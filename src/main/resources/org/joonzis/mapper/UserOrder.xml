@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.joonzis.mapper.UserOrderMapper">
+   <!-- mno로 유저 구매 목록 -->
+   <select id="userOrderSelect" parameterType="int" resultType="org.joonzis.domain.UserOrderVO">
+   SELECT
+         u.mno,
+         o.odno,
+         o.orderaddr,
+         o.orderphone,
+         o.totalprice,
+         o.orderdate,
+         o.orderstatus,
+         b.bno,
+         b.count,
+            tb.bookcover,
+             tb.title
+      FROM
+         tbl_user u,
+         tbl_order_detail o,
+         tbl_odno_bno b,
+             tbl_book tb
+      WHERE u.mno = o.mno
+         AND o.odno = b.odno
+           AND b.bno = tb.bno
+         AND u.mno = #{mno}
+         order by o.orderdate desc
+   </select>
+   
+   <!-- 구매 몇개 했는지 구하는 쿼리문이에용 -->
+   <select id="orderCount" parameterType="int" resultType="int">
+      SELECT
+             count(*)
+      FROM
+         tbl_user u,
+         tbl_order_detail o,
+         tbl_odno_bno b,
+           tbl_book tb
+      WHERE u.mno = o.mno
+         AND o.odno = b.odno
+            AND b.bno = tb.bno
+         AND u.mno = #{mno}
+   </select>
+   
+   <!-- 오늘/어제/3달 주문내역 조회  -->
+   <select id="selectDays"  parameterType="org.joonzis.domain.UserOrderVO" resultType="org.joonzis.domain.UserOrderVO">
+      SELECT
+         u.mno,
+         o.odno,
+         o.orderaddr,
+         o.orderphone,
+         o.totalprice,
+         o.orderdate,
+         o.orderstatus,
+         b.bno,
+         b.count,
+           tb.bookcover,
+           tb.title
+      FROM
+         tbl_user u,
+         tbl_order_detail o,
+         tbl_odno_bno b,
+             tbl_book tb
+      WHERE u.mno = o.mno
+         AND o.odno = b.odno
+             AND b.bno = tb.bno
+         AND u.mno = #{mno}
+         AND TRUNC(o.orderdate) 
+         <choose>
+            <when test="selectDay == '7days'">BETWEEN TRUNC (SYSDATE- 7) AND TRUNC(SYSDATE)</when>
+            <when test="selectDay == '1month'">BETWEEN TRUNC (SYSDATE- 31) AND TRUNC(SYSDATE)</when>
+            <when test="selectDay == '3months'">BETWEEN TRUNC (SYSDATE- 93) AND TRUNC(SYSDATE)</when>
+            <otherwise> = TRUNC(SYSDATE) </otherwise>
+         </choose>
+         ORDER BY 
+            o.orderdate 
+         DESC
+   </select>
+   
+   <select id="">
+      UPDATE 
+         tbl_order_detail 
+      SET 
+         orderstatus = '배송중' 
+      WHERE odno = 50; 
+   
+   
+   </select>
+   
+   
+   <!-- 캘린더로 조회 -->
+   <select id="selectCalendar"  parameterType="org.joonzis.domain.UserOrderVO" resultType="org.joonzis.domain.UserOrderVO">
+      SELECT
+         u.mno,
+         o.odno,
+         o.orderaddr,
+         o.orderphone,
+         o.totalprice,
+         o.orderdate,
+         o.orderstatus,
+         b.bno,
+         b.count,
+           tb.bookcover,
+           tb.title
+      FROM
+         tbl_user u,
+         tbl_order_detail o,
+         tbl_odno_bno b,
+             tbl_book tb
+      WHERE u.mno = o.mno
+         AND o.odno = b.odno
+             AND b.bno = tb.bno
+         AND u.mno = 1
+         AND o.orderdate 
+      BETWEEN #{startDate} AND #{endDate}
+      ORDER BY
+         o.orderdate DESC
+   </select>
+      
+   <!-- 주문 상세페이지 이동에용 -->
+   <select id="myPageUserOrderDetail" parameterType="org.joonzis.domain.UserOrderVO" resultType="org.joonzis.domain.UserOrderVO">
+      SELECT
+         u.mno,
+         o.odno,
+         o.orderaddr,
+         o.orderphone,
+         o.totalprice,
+         o.orderdate,
+         o.orderstatus,
+         o.usepoint,
+             o.userdeposit,
+         b.bno,
+         b.count,
+           tb.bookcover,
+           tb.title,
+           tb.bookprice
+      FROM
+         tbl_user u,
+         tbl_order_detail o,
+         tbl_odno_bno b,
+           tbl_book tb
+      WHERE u.mno = o.mno
+      AND o.odno = b.odno
+        AND b.bno = tb.bno
+      AND u.mno = #{mno}
+        AND o.odno = #{odno}
+   </select>
+   
+   <select id="NewuserOrderSelect" parameterType="int" resultType="org.joonzis.domain.OrderDetailVO">
+      SELECT * 
+      FROM
+         tbl_order_detail 
+      WHERE mno = #{mno}
+      ORDER BY orderDate DESC
+   </select>
+   
+   <select id="selectOrderByOdno" parameterType="int" resultType="org.joonzis.domain.UserOrderVO">
+       SELECT
+         u.mno,
+         o.odno,
+         o.orderaddr,
+         o.orderphone,
+         o.totalprice,
+         o.orderdate,
+         o.orderstatus,
+         b.bno,
+         b.count,
+            tb.bookcover,
+             tb.title,
+            tb.bookprice
+      FROM
+         tbl_user u,
+         tbl_order_detail o,
+         tbl_odno_bno b,
+             tbl_book tb
+      WHERE u.mno = o.mno
+         AND o.odno = b.odno
+           AND b.bno = tb.bno
+         AND o.odno = #{odno}
+         order by o.orderdate desc
+   </select>
+</mapper>

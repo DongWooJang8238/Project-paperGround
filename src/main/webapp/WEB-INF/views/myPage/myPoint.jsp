@@ -1,0 +1,311 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="/resources/css/myPage.css">
+    <title>포인트 현황</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+body {
+    font-family: 'Apple SD Gothic Neo', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.point-status {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.point-box h2 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333333;
+    margin-bottom: 20px;
+}
+
+.points {
+    font-size: 36px;
+    font-weight: 700;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.monthly-points, .expiring-points {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #666666;
+}
+
+.points-value {
+    font-weight: 500;
+}
+
+.tabs {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 15px 0;
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.tab-button.active {
+    font-weight: 700;
+    color: #007bff;
+}
+
+.tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: #007bff;
+}
+
+.tab-content {
+    display: none;
+    margin-top: 30px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-top: 1px solid #eaeaea;
+    font-size: 16px;
+}
+
+.entry:first-child {
+    border-top: none;
+}
+
+.icon {
+    font-size: 22px;
+    margin-right: 15px;
+}
+
+.details {
+    flex-grow: 1;
+    color: #333333;
+}
+
+.points-earned {
+    font-weight: 700;
+    color: #007bff;
+}
+
+/* 포인트 안내사항 섹션 스타일 */
+.point-info {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.point-info h3 {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.info-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.info-icon {
+    font-size: 24px;
+    color: #ff4b4b;
+}
+
+.info-text {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    margin-left: 10px;
+    flex-grow: 1;
+}
+
+.external-link {
+    font-size: 18px;
+    color: #999;
+    text-decoration: none;
+    
+    
+}
+
+</style>
+<body>
+<jsp:include page="../layout/header.jsp"></jsp:include>
+        <div class="container">
+        <div class="point-status">
+            <div class="point-box">
+                <h2>${sessionScope.vo.userName }님의 사용 가능 포인트  </h2>
+                <div class="points">${sessionScope.vo.userPoint }P</div>
+                <div class="monthly-points">
+                    <span>이번 달 적립 포인트</span>
+                    <span class="points-value">+${totalPoint }P</span>
+                </div>
+                <div class="expiring-points">
+                    <span>이번 달 사용 포인트</span>
+                    <span class="points-value">- ${totalUsePoint }P</span>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-button active" data-tab="all">전체</button>
+                <button class="tab-button" data-tab="earn">적립</button>
+                <button class="tab-button" data-tab="use">사용</button>
+            </div>
+			
+            <div class="tab-content active" id="all">
+                    <c:forEach var="p" items="${list }">
+                <div class="entry">
+                    <div class="icon">📝</div>
+                    <div class="details">
+                        <p>${p.pointArea}</p>
+                        <p>${p.pointGetDate }</p>
+                    </div>
+                    <div class="points-earned">${p.point }P ${p.status }</div>
+                </div>
+                    </c:forEach>
+                </div>
+
+		<div class="tab-content" id="earn">
+			<c:choose>
+				<c:when test="${empty list }">
+					<p>적립내역이 없습니다.</p>
+				</c:when>
+				<c:when test="${not empty list }">
+					<c:forEach var="p" items="${list }">
+						<c:choose>
+							<c:when test="${p.status eq '적립' }">
+								<div class="entry">
+									<div class="icon">📝</div>
+									<div class="details">
+										<p>${p.pointArea}</p>
+										<p>${p.pointGetDate }</p>
+									</div>
+									<div class="points-earned">${p.point }P ${p.status }</div>
+								</div>
+							</c:when>
+						</c:choose>
+					</c:forEach>
+				</c:when>
+			</c:choose>
+		</div>
+		<div class="tab-content" id="use">
+                	<c:choose>
+				<c:when test="${empty list }">
+					<p>사용내역이 없습니다.</p>
+				</c:when>
+				<c:when test="${not empty list }">
+					<c:forEach var="p" items="${list }">
+						<c:choose>
+							<c:when test="${p.status eq '사용' }">
+								<div class="entry">
+									<div class="icon">📝</div>
+									<div class="details">
+										<p>${p.pointArea}</p>
+										<p>${p.pointGetDate }</p>
+									</div>
+									<div class="points-earned">${p.point }P ${p.status }</div>
+								</div>
+							</c:when>
+						</c:choose>
+					</c:forEach>
+				</c:when>
+			</c:choose>
+            </div>
+        </div>
+        </div>
+
+        <!-- 포인트 안내사항 섹션 -->
+        <div class="point-info">
+            <h3>포인트 안내사항</h3>
+            <div class="info-box">
+                <div class="info-icon">📄</div>
+                <a href="/report/qna" class="external-link"><span class="info-text">포인트 정책</span></a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="sidebar">
+				<h3>마이페이지</h3>
+				<ul>
+					<li><a href="userShoping"
+						onclick="toggleSubMenu('shopping-info')">쇼핑정보</a>
+						<ul id="shopping-info" class="sub-menu">
+							<li><a id="myOrder"
+								href="/User/OrderSelect?mno=${sessionScope.vo.mno }">주문목록/배송조회</a></li>
+							<li><a href="#">취소/반품/교환 내역</a></li>
+						</ul></li>
+					<li><a href="#" onclick="toggleSubMenu('benefit-management')">혜택관리</a>
+						<ul id="benefit-management" class="sub-menu">
+							<li><a a id ="myPoint" href="/User/selectMyPoint?mno=${sessionScope.vo.mno }">내 포인트</a></li>
+							<li><a href="#">적립금</a></li>
+						</ul></li>
+					<li><a href="userInfo" onclick="toggleSubMenu('member-info')">회원정보</a>
+						<ul id="member-info" class="sub-menu">
+							<li><a id="checkPage"
+								href="/User/checkPassword?userId=${sessionScope.vo.userId }">회원정보 수정</a></li>
+							<li><a href="#">배송지 관리</a></li>
+						</ul></li>
+					<li><a href="/report/selectReport"
+						onclick="toggleSubMenu('serviceCenter-info')">고객센터</a>
+						<ul id="serviceCenter-info" class="sub-menu">
+							<li><a id="reportCategory" href="/report/reportCategory">Q&A</a></li>
+							<li><a id="reportBoard" href="/report/reportBoard?mno="1>문의센터</a></li>
+							<li><a id="directReport" href="/report/directReport?mno="1>1:1문의</a></li>
+						</ul></li>
+					<li><a href="#">나의 게시글</a></li>
+				</ul>
+			</div>
+
+    <jsp:include page="../layout/footer.jsp"></jsp:include>
+    <script type="text/javascript" src="/resources/js/myPage/myPoint.js"></script>
+    <script type="text/javascript" src="/resources/js/myPage/sidebar.js"></script>
+</body>
+</html>
+    

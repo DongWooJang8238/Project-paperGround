@@ -1,0 +1,124 @@
+/* 기본 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+h1.page-header {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* 버튼 스타일 */
+.btn {
+    display: inline-block;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 4px;
+    border: none;
+    margin: 5px;
+}
+
+.btn-fir {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-fir:hover {
+    background-color: #0056b3;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f1f1f1;
+    color: #333;
+}
+
+td {
+    background-color: white;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.bno, .replycnt {
+    text-align: center;
+}
+
+/* 페이지네이션 스타일 */
+.page-nation {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    list-style: none;
+}
+
+.page-nation li {
+    margin: 0 5px;
+}
+
+.page-nation a {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    color: #007bff;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.page-nation a.active {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #007bff;
+}
+
+.page-nation a:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+/* 반응형 */
+@media screen and (max-width: 768px) {
+    table, th, td {
+        display: block;
+        width: 100%;
+    }
+    
+    th, td {
+        text-align: left;
+        padding: 10px;
+        border-bottom: none;
+    }
+}
+.sidebar {
+    width: 200px; /* 사이드바의 너비 */
+    background-color: #ffffff; /* 사이드바 배경색 */
+    padding: 20px; /* 패딩 추가 */
+    position: absolute; /* 절대 위치로 설정 */
+    top: 150px; /* 헤더 아래 위치 (헤더 높이에 따라 조정) */
+    bottom: 120px; /* 푸터 위 위치 (푸터 높이에 따라 조정) */
+    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 가능 */
+}
+

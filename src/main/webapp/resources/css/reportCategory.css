@@ -1,0 +1,51 @@
+
+/* 전체 body에 영향을 주지 않음 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+/* 버튼 컨테이너를 3x3 그리드로 설정 */
+.panel-body-btns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3개의 열로 나누기 */
+    grid-gap: 20px; /* 버튼들 사이에 간격 추가 */
+    justify-items: center; /* 버튼을 중앙에 정렬 */
+    padding: 20px;
+}
+
+/* 버튼 스타일 - 크기 증가 및 개별 색상 설정 */
+.btn {
+    width: 300px; /* 적당한 크기로 설정 */
+    padding: 40px; /* 버튼 크기 증가 */
+    font-size: 24px; /* 폰트 크기 조정 */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* 버튼별로 다른 색상 설정 */
+#reportall { background-color: #ff6666; } /* reportall: 빨강 */
+#reportUser { background-color: #66b3ff; } /* reportUser: 파랑 */
+#reportWriter { background-color: #99ff99; } /* reportWriter: 초록 */
+#reportSystem { background-color: #ffcc99; } /* reportSystem: 오렌지 */
+#reportShop { background-color: #c299ff; } /* reportShop: 보라 */
+#reportRefund { background-color: #ffb366; } /* reportRefund: 황토색 */
+#reportProfile { background-color: #66ffcc; } /* reportProfile: 민트 */
+#reportFesta { background-color: #ff99cc; } /* 산문: 핑크 */
+#reportHeadhunter { background-color: #ffff66; } /* 현대소설: 노랑 */
+
+/* hover 상태에서 더 어두운 색상 적용 */
+#reportall:hover { background-color: #cc5252; }
+#reportUser:hover { background-color: #4d94ff; }
+#reportWriter:hover { background-color: #80e680; }
+#reportSystem:hover { background-color: #e69966; }
+#reportShop:hover { background-color: #9933ff; }
+#reportRefund:hover { background-color: #e67300; }
+#reportProfile:hover { background-color: #33ff99; }
+#reportFesta:hover { background-color: #ff66b2; }
+#reportHeadhunter:hover { background-color: #ffff33; }

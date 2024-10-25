@@ -1,0 +1,57 @@
+@charset "UTF-8";
+
+.sidebar {
+    width: 200px; /* 사이드바의 너비 */
+    background-color: #ffffff; /* 사이드바 배경색 */
+    padding: 20px; /* 패딩 추가 */
+    position: absolute; /* 절대 위치로 설정 */
+    top: 150px; /* 헤더 아래 위치 (헤더 높이에 따라 조정) */
+    bottom: 120px; /* 푸터 위 위치 (푸터 높이에 따라 조정) */
+    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 가능 */
+}
+
+
+.sidebar h3 {
+    margin-top: 0; /* 제목 상단 여백 제거 */
+}
+
+.sidebar a {
+    display: block; /* 링크를 블록 요소로 설정하여 전체 너비를 차지하게 함 */
+    padding: 10px; /* 링크 패딩 */
+    color: #333; /* 링크 글자 색상 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+.sidebar a:hover {
+    background-color: #ddd; /* 마우스 오버 시 배경색 변경 */
+}
+
+.panel-body {
+    margin-left: 220px; /* 사이드바 너비 + 여백 (사이드바가 200px이므로 추가 여백을 고려) */
+    padding: 20px; /* 패딩 추가 (필요에 따라 조정 가능) */
+}
+
+.used-shop-table {
+    width: 100%; /* 테이블 너비 100% */
+    border-collapse: collapse; /* 테두리 겹침 제거 */
+}
+
+.used-shop-table th, .used-shop-table td {
+    border: 1px solid #ccc; /* 테두리 색상 */
+    padding: 10px; /* 패딩 추가 */
+    text-align: left; /* 왼쪽 정렬 */
+}
+
+.used-shop-table th {
+    background-color: #f2f2f2; /* 헤더 배경색 */
+}
+
+.used-shop-table tr:hover {
+    background-color: #f5f5f5; /* 마우스 오버 시 배경색 변경 */
+}
+
+.card-image {
+    width: 100px; /* 이미지 너비 */
+    height: auto; /* 높이는 자동 */
+}
+

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.joonzis.mapper.BoardMapper">
+<!--<select id="getList" resultType="org.joonzis.domain.BoardVO">
+		SELECT * FROM table_board
+	</select> -->
+ <select id="getList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.BoardVO">
+		<![CDATA[
+			select boardno, writer, title, regdate, replyCount, readCount, category 
+			from (select rownum rn, boardno, writer, title, regdate, replyCount, readCount, category
+  			  from (select * from table_board order by boardno desc)
+     		   where rownum <= #{pageNum} * #{amount})
+			where rn > (#{pageNum} - 1) * #{amount}
+		]]>
+	</select>
+	
+	<!-- 
+	<select id="getList" resultType="org.joonzis.domain.BoardVO">
+ 	   select * from table_board order by boardno desc
+	</select>  -->
+	
+	<select id="get" parameterType="int" resultType="org.joonzis.domain.BoardVO">
+		select * from table_board WHERE boardno = #{boardno}
+	</select>
+	
+	<insert id="register" parameterType="org.joonzis.domain.BoardVO">
+		<selectKey keyProperty="boardno" resultType="int" order="BEFORE">
+			SELECT table_board_seq.nextval FROM dual
+		</selectKey>
+		insert into table_board(boardno, mno, title, content, writer, category, REGDATE, UPDATEDATE) values(
+		#{boardno}, #{mno}, #{title}, #{content}, #{writer}, #{category}, sysdate, sysdate)
+	</insert>
+	
+	<update id="modify" parameterType="org.joonzis.domain.BoardVO">
+		update table_board set title = #{title}, content=#{content}, writer=#{writer}, UPDATEDATE = sysdate 
+		where boardno = #{boardno}
+	</update>
+	
+	<delete id="remove" parameterType="int">
+		delete from table_board where boardno = #{boardno}
+	</delete>
+	
+	<!-- 조회수 -->
+	<update id="boardReadCount" parameterType="int">
+		UPDATE table_board SET readCount = readCount + 1 WHERE boardno = #{boardno}
+	</update>
+	
+	<select id="getTotal" resultType="int">
+		select count(*) from table_board
+	</select>
+		<update id="updateReplyCnt">
+		UPDATE table_board SET
+			replycount = replycount + #{amount}
+		WHERE
+			boardno = #{boardno}
+	</update>
+	
+	<!-- 좋아요 수 조회 -->
+	<select id="getLikeCount" parameterType="int" resultType="int">
+		select count(*) from table_likes where boardno = #{boardno}
+	</select>
+	
+</mapper>

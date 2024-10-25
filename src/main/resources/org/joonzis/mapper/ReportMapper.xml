@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.joonzis.mapper.ReportMapper">
+
+<select id="getCategoryData" parameterType="int" resultType="org.joonzis.domain.QnaVO">
+SELECT * FROM reportQNA WHERE qnaCategory = #{qnaCategory} 
+</select>
+
+<select id="getAllQnaData" resultType="org.joonzis.domain.QnaVO">
+    SELECT * FROM reportQNA
+</select>
+<select id="selectQnaByCategory" parameterType="int" resultType="org.joonzis.domain.QnaVO">
+    SELECT * FROM reportQNA WHERE qnaCategory = #{qnaCategory}
+</select>
+
+<insert id="insertDR" parameterType="org.joonzis.domain.DrVO">
+	insert into tbl_directReport values(dr_seq.NEXTVAL,#{DRtitle}, #{DRcategory},#{DRcontent})
+</insert>
+<select id="getTotal" resultType="int">
+		select count(*) from tbl_reportboard
+</select>	
+<select id="getList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.ReportBoardVO">
+		<![CDATA[
+			select boardNO, writer, title, regdate, replyCount, readCount 
+			from (select rownum rn, boardNO, writer, title, regdate, replyCount, readCount
+  			  from (select * from tbl_reportboard order by boardNO desc)
+     		   where rownum <= #{pageNum} * #{amount})
+			where rn > (#{pageNum} - 1) * #{amount}
+		]]>
+</select>
+
+<insert id="insertReport" parameterType="org.joonzis.domain.ReportBoardVO">
+	insert into tbl_reportboard (boardNO, mno, title, content, writer, readCount, regdate, updatedate, replyCount  ) values(#{boardNO}, #{mno}, #{title}, #{content}, #{writer}, 0, sysdate,sysdate, 0)
+</insert>
+
+
+
+</mapper>

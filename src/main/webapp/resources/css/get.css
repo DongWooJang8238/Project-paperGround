@@ -1,0 +1,226 @@
+/* General styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #4cae4c;
+}
+
+.table th, .table td {
+    padding: 10px;
+}
+
+.panel-body {
+    background-color: white;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 900px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* File container styling */
+.file-container {
+    margin-top: 20px;
+}
+
+.file-header .file-title a {
+    font-weight: bold;
+    font-size: 18px;
+    color: #333;
+}
+
+.file-body {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.uploadResult ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Like section styling */
+#like-section {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#like-count h1 {
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+#like-btn {
+    background-color: #007bff;
+}
+
+#like-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Reply section styling */
+#reply {
+    margin-top: 30px;
+}
+
+.reply-title a {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.reply-body .reply-font {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.chat {
+    list-style-type: none;
+    padding: 0;
+}
+
+.chat-header {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.reply-like-section {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.reply-like-count {
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.reply-like-btn {
+    background-color: #ff9800;
+}
+
+.reply-like-btn:hover {
+    background-color: #e68900;
+}
+
+/* Modal styling */
+#modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    border-radius: 8px;
+}
+
+.modal-title a {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.modal-font {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.modal-footer button {
+    margin-right: 10px;
+}
+
+.panel-body-btns {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.btn-sec {
+    background-color: #f0ad4e;
+}
+
+.btn-sec:hover {
+    background-color: #ec971f;
+}
+
+.btn-fir {
+    background-color: #5cb85c;
+}
+
+.btn-fir:hover {
+    background-color: #449d44;
+}
+
+.btn-thi {
+    background-color: #337ab7;
+}
+
+.btn-thi:hover {
+    background-color: #286090;
+}
+
+.btn-fou {
+    background-color: #d9534f;
+}
+
+.btn-fou:hover {
+    background-color: #c9302c;
+}
+
+/* Footer */
+.panel-footer {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-top: 1px solid #ddd;
+}
+.panel-footer-body {
+    position: relative;
+}
+
+#openModalFooterBtn {
+    position: absolute;
+    right: 0;
+    top: 10px;
+}

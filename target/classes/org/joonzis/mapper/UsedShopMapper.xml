@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.joonzis.mapper.UsedShopMapper">
+	
+	<!-- 전체 책 리스트 조회 -->
+<select id="getuBookList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.UsedBookVO">
+	<![CDATA[
+		SELECT ubno, mno, gno, ubookPrice, title, content, ubookImage, status, ubookDate
+		FROM (
+			SELECT ROWNUM rn, ubno, mno, gno, ubookPrice, title, content, ubookImage, status, ubookDate 
+			FROM (
+				SELECT * FROM tbl_ubook 
+				ORDER BY ubno DESC
+			)
+			WHERE ROWNUM <= #{pageNum} * #{amount}
+		)
+		WHERE rn > (#{pageNum} - 1) * #{amount}
+	]]>
+</select>
+
+	
+	<!-- 카테고리 별 책 리스트 조회 -->
+	<!-- <select id="getuBookListGe" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.UsedBookVO">
+		<![CDATA[
+		select ubno, mno, gno, ubookPrice, title, content, ubookImage, status, ubookDate from
+		(select rownum rn, ubno, mno, gno, ubookPrice, title, content, ubookImage, status, ubookDate from
+		(select * from tbl_ubook where gno = #{gener} ORDER BY status DESC)
+		where rownum <= #{pageNum} * #{amount})
+		where rn > (#{pageNum} - 1) * #{amount}
+		]]>
+	</select> -->
+	
+	<!-- 전체 책 개수 조회 -->
+	<select id="getTotal" resultType="int">
+		 select count(*) from tbl_ubook
+	</select>
+	
+	<!-- 카테고리 별 책 개수 조회 -->
+	<select id="getTotalByGno" parameterType="int" resultType="int">
+		 select count(*) from tbl_ubook where gno = #{gno}
+	</select>
+	
+	<!-- 중고상품 등록 -->
+	<insert id="usedShopInsert" parameterType="org.joonzis.domain.UsedBookVO">
+		insert into tbl_ubook values ( seq_ubno.nextval , #{mno}, #{gno}, #{title}, #{content}, #{ubookPrice}, #{ubookImage}, #{status}, sysdate)
+	</insert>
+	
+	<!-- ubno 조회 -->
+	<select id="selectUbno" resultType="int">
+		select max(ubno) from tbl_ubook
+	</select>
+	
+	<!-- 중고상품 이미지 등록 -->
+	<insert id="usedShopImgInsert" parameterType="org.joonzis.domain.usedBookImgVO">
+		insert into tbl_ubook_image values ( #{ubno}, #{ubookimage} )
+	</insert>
+	
+	<!-- 중고 상품 보기 by.ubno -->
+	<select id="getuBookOne" parameterType="int" resultType="org.joonzis.domain.UsedBookVO">
+		select * from tbl_ubook where ubno = #{ubno}
+	</select>
+	
+	<!-- 중고 상품 이미지 보기 -->
+	<select id="getuBookImgByUbno" parameterType="int" resultType="org.joonzis.domain.usedBookImgVO">
+		select * from tbl_ubook_image where ubno = #{ubno}
+	</select>
+</mapper>

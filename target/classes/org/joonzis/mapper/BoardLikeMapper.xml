@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.joonzis.mapper.BoardLikeMapper">
+	<!-- 게시판 -->
+	<insert id="insertLike" parameterType="org.joonzis.domain.BoardLikeVO">
+		INSERT INTO table_likes (likeno, boardno, mno)
+		VALUES (table_likes_seq.NEXTVAL, #{boardno}, #{mno})
+	</insert>
+
+	<delete id="deleteLike" parameterType="org.joonzis.domain.BoardLikeVO">
+		DELETE FROM table_likes WHERE boardno = #{boardno} AND mno = #{mno}
+	</delete>
+
+	<select id="countLikes" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM table_likes WHERE boardno = #{boardno}
+	</select>
+
+	<select id="isLiked" resultType="int" parameterType="org.joonzis.domain.BoardLikeVO">
+		SELECT COUNT(*) FROM table_likes WHERE boardno = #{boardno} AND mno = #{mno}
+	</select>
+	
+	<delete id="deleteBoard" parameterType="int">
+		delete from table_likes where boardno = #{boardno}
+	</delete>
+	
+	<!-- 댓글 -->
+	<insert id="cominsertLike" parameterType="org.joonzis.domain.BoardCommentLikeVO">
+		INSERT INTO table_commentLikes (comlikeno, replyno, boardno, mno)
+		VALUES (table_commentLikes_seq.NEXTVAL, #{replyno}, #{boardno}, #{mno})
+	</insert>
+
+	<delete id="comdeleteLike" parameterType="org.joonzis.domain.BoardCommentLikeVO">
+		DELETE FROM table_commentLikes WHERE replyno = #{replyno} AND boardno = #{boardno} AND mno = #{mno}
+	</delete>
+
+	<select id="comcountLikes" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM table_commentLikes WHERE replyno = #{replyno}
+	</select>
+	
+	<select id="comisLikedVO" resultType="int" parameterType="org.joonzis.domain.BoardCommentLikeVO">
+		SELECT COUNT(*) FROM table_commentLikes WHERE replyno = #{replyno} AND boardno = #{boardno} AND mno = #{mno}
+	</select>
+	
+</mapper>

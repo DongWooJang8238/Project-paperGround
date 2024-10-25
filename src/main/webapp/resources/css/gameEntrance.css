@@ -1,0 +1,57 @@
+/* 전체 body에 영향을 주지 않음 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+/* 버튼들만 가운데 정렬 */
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;  /* 버튼을 화면 가운데로 정렬하기 위해 설정 */
+}
+
+/* 버튼 스타일 - 크기 5배 더 크게 만들고, 색상 변경 */
+.panel-body-btns {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* 쉬움 난이도 버튼 - green 색상 */
+#easyBtn {
+    width: 1000px; /* 기존 크기에서 5배 증가 */
+    padding: 50px; /* 기존 크기에서 5배 증가 */
+    font-size: 90px; /* 폰트 크기를 5배 증가 */
+    color: white;
+    background-color: green; /* 쉬움 난이도 버튼 색상을 초록색으로 변경 */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#easyBtn:hover {
+    background-color: darkgreen; /* hover 상태에서 더 어두운 초록색 */
+}
+
+/* 기본 난이도 버튼 - brown 색상 */
+#nomalBtn {
+    width: 1000px; /* 기존 크기에서 5배 증가 */
+    padding: 50px; /* 기존 크기에서 5배 증가 */
+    font-size: 90px; /* 폰트 크기를 5배 증가 */
+    color: white;
+    background-color: brown; /* 기본 난이도 버튼 색상을 갈색으로 설정 */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#nomalBtn:hover {
+    background-color: #8b4513; /* hover 상태에서 어두운 갈색 */
+}

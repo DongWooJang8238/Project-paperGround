@@ -2,7 +2,9 @@ package org.joonzis.controller;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -25,6 +27,7 @@ import lombok.extern.log4j.Log4j;
 public class SocketServer {
 
 	private UsedShopService service;
+	private static Set<Session> sessions = new HashSet<>();
 	
 	public SocketServer() {
         ApplicationContext context = ApplicationContextProvider.getApplicationContext();
@@ -34,6 +37,7 @@ public class SocketServer {
 	@OnOpen
 	public void handelOpen(Session session) {
 		log.warn("채팅방 오픈 췍췤췍췤");
+		sessions.add(session);
 
 		int ubno = Integer.parseInt(session.getRequestParameterMap().get("ubno").get(0));
 		int sellmno = Integer.parseInt(session.getRequestParameterMap().get("sellmno").get(0));
@@ -102,66 +106,62 @@ public class SocketServer {
 	}
 
 	@OnClose
-	public void handleClose() {
+	public void handleClose(Session session) {
+		sessions.remove(session);
 		System.out.println("클라이언트가 종료했습니다.");
 	}
 
 	@OnMessage
-	public void handleMessage(String msgJson, Session session) {
-	    log.warn("넘어온 json 파일 : " + msgJson);
-	    
-	    ObjectMapper objectMapper = new ObjectMapper();
-	    log.warn("데이터 파싱중..");
+    public void handleMessage(String msgJson, Session session) {
+        log.warn("넘어온 json 파일 : " + msgJson);
 
-	    MessageData messageData = null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        MessageData messageData;
 
-	    try {
-	        messageData = objectMapper.readValue(msgJson, MessageData.class);
-	        log.warn("데이터 파싱 완료: " + messageData);
-	    } catch (Exception e) {
-	        log.error("데이터 파싱 오류: " + e.getMessage());
-	        try {
-	            session.getBasicRemote().sendText("(오류: 데이터 파싱 실패)");
-	        } catch (IOException ioException) {
-	            log.error("오류 메시지 전송 실패: " + ioException.getMessage());
-	        }
-	        return;
-	    }
-	    
-	    String msg = messageData.getMsg();
-	    int yourMsg = messageData.getSellmno();
-	    int myMsg = messageData.getBuymno();
-	    int ubno = messageData.getUbno();
-	    log.warn("클라이언트가 보낸 메시지 : " + msg);
-	    log.warn("클라이언트 상대방 번호 : " + yourMsg);
-	    log.warn("클라이언트 내 번호 : " + myMsg);
-	    log.warn("클라이언트 중고상품 번호 : " + ubno);
+        try {
+            messageData = objectMapper.readValue(msgJson, MessageData.class);
+            log.warn("데이터 파싱 완료: " + messageData);
+        } catch (Exception e) {
+            log.error("데이터 파싱 오류: " + e.getMessage());
+            try {
+                session.getBasicRemote().sendText("(오류: 데이터 파싱 실패)");
+            } catch (IOException ioException) {
+                log.error("오류 메시지 전송 실패: " + ioException.getMessage());
+            }
+            return;
+        }
 
-	    ChatRoomDTO chat = new ChatRoomDTO();
-	    chat.setSellmno(yourMsg);
-	    chat.setBuymno(myMsg);
-	    chat.setUbno(ubno);
-	    int chatno = service.getChattingNumber(chat);
-	    log.warn("채팅 방 번호 : " + chatno);
+        String msg = messageData.getMsg();
+        int yourMsg = messageData.getSellmno();
+        int myMsg = messageData.getBuymno();
+        int ubno = messageData.getUbno();
 
-	    ChattingDTO chatting = new ChattingDTO();
-	    chatting.setChatno(chatno);
-	    chatting.setMno(myMsg);
-	    chatting.setContent(msg);
-	    
-	    int chattingCheck = service.insertChattingContent(chatting);
-	    log.warn("채팅 내용 저장 결과 : " + chattingCheck);
+        ChatRoomDTO chat = new ChatRoomDTO();
+        chat.setSellmno(yourMsg);
+        chat.setBuymno(myMsg);
+        chat.setUbno(ubno);
+        int chatno = service.getChattingNumber(chat);
 
-	    long nowTime = System.currentTimeMillis();
-	    Date sqlDate = new Date(nowTime);
-	    String responseMessage = "[" + sqlDate + "] : " + msg;
-	    
-	    try {
-	        session.getBasicRemote().sendText(responseMessage);
-	    } catch (IOException e) {
-	        log.error("메시지 전송 오류: " + e.getMessage());
-	    }
-	}
+        ChattingDTO chatting = new ChattingDTO();
+        chatting.setChatno(chatno);
+        chatting.setMno(myMsg);
+        chatting.setContent(msg);
+
+        int chattingCheck = service.insertChattingContent(chatting);
+        log.warn("채팅 내용 저장 결과 : " + chattingCheck);
+
+        long nowTime = System.currentTimeMillis();
+        Date sqlDate = new Date(nowTime);
+        String responseMessage = "[" + sqlDate + "] : " + msg;
+
+        for (Session s : sessions) {
+            try {
+                s.getBasicRemote().sendText(responseMessage);
+            } catch (IOException e) {
+                log.error("브로드캐스트 메시지 전송 오류: " + e.getMessage());
+            }
+        }
+    }
 
 
 	@OnError

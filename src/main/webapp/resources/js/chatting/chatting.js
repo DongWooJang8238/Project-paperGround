@@ -110,5 +110,5 @@ function gobtnMsg(chatno) {
 		};
 		ws.send(JSON.stringify(msgJson));
 		
-		$('#msg').val('');
+		$('#sellmsg').val('');
 }

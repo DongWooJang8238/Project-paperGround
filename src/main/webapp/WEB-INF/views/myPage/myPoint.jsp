@@ -207,7 +207,14 @@ body {
                         <p>${p.pointArea}</p>
                         <p>${p.pointGetDate }</p>
                     </div>
-                    <div class="points-earned">${p.point }P ${p.status }</div>
+                    <c:choose>
+                    	<c:when test="${p.status == '적립' }">
+		                    <div class="points-earned">${p.point }P ${p.status }</div>
+                    	</c:when>
+                    	<c:otherwise>
+		                    <div class="points-earned" style="color: red;">${p.point }P ${p.status }</div>
+                    	</c:otherwise>
+                    </c:choose>
                 </div>
                     </c:forEach>
                 </div>
@@ -250,7 +257,7 @@ body {
 										<p>${p.pointArea}</p>
 										<p>${p.pointGetDate }</p>
 									</div>
-									<div class="points-earned">${p.point }P ${p.status }</div>
+									<div class="points-earned" style="color: red;">${p.point }P ${p.status }</div>
 								</div>
 							</c:when>
 						</c:choose>

@@ -1,11 +1,22 @@
 let f = document.forms[0];
-const mno = new URLSearchParams(location.search).get('mno');
-// 수량 증가/감소 버튼 이벤트 리스너 추가
-    const spanCount = document.querySelector('.spanCount');
-    const bookPriceElement = document.querySelector('.bookPrice');
-    const inputCount = document.querySelector('input[name="count"]');
+// 총 결제 금액 계산
+let totalPrice = 0;
 
-    document.querySelector('.minus').addEventListener('click', () => {
+document.querySelectorAll('.product-details').forEach(item => {
+    const bookPrice = Number(item.querySelector('.bookPrice').getAttribute('data-price'));
+    const quantity = Number(item.querySelector('.spanCount').innerHTML);
+    totalPrice += bookPrice * quantity;
+});
+
+document.querySelector('#totalPrice').innerHTML = totalPrice;
+
+// 수량 증가/감소 버튼 이벤트 리스너 추가
+document.querySelectorAll('.product-details').forEach(item => {
+    const spanCount = item.querySelector('.spanCount');
+    const bookPriceElement = item.querySelector('.bookPrice');
+    const inputCount = item.querySelector('input[name="count"]');
+
+    item.querySelector('.minus').addEventListener('click', () => {
         let currentCount = Number(spanCount.innerHTML);
         if (currentCount > 1) {
             currentCount--;
@@ -21,7 +32,7 @@ const mno = new URLSearchParams(location.search).get('mno');
         }
     });
 
-    document.querySelector('.plus').addEventListener('click', () => {
+    item.querySelector('.plus').addEventListener('click', () => {
         let currentCount = Number(spanCount.innerHTML);
         if (currentCount < 100) {
             currentCount++;
@@ -36,11 +47,14 @@ const mno = new URLSearchParams(location.search).get('mno');
             updateTotalPrice();
         }
     });
+});
 
 function updateTotalPrice() {
     totalPrice = 0;
-    const bookPrice = Number(document.querySelector('.bookPrice').innerHTML);
-    totalPrice += bookPrice;
+    document.querySelectorAll('.product-details').forEach(item => {
+        const bookPrice = Number(item.querySelector('.bookPrice').innerHTML);
+        totalPrice += bookPrice;
+    });
     document.querySelector('#totalPrice').innerHTML = totalPrice;
 }
 
@@ -127,6 +141,11 @@ function sample6_execDaumPostcode() {
 
 // 신용카드 결제
 function cardPay() {
+	// 사용자 입력 정보 확인
+	if(f.orderName.value === '' || f.orderPhone.value === '' || f.address.value === '' || f.streetAddress.value === '' || f.detailAddress.value === ''){
+		alert('(필수) 항목이 비어있습니다.');
+		return;
+	}
 	// 신용카드 관련 로직 실행
 //	alert('mno = ' + mno);
 	const img = document.querySelectorAll('img');
@@ -137,62 +156,62 @@ function cardPay() {
 	console.log(bnoOne[0].value);
 	alert('뭔가신용카드결제');
 	// 결제 완료 후 페이지 이동
-	const listData = [];
-	// 상품 리스트 데이터 수집
-	document.querySelectorAll('.product-details').forEach(product => {
-		const bno = product.querySelector('input[name="bno"]').value;
-		const count = product.querySelector('input[name="count"]').value;
-		listData.push({ "bno" : bno, "count" : count});
-	});
-	const orderData = {
-		    mno: mno,
-		    bno: bnoOne[0].value,
-		    bookTypeCount : products.length,
-		    orderMainBookName : orderMainBookName[0].getAttribute('data-title'),
-		    orderMainImage : img[0].src,
-		    totalPrice: document.querySelector('#totalPrice').innerHTML,
-		    orderName: document.getElementById('orderName').value,
-		    orderPhone: document.getElementById('orderPhone').value,
-		    orderAddress: document.getElementById('address').value,
-		    orderStreetAddress: document.getElementById('streetAddress').value,
-		    orderDetailAddress: document.getElementById('detailAddress').value,
-		    point: document.querySelector('select[name="point"]').value,
-		    userDeposit: document.getElementById('userDeposit').value,
-		    
-		    list: listData // 여기에 상품 리스트 데이터 추가
-		};
-	
-	const userCheck = document.querySelector('input[name="userCheck"]');
-	let check;
-	if(userCheck.checked){
-		check = 1;
-		console.log(check);
-	}else {
-		check = 0;
-		console.log(check);
-	}
-		// 데이터를 JSON으로 변환 후 전송
-		fetch(`/shop/buySuccess/${check}`, {
-		    method: 'POST',
-		    headers: {
-		        'Content-Type': 'application/json',
-		    },
-		    body: JSON.stringify(orderData),
-		})
-		.then(response => response.text())
-		.then(data => {
-			console.log("비동기 결과 : " + data);
-			if(data === 'success'){
-				if(confirm('상품 상세 페이지로 이동하시겠습니까? ( 거절 시 상품 목록으로 이동 )')){
-					location.href = "/order/orderDetail?mno=" + mno
+		const listData = [];
+		// 상품 리스트 데이터 수집
+		document.querySelectorAll('.product-details').forEach(product => {
+			const bno = product.querySelector('input[name="bno"]').value;
+			const count = product.querySelector('input[name="count"]').value;
+			listData.push({ "bno" : bno, "count" : count});
+		});
+		const orderData = {
+			    mno: mno.value,
+			    bno: bnoOne[0].value,
+			    bookTypeCount : products.length,
+			    orderMainBookName : orderMainBookName[0].getAttribute('data-title'),
+			    orderMainImage : img[0].src,
+			    totalPrice: document.querySelector('#totalPrice').innerHTML,
+			    orderName: document.getElementById('orderName').value,
+			    orderPhone: document.getElementById('orderPhone').value,
+			    orderAddress: document.getElementById('address').value,
+			    orderStreetAddress: document.getElementById('streetAddress').value,
+			    orderDetailAddress: document.getElementById('detailAddress').value,
+			    point: document.querySelector('select[name="point"]').value,
+			    userDeposit: document.getElementById('userDeposit').value,
+			    
+			    list: listData // 여기에 상품 리스트 데이터 추가
+			};
+		
+		const userCheck = document.querySelector('input[name="userCheck"]');
+		let check;
+		if(userCheck.checked){
+			check = 1;
+			console.log(check);
+		}else {
+			check = 0;
+			console.log(check);
+		}
+			// 데이터를 JSON으로 변환 후 전송
+			fetch(`/shop/buySuccessOne/${check}`, {
+			    method: 'POST',
+			    headers: {
+			        'Content-Type': 'application/json',
+			    },
+			    body: JSON.stringify(orderData),
+			})
+			.then(response => response.text())
+			.then(data => {
+				console.log("비동기 결과 : " + data);
+				if(data === 'success'){
+					if(confirm('상품 상세 페이지로 이동하시겠습니까? ( 거절 시 상품 목록으로 이동 )')){
+						location.href = "/order/orderDetail?mno=" + mno.value;
+					}else {
+						location.href = "/shop/list";
+					}
 				}else {
-					location.href = "/shop/list";
+					alert('실패데스');
 				}
-			}else {
-				alert('실패데스');
-			}
-		})
-		.catch(error => console.error('Error:', error));
+			})
+			.catch(error => console.error('Error:', error));
 }
 
 function addrChange() {

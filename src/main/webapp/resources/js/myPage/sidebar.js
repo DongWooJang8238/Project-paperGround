@@ -13,6 +13,14 @@ document.querySelectorAll(".sidebar a").forEach(a => {
 			location.href = menu;
 		}else if(a.id === "myPoint"){
 			location.href = menu;
+		}else if(a.id === "reportCategory"){
+			location.href = menu;
+		}else if(a.id === "reportBoard"){
+			console.log('미구현');
+//			location.href = menu;
+		}else if(a.id === "directReport"){
+			console.log('미구현');
+//			location.href = menu;
 		}
 		
 	});

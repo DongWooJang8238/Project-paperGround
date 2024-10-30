@@ -126,6 +126,31 @@ public class ShopServiceImpl implements ShopService {
 		return result;
 	}
 	
+	@Transactional
+	@Override
+	public int insertOrderDetailOne(OrderDetailVO vo, int check) {
+		log.warn("서비스 인서트 상세주문" + vo);
+		// 상세 주문 테이블에 데이터 저장
+		int result = mapper.insertOrderDetail(vo);
+		log.warn("서비스 인서트 상세주문 결과 .. " + result);
+		
+		// 유저가 데이터 저장 눌렀으면 유저 데이터 저장
+		log.warn("체크체크체크체크" + check);
+		if(check == 1) {
+			// 유저 vo에 담아서 update
+			UserVO uservo = new UserVO();
+			uservo.setMno(vo.getMno());
+			uservo.setAddress(vo.getOrderAddress());
+			uservo.setStreetAddress(vo.getOrderStreetAddress());
+			uservo.setDetailAddress(vo.getOrderDetailAddress());
+			uservo.setUserPhonenumber(vo.getOrderPhone());
+			
+			int updateResult = mapper.checkUserUpdate(uservo);
+			log.warn("유저정보 업데이트 결과 : " + updateResult);
+		}
+		return result;
+	}
+	
 	@Override
 	public int selectOrderDetailOdno(int mno) {
 		return mapper.selectOrderDetailOdno(mno);

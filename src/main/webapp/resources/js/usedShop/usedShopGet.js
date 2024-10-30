@@ -2,22 +2,15 @@
 
 // 찜 하기 기능
 function jjim(ubno, mno) {
-	console.log(ubno);
-	console.log(mno);
+	if(mno.value === ""){
+		alert('로그인이 필요한 기능입니다!');
+		return;
+	}else{
+		console.log(ubno);
+		console.log(mno);
+	}
 }
 
-// 실시간 채팅 켜기
-function chat(ubno, sellmno, buymno) {
-	
-	if(sellmno === buymno){
-		alert('판매자와 구매자가 동일한 경우 채팅이 불가능 합니다.');
-		return;
-	}
-	
-	const locaData = `ubno=${ubno}&sellmno=${sellmno}&buymno=${buymno}`;
-	
-	location.href = "/used/test?" + locaData;
-}
 // 실시간 채팅 끄기
 function closeChatModal() {
     const chatModal = document.getElementById('chatingModal');
@@ -27,12 +20,22 @@ function closeChatModal() {
 
 // 판매 완료 버튼
 function sellSuccess(ubno) {
-	console.log(ubvo);
+	if(mno.value === ""){
+		alert('로그인이 필요한 기능입니다!');
+		return;
+	}else{
+		console.log(ubvo);
+	}
 }
 
 // 상품 삭제 버튼
 function deleteUsed(ubno) {
-	console.log(ubvo);
+	if(mno.value === ""){
+		alert('로그인이 필요한 기능입니다!');
+		return;
+	}else{
+		console.log(ubvo);
+	}
 }
 
 // ======================================================================================

@@ -35,33 +35,33 @@ th, td {
 		<!-- Main content -->
 		<div class="main-content">
 			<div class="header">
-				<h1>${vo.userId}님은${vo.userRole}입니다.${vo.mno }</h1>
-				<h2>보유 포인트: ${vo.userPoint} P</h2>
+				<h1>${sessionScope.vo.userId}님은${sessionScope.vo.userRole}입니다.${sessionScope.vo.mno }</h1>
+				<h2>보유 포인트: ${sessionScope.vo.userPoint} P</h2>
 				<c:if test="${empty vo.userIcon}">
-					<a href="/User/changeIcon?userId=${vo.userId}"> <img
+					<a href="/User/changeIcon?userId=${sessionScope.vo.userId}"> <img
 						src="../resources/images/usericon.jpg" alt="User Icon" width="100"
 						height="100">
 					</a>
 				</c:if>
 
-				<c:if test="${not empty vo.userIcon}">
-					<a href="/User/changeIcon?userId=${vo.userId}"> <img
+				<c:if test="${not empty sessionScope.vo.userIcon}">
+					<a href="/User/changeIcon?userId=${sessionScope.vo.userId}"> <img
 						src="${result.userIcon}" id="userIcon" alt="userIcon" width="100"
 						height="100">
 					</a>
 				</c:if>
 
-				<input type="hidden" name="userId" value="${vo.userId}">
+				<input type="hidden" name="userId" value="${sessionScope.vo.userId}">
 			</div>
 
 			<div class="body-content">
 				<div class="header">
 					<h1>계정 정보</h1>
 					<button type="button" onclick="goDetailMyPage()">></button>
-					<h2>대표 이메일 ${vo.userEmail}</h2>
+					<h2>대표 이메일 ${sessionScope.vo.userEmail}</h2>
 					<input type="text" name="email" value="${domain}">
-					<h2>아이디 ${vo.userId}</h2>
-					<h2>이름 ${vo.userName}</h2>
+					<h2>아이디 ${sessionScope.vo.userId}</h2>
+					<h2>이름 ${sessionScope.vo.userName}</h2>
 				</div>
 
 				<div class="box-container">
@@ -90,26 +90,26 @@ th, td {
 						onclick="toggleSubMenu('shopping-info')">쇼핑정보</a>
 						<ul id="shopping-info" class="sub-menu">
 							<li><a id="myOrder"
-								href="/User/OrderSelect?mno=${vo.mno }">주문목록/배송조회</a></li>
+								href="/User/OrderSelect?mno=${sessionScope.vo.mno }">주문목록/배송조회</a></li>
 							<li><a href="#">취소/반품/교환 내역</a></li>
 						</ul></li>
 					<li><a href="#" onclick="toggleSubMenu('benefit-management')">혜택관리</a>
 						<ul id="benefit-management" class="sub-menu">
-							<li><a a id ="myPoint" href="/User/selectMyPoint?mno=${vo.mno }">내 포인트</a></li>
+							<li><a a id ="myPoint" href="/User/selectMyPoint?mno=${sessionScope.vo.mno }">내 포인트</a></li>
 							<li><a href="#">적립금</a></li>
 						</ul></li>
 					<li><a href="userInfo" onclick="toggleSubMenu('member-info')">회원정보</a>
 						<ul id="member-info" class="sub-menu">
 							<li><a id="checkPage"
-								href="/User/checkPassword?userId=${vo.userId }">회원정보 수정</a></li>
+								href="/User/checkPassword?userId=${sessionScope.vo.userId }">회원정보 수정</a></li>
 							<li><a href="#">배송지 관리</a></li>
 						</ul></li>
 					<li><a href="/report/selectReport"
 						onclick="toggleSubMenu('serviceCenter-info')">고객센터</a>
 						<ul id="serviceCenter-info" class="sub-menu">
-							<li><a id="reportCategory" href="/report/reportCategory">Q&A</a></li>
-							<li><a id="reportBoard" href="/report/reportBoard?mno="1>문의센터</a></li>
-							<li><a id="directReport" href="/report/directReport?mno="1>1:1문의</a></li>
+							<li><a id="reportCategory" href="/report/qna">Q&A</a></li>
+							<li><a id="reportBoard" href="/report/reportBoard?mno=${sessionScope.vo.mno}">문의센터</a></li>
+							<li><a id="directReport" href="/report/directReport?mno=${sessionScope.vo.mno}">1:1문의</a></li>
 						</ul></li>
 					<li><a href="#">나의 게시글</a></li>
 				</ul>

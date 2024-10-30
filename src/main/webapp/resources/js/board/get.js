@@ -34,22 +34,39 @@ document.querySelectorAll("button").forEach(btn => {
 			let sendData = `pageNum=${pageData.pageNum}&amount=${pageData.amount}`;
 			location.href = '/board/list?' + sendData; // 목록으로 이동
         } else if (type === 'modifyBtn') {// 게시글 수정 버튼
-            let boardno = f.boardno.value;
-            location.href = '/board/modify?boardno=' + boardno;
+        	if(mno.value === ""){
+        		alert('로그인이 필요한 기능입니다!');
+        		return;
+        	}else{
+        		let boardno = f.boardno.value;
+        		location.href = '/board/modify?boardno=' + boardno;
+        	}
 		}else if(type === 'addReplyBtn'){
 			// 댓글 등록 실행
-			registerReply();
+			if(mno.value === ""){
+				alert('로그인이 필요한 기능입니다!');
+				return;
+			}else{
+				registerReply();
+			}
 		}else if(type === 'closeModalBtn'){// 댓글 등록창 닫기
 			closeModal();
-		}else if(type === 'addReplyBtn'){
-			// 댓글 등록 실행
-			registerReply();
 		}else if(type === 'modifyReplyBtn'){
 			// 댓글 수정 실행 버튼
-			modifyReply();
+			if(mno.value === ""){
+				alert('로그인이 필요한 기능입니다!');
+				return;
+			}else{
+				modifyReply();
+			}
 		}else if(type === 'removeReplyBtn'){
-			// 댓글 수정 실행 버튼
-			removeReply();
+			// 댓글 삭제 실행 버튼
+			if(mno.value === ""){
+				alert('로그인이 필요한 기능입니다!');
+				return;
+			}else{
+				removeReply();
+			}
 		}
         
 	});

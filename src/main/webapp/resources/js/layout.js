@@ -8,6 +8,8 @@ const signupButton = document.getElementById('signup');
 const mypageButton = document.getElementById('mypage');
 const cart = document.getElementById('cart');
 const userId = document.querySelector('input[name="userId"]');
+const mno = document.querySelector('input[name="mno"]');
+const books = document.querySelector('#books');
 
 // 헤더 각 버튼 이벤트 핸들러
 document.querySelectorAll(".user-options button").forEach(a => {
@@ -21,7 +23,12 @@ document.querySelectorAll(".user-options button").forEach(a => {
 		}else if(menu === "signup"){
 			location.href = '/User/signup';
 		}else if(menu === "cart"){
-			goToCart();
+			if(mno.value === ""){
+				alert('로그인이 필요한 기능입니다.');
+				return;
+			}else {
+				goToCart();
+			}
 		}else if(menu === "myPage"){
 			if(mno.value === ""){
 				if(confirm('로그인이 필요한 서비스입니다. 로그인 하시겠습니까?')){
@@ -57,15 +64,19 @@ function shopUsedList() {
 	location.href = '/used/list';
 }
 function goToCart() {
-	location.href = '/shop/cartListBuy?mno=' + 1;
+	location.href = '/shop/cartListBuy?mno=' + mno.value;
 }
 function goBoard() {
 	location.href = '/board/list?pageNum=1&amount=10';
 }
 function goGame(){
-	location.href = '/game/entrance?mno='+1;
+	if(mno.value === ""){
+		alert('로그인이 필요한 기능입니다!');
+		return;
+	}else{
+		location.href = '/game/entrance?mno='+mno.value;
+	}
 }
-const books = document.querySelector('#books');
 
 function toggleSubcategories(e){
 	if(books.style.display === "none"){

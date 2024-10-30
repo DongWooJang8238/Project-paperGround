@@ -1,9 +1,13 @@
 const inputImgName = document.querySelector('input[name="ReviewImgName"]'); 
 const inputImgUUID = document.querySelector('input[name="ReviewImgUuid"]');
-const userName = "장동우";
 console.log(inputImgUUID);
 console.log(inputImgName);
 function previewImage(event) {
+	if(mno.value === ""){
+		alert('로그인이 필요한 기능입니다.');
+		return;
+	}else{
+	
     const imagePreview = document.getElementById('imagePreview');
     const file = event.target.files[0];
     
@@ -21,7 +25,7 @@ function previewImage(event) {
 			
 			if(data){
 				const imgName = data.reviewimgname;
-				const imgUuid = "/resources/images/" + data.reviewimguuid + "_" + imgName;
+				const imgUuid = data.reviewimguuid;
 //				const imgPath = "/resources/images/" + imgUuid + "_" + imgName;
 				inputImgName.value = imgName;
 				inputImgUUID.value = imgUuid;
@@ -45,6 +49,7 @@ function previewImage(event) {
 			
 		})
 		.catch(err => console.log(err));
+	}
 
 }
 
@@ -93,20 +98,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
 document.querySelector('.submit-review').addEventListener('click', e=> {
 	// 리뷰 등록 비동기 ( 첨부파일 db에 저장까지 )
-	reviewAdd();
+	if(mno.value === ""){
+		alert('로그인이 필요한 기능입니다!');
+		return;
+	}else{
+		reviewAdd();
+	}
 });
 
 function reviewAdd() {
 	const formData = new FormData();
 	
 	const dataRating = parseInt(document.querySelector('.ratings').getAttribute('data-rating'));
-	console.log("uuid : " + inputImgUUID.value);
+	console.log("uuid : " + inputImgName.value);
 	console.log("리뷰내용 : " + document.querySelector('.review-body').value);
 	console.log("별점 : " + dataRating);
-	formData.append("reviewImage",inputImgUUID.value);
+	formData.append("reviewImage",inputImgName.value);
 	formData.append("reviewContent", document.querySelector('.review-body').value)
 	formData.append("bno", bno);
-	formData.append("mno", 1);
+	formData.append("mno", mno.value);
 	formData.append("rating", dataRating);
 	
 	fetch('/review/new', {
@@ -149,7 +159,7 @@ function reviewLoad() {
 			  msg += `<li>`;
 			  msg += `<div>`;
 			  msg += `<div class="chat-header">`;
-			  msg += `<strong class="primary-font">${userName}</strong>`;
+			  msg += `<strong class="primary-font">${rvo.userName}</strong>`;
 			  msg += `<small class="pull-right">${sqlDate}</small>`;
 			  msg += `</div>`;
 			  msg += `<div class="stars" data-rating="${rvo.rating}.0">`;
@@ -160,7 +170,11 @@ function reviewLoad() {
 			  msg += `<span class="star">&#9733;</span> `;
 			  msg += `</div>`;
 			  msg += `<p>${rvo.reviewContent}</p>`;
-			  msg += `<img src="${rvo.reviewImage}" alt="예시 이미지" class="comment-image" style="max-width: 200px;" />`;
+			  if(rvo.reviewImage === null){
+				  
+			  }else{
+				  msg += `<img src="${rvo.reviewImage}" alt="예시 이미지" class="comment-image" style="max-width: 200px;" />`;
+			  }
 			  msg += `<button onclick="deleteReview(${rvo.bno}, ${rvo.mno})">삭제</button>`;
 			  msg += `</div>`;
 			  msg += `</li>`;
@@ -175,6 +189,12 @@ function reviewLoad() {
 
 // 리뷰 삭제
 function deleteReview(rbno, rmno) {
+	console.log(rmno);
+	if(mno.value === ""){
+		alert('로그인이 필요한 기능입니다!');
+		return;
+	}else if(mno.value == rmno){
+
 	fetch(`/review/deleteReview/${rbno}/${rmno}`)
 	  .then(response => response.text()) // 응답을 JSON 형식으로 파싱
 	  .then(data => {
@@ -184,4 +204,9 @@ function deleteReview(rbno, rmno) {
 		  applyStarRatings();
 	  })
 	  .catch(error => console.error('Error:', error));
+
+	}else {
+		alert('꺼지쇼');
+		return;
+	}
 }

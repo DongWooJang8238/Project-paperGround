@@ -11,7 +11,9 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class chatRoomDTO {
+public class ChatRoomDTO {
 	private int chatno, ubno, sellmno, buymno;
 	private Date roomdate;
+	
+	private String userName;
 }

@@ -1,8 +1,9 @@
 package org.joonzis.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.joonzis.domain.ChatRoomDTO;
+import org.joonzis.domain.ChattingDTO;
 import org.joonzis.domain.Criteria;
 import org.joonzis.domain.UsedBookVO;
 import org.joonzis.domain.usedBookImgVO;
@@ -102,4 +103,47 @@ public class UsedShopServiceImpl implements UsedShopService{
 		
 		return vo;
 	}
+	
+	@Override
+	public int chatingRoomCheck(ChatRoomDTO chat) {
+		log.warn("채팅방 도착 확인");
+		log.warn("채팅방 유무 확인 : " + chat);
+		return mapper.chatingRoomCheck(chat);
+	}
+	
+	@Override
+	public int chatingRoomInsert(ChatRoomDTO chat) {
+		log.warn("채팅방 insert : " + chat);
+		return mapper.chatingRoomInsert(chat);
+	}
+	
+	@Override
+	public int getChattingNumber(ChatRoomDTO chat) {
+		log.warn("채팅방 번호 조회 : " + chat);
+		return mapper.getChattingNumber(chat);
+	}
+	
+	@Override
+	public int insertChattingContent(ChattingDTO chat) {
+		log.warn("채팅 방 내용 insert : " + chat);
+		log.warn("채팅 방 내용 insert : " + chat.getChatno());
+		log.warn("채팅 방 내용 insert : " + chat.getMno());
+		log.warn("채팅 방 내용 insert : " + chat.getContent());
+		return mapper.insertChattingContent(chat);
+	}
+	
+	@Override
+	public List<ChattingDTO> getChattingContent(int chatno) {
+		log.warn("채팅 내용 조회 : " + chatno);
+		return mapper.getChattingContent(chatno);
+	}
+	
+	@Override
+	public List<ChatRoomDTO> selectSellChatRoomList(ChatRoomDTO chat) {
+		log.warn("채팅 방 조회 : " + chat);
+		log.warn("채팅 방 조회 구매자 : " + chat.getBuymno());
+		log.warn("채팅 방 조회 판매자 : " + chat.getSellmno());
+		return mapper.selectSellChatRoomList(chat);
+	}
+	
 }

@@ -3,6 +3,14 @@ const f = document.forms[0];
 let imgName = f.ubookImage;
 let usedImgs = document.querySelectorAll('.usedImgs');
 
+// 책 가격 부분에 숫자만 입력 할 수 있게 변경하기
+f.ubookPrice.addEventListener('input', e => {
+	if(/[^0-9]/g.test(e.target.value)){
+		alert('숫자만 입력 가능합니다.');
+		e.target.value = e.target.value.replace(/[^0-9]/g, '');
+	}
+});
+
 // 버튼 이벤트
 document.querySelectorAll('button').forEach(btn => {
 	btn.addEventListener('click', () => {
@@ -17,6 +25,9 @@ document.querySelectorAll('button').forEach(btn => {
 
 // 상품 등록 함수
 function usedShopInsert() {
+	if(f.ubookPrice.value){
+		
+	}
 	console.log(f.title.value);
 	console.log(f.ubookPrice.value);
 	console.log(f.gno.value);

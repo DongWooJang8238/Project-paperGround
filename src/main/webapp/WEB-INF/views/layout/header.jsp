@@ -23,7 +23,7 @@
 					<button type="button" id="adminPage">관리자 페이지</button>
 					<button type="button" id="myPage">마이페이지</button>
 					<button id="search" onclick="toggleCart()">🔍</button>
-					<button id="cart" onclick="goToCart()">🛒</button>
+					<button id="cart">🛒</button>
 					<input type="hidden" id="mno" name="mno" value="${sessionScope.vo.mno}">
 				</div>
 			</div>

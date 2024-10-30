@@ -66,4 +66,33 @@
 	<select id="getuBookImgByUbno" parameterType="int" resultType="org.joonzis.domain.usedBookImgVO">
 		select * from tbl_ubook_image where ubno = #{ubno}
 	</select>
+	
+	<!-- 실시간 채팅 방 유무 check -->
+	<select id="chatingRoomCheck" parameterType="org.joonzis.domain.ChatRoomDTO" resultType="int">
+		select count(*) from tbl_chat_room where ubno = #{ubno} AND sellmno = #{sellmno} AND buymno = #{buymno}
+	</select>
+	
+	<!-- 실시간 채팅 방 insert -->
+	<insert id="chatingRoomInsert" parameterType="org.joonzis.domain.ChatRoomDTO">
+		insert into tbl_chat_room values ( SEQ_CHATNO.nextval, #{ubno}, #{sellmno}, #{buymno}, sysdate )
+	</insert>
+	
+	<!-- 채팅 방 접근을 위한 번호 조회 -->
+	<select id="getChattingNumber" parameterType="org.joonzis.domain.ChatRoomDTO" resultType="int">
+		select chatno from tbl_chat_room where ubno = #{ubno} AND sellmno = #{sellmno} AND buymno = #{buymno}
+	</select>
+	
+	<!-- 채팅 방 메시지 insert -->
+	<insert id="insertChattingContent" parameterType="org.joonzis.domain.ChattingDTO">
+		insert into tbl_chat_content values (#{chatno}, #{mno}, #{content}, sysdate)
+	</insert>
+	<!-- 채팅 방 메시지 조회 -->
+	<select id="getChattingContent" parameterType="int" resultType="org.joonzis.domain.ChattingDTO">
+		select * from tbl_chat_content where chatno = #{chatno} order by chatdate
+	</select>
+	
+	<!-- 판매자용 채팅 방 리스트 -->
+	<select id="selectSellChatRoomList" parameterType="org.joonzis.domain.ChatRoomDTO" resultType="org.joonzis.domain.ChatRoomDTO">
+		select * from tbl_chat_room where ubno = #{ubno} and sellmno = #{sellmno}
+	</select>
 </mapper>

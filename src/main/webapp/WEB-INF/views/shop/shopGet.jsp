@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -96,7 +97,7 @@
 		<div class="review-header">
 			<img id="imagePreview" class="image-preview" alt="첨부한 이미지 미리보기" />
 		</div>
-
+		
 		<div class="ratings" data-rating="1">
 			<span class="rating" data-value="1">&#9733;</span> <span
 				class="rating" data-value="2">&#9733;</span> <span class="rating"
@@ -114,9 +115,7 @@
 		</div>
 
 		<div class="review-input">
-			<input type="text" class="user-id" placeholder="사용자 ID" />
-			<textarea class="review-body" placeholder="리뷰 내용을 입력하세요..."></textarea>
-			<input type="text" class="user-id" placeholder="사용자 ID" />
+			<input type="text" class="user-id" placeholder="사용자 ID" value="${sessionScope.vo.userId}"/>
 			<textarea class="review-body" placeholder="리뷰 내용을 입력하세요..."></textarea>
 			<input type="hidden" name="ReviewImgUuid"> <input
 				type="hidden" name="ReviewImgName">
@@ -132,7 +131,7 @@
 		<button id="gobottom">Bottom</button>
 		<button id="goShopList">목록으로 가기</button>
 		<!-- 관리자용 -->
-		<button id="goDelete">상품 삭제</button>
+		<!-- <button id="goDelete">상품 삭제</button> -->
 	</div>
 
 	<jsp:include page="../layout/footer.jsp" />
@@ -159,4 +158,5 @@
 	</div>
 </body>
 <script type="text/javascript" src="/resources/js/shop/shopGet.js"></script>
+<script type="text/javascript" src="/resources/js/shop/shopReview.js"></script>
 </html>

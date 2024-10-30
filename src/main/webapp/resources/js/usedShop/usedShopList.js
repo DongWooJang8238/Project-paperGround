@@ -7,7 +7,12 @@ img.forEach(i => {
 });
 function goShopInsert() {
 //	console.log('중고상품 등록');
-	location.href = '/used/goInsert';
+	if(mno.value === ""){
+		alert('로그인이 필요한 기능입니다!');
+		return;
+	}else{
+		location.href = '/used/goInsert';
+	}
 }
 
 function goGet(ubno){

@@ -16,7 +16,7 @@
 	중고 상점 리스트 페이지
 	</h1>
 	
-	<div class="sidebar">
+	<!-- <div class="sidebar">
 		<h3>카테고리</h3>
 		<hr>
 		<a href="0">초기화</a> 
@@ -25,7 +25,7 @@
 		<a href="4">예술</a> <a href="5">철학</a> <a href="6">자기계발</a> <a href="7">기술/공학</a>
 		<a href="8">경제/경영</a> <a href="9">사회과학</a> <a href="10">종교</a>
 		<hr>
-	</div>
+	</div> -->
 	
 	<div class="panel-body">
     <table class="used-shop-table">

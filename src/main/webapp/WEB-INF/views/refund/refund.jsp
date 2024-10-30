@@ -5,7 +5,6 @@
 <html>
 <head>
     <title>refund page</title>
-   <style>
    
 </head>
 <body>
@@ -14,7 +13,7 @@
 		<h1 class="page-title">환불 정보</h1>
 
 		<form action="#" method="POST" class="buyer-info-form">
-			<input type="hidden" id="mno" name="mno" value="${vo.mno}">
+			<input type="hidden" id="mno" name="mno" value="${sessionScope.vo.mno}">
 			<!-- 사용자 번호 -->
 
 			<!-- 구매자 정보 섹션 -->
@@ -60,7 +59,7 @@
 					<h2>총 구매 금액 : ${vo.totalPrice}</h2>
 				</div>
 				<div class="form-group">
-					<a href="/order/shopingList?mno=${vo.mno}">주문 리스트 보기</a>
+					<a href="/order/shopingList?mno=${sessionScope.vo.mno}">주문 리스트 보기</a>
 				</div>
 
 			</section>

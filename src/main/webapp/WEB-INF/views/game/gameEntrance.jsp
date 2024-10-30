@@ -11,7 +11,7 @@
 <body>
 <jsp:include page="../layout/header.jsp"></jsp:include>
 
- <input type="hidden" class="userMno" value="${mno}" />
+ <input type="hidden" class="userMno" value="${sessionScope.vo.mno}" />
  <input type="hidden" class="alertMessage" value="${alertMessage}" />
  <!-- 씨큐리티 적용시 받아오기. -->
  

@@ -60,7 +60,7 @@
 	 <h1>게임 모드: nomal</h1>
     <h2>장르: ${gameJenre}</h2>
 
-	<input type="hidden" class="userMno" value="${mno}" />
+	<input type="hidden" class="userMno" value="${sessionScope.vo.mno}" />
 
     
 	<div id="questContainer">

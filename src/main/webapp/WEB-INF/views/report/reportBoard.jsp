@@ -78,12 +78,12 @@ th {
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="vo" items="${list}">
+				<c:forEach var="bvo" items="${list}">
 				<tr>
-					<td>${vo.boardNO }</td>
-					<td><a href="${vo.boardNO }">${vo.title } <b>[${vo.replyCount }]</b></a></td>
-					<td>${vo.writer }</td>
-					<td>${vo.regdate }</td>
+					<td>${bvo.boardNO }</td>
+					<td><a href="${bvo.boardNO }">${bvo.title } <b>[${bvo.replyCount }]</b></a></td>
+					<td>${bvo.writer }</td>
+					<td>${bvo.regdate }</td>
 				</tr>
 				</c:forEach>
 			</tbody>

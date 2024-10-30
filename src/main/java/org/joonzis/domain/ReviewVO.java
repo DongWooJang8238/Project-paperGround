@@ -15,4 +15,6 @@ public class ReviewVO {
 	private int reno, bno, mno, rating;
 	private String reviewContent, reviewImage;
 	private Date reviewDate;
+	
+	private String userName;
 }

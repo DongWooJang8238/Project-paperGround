@@ -23,10 +23,6 @@
                   <td><input type="text" name="title" placeholder="제목을 입력 해 주세요" required="required"></td>
                </tr>
                <tr>
-                  <th>가격</th>
-                  <td><input type="text" name="ubookPrice" placeholder="가격 입력"></td>
-               </tr>
-               <tr>
                   <th>장르</th>
                   <td>
                   	<select name="gno">
@@ -61,10 +57,14 @@
                      <textarea rows="10" cols="76" name="content" placeholder="내용 입력"></textarea>
                   </td>
                </tr>
+               <tr>
+                  <th>가격</th>
+                  <td><input type="text" name="ubookPrice" placeholder="가격 입력"></td>
+               </tr>
             </tbody>
          </table>
          <input type="hidden" name="ubookImage">
-         <input type="hidden" name="mno" value="1">
+         <input type="hidden" name="mno" value="${sessionScope.vo.mno}">
 		</form>
 	</div>
 	<div class="footer">

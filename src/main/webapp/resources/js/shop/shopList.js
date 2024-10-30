@@ -113,8 +113,14 @@ function goGet(bno) {
 	location.href = '/shop/get?bno=' + bno;
 }
 
+// 상품 등록 이벤트
 function goShopInsert() {
-	location.href = '/shop/goInsert';
+	if(mno.value === ""){
+		alert('로그인이 필요한 기능입니다!');
+		return;
+	}else{
+		location.href = '/shop/goInsert';
+	}
 }
 
 //별점 js

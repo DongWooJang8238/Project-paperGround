@@ -51,24 +51,24 @@ th, td {
 		<!-- Main content -->
 		<div class="main-content">
 			<div class="header">
-				<h1>${vo.userId}님은${vo.userRole}입니다.${vo.mno }</h1>
-				<h2>보유 포인트: ${vo.userPoint} P</h2>
+				<h1>${sessionScope.vo.userId}님은${sessionScope.vo.userRole}입니다.${sessionScope.vo.mno }</h1>
+				<h2>보유 포인트: ${sessionScope.vo.userPoint} P</h2>
 				<c:if test="${empty vo.userIcon}">
-					<a href="/User/changeIcon?userId=${vo.userId}"> <img
+					<a href="/User/changeIcon?userId=${sessionScope.vo.userId}"> <img
 						src="../resources/images/usericon.jpg" alt="User Icon" width="100"
 						height="100">
 					</a>
 				</c:if>
 
 				<c:if test="${not empty vo.userIcon}">
-					<a href="/User/changeIcon?userId=${vo.userId}"> <img
-						src="${vo.userIcon}" id="userIcon" alt="userIcon" width="100"
+					<a href="/User/changeIcon?userId=${sessionScope.vo.userId}"> <img
+						src="${sessionScope.vo.userIcon}" id="userIcon" alt="userIcon" width="100"
 						height="100">
 					</a>
 				</c:if>
 
-				<input type="hidden" name="userId" value="${vo.userId}"> <input
-					type="hidden" id="mno" value="${vo.mno}">
+				<input type="hidden" name="userId" value="${sessionScope.vo.userId}"> <input
+					type="hidden" id="mno" value="${sessionScope.vo.mno}">
 			</div>
 		</div>
 		<!-- 주문 내역 테이블 -->
@@ -143,35 +143,36 @@ th, td {
 		</div>
 
 		<div class="sidebar">
-			<h3>마이페이지</h3>
-			<ul>
-				<li><a href="userShoping"
-					onclick="toggleSubMenu('shopping-info')">쇼핑정보</a>
-					<ul id="shopping-info" class="sub-menu">
-						<li><a id="myOrder" href="/User/OrderSelect?mno=${vo.mno }">주문목록/배송조회</a></li>
-						<li><a href="#">취소/반품/교환 내역</a></li>
-					</ul></li>
-				<li><a href="#" onclick="toggleSubMenu('benefit-management')">혜택관리</a>
-					<ul id="benefit-management" class="sub-menu">
-						<li><a href="#">쿠폰</a></li>
-						<li><a href="#">적립금</a></li>
-					</ul></li>
-				<li><a href="userInfo" onclick="toggleSubMenu('member-info')">회원정보</a>
-					<ul id="member-info" class="sub-menu">
-						<li><a id="checkPage"
-							href="/User/checkPassword?userId=${vo.userId }">회원정보 수정</a></li>
-						<li><a href="#">배송지 관리</a></li>
-					</ul></li>
-				<li><a href="/report/selectReport"
-					onclick="toggleSubMenu('serviceCenter-info')">고객센터</a>
-					<ul id="serviceCenter-info" class="sub-menu">
-						<li><a id="reportCategory" href="/report/reportCategory">Q&A</a></li>
-						<li><a id="reportBoard" href="/report/reportBoard?mno=1">문의센터</a></li>
-						<li><a id="directReport" href="/report/directReport?mno=1">1:1문의</a></li>
-					</ul></li>
-				<li><a href="#">나의 게시글</a></li>
-			</ul>
-		</div>
+				<h3>마이페이지</h3>
+				<ul>
+					<li><a href="userShoping"
+						onclick="toggleSubMenu('shopping-info')">쇼핑정보</a>
+						<ul id="shopping-info" class="sub-menu">
+							<li><a id="myOrder"
+								href="/User/OrderSelect?mno=${sessionScope.vo.mno }">주문목록/배송조회</a></li>
+							<li><a href="#">취소/반품/교환 내역</a></li>
+						</ul></li>
+					<li><a href="#" onclick="toggleSubMenu('benefit-management')">혜택관리</a>
+						<ul id="benefit-management" class="sub-menu">
+							<li><a a id ="myPoint" href="/User/selectMyPoint?mno=${sessionScope.vo.mno }">내 포인트</a></li>
+							<li><a href="#">적립금</a></li>
+						</ul></li>
+					<li><a href="userInfo" onclick="toggleSubMenu('member-info')">회원정보</a>
+						<ul id="member-info" class="sub-menu">
+							<li><a id="checkPage"
+								href="/User/checkPassword?userId=${sessionScope.vo.userId }">회원정보 수정</a></li>
+							<li><a href="#">배송지 관리</a></li>
+						</ul></li>
+					<li><a href="/report/selectReport"
+						onclick="toggleSubMenu('serviceCenter-info')">고객센터</a>
+						<ul id="serviceCenter-info" class="sub-menu">
+							<li><a id="reportCategory" href="/report/reportCategory">Q&A</a></li>
+							<li><a id="reportBoard" href="/report/reportBoard?mno="1>문의센터</a></li>
+							<li><a id="directReport" href="/report/directReport?mno="1>1:1문의</a></li>
+						</ul></li>
+					<li><a href="#">나의 게시글</a></li>
+				</ul>
+			</div>
 	</form>
 
 	<jsp:include page="../layout/footer.jsp"></jsp:include>

@@ -167,13 +167,11 @@ li span.value {
 				<img src="${order.bookCover }" alt="책 표지 이미지">
 				</a>
 				<div class="book-details">
-					<a href="/shop/get?bno=${order.bno }" >
-					<h3>${order.title}(국내도서)</h3>
-					</a>
-					<p>수량 : ${order.count }개</p>
+					<h3><a href="/shop/get?bno=${order.bno}">${order.title}</a></h3>
+					<p>수량 : ${order.count}개</p>
 				</div>
 				<div class="price">${order.bookPrice * order.count}원</div>
-				<div class="status">${order.orderStatus }</div>
+				<div class="status">${order.orderStatus}</div>
 				
 				<!-- 취소 버튼 -->
 				<input type="button" value="취소 신청" class="cancel-btn" />

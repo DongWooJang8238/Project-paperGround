@@ -22,7 +22,7 @@
     <div class="container">
         <div class="banner">
             <span>⬅️</span>
-            <p>도서 관련 이동 배너 / 클릭 시 해당 게시글로 이동 ${sessionScope.vo.mno }</p>
+            <p>도서 관련 이동 배너 / 클릭 시 해당 게시글로 이동</p>
             <span>➡️</span>
         </div>
         

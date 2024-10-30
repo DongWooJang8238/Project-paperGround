@@ -100,7 +100,7 @@ public class ShopUploadController {
 				
 				ravo.setReviewimguuid(uuid.toString());
 				ravo.setReviewimgpath("");
-				ravo.setReviewimgname("/images/" + getFolder() + "/" + uploadFileName);
+				ravo.setReviewimgname("/images/" + uploadFileName);
 			} catch (Exception e) {
 				log.error(e.getMessage());
 			}

@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/resources/css/shopBuy.css">
 </head>
 <body>
-
+	<jsp:include page="../layout/header.jsp" />
     <div class="payment-container">
         <h1 class="page-title">결제 정보</h1>
 
@@ -44,27 +44,27 @@
     <section class="buyer-info-section">
         <h2>구매자 정보</h2>
         <div class="form-group">
-            <label for="orderName">이름</label>
-            <input type="text" id="orderName" name="orderName" required>
+            <label for="orderName">이름 (필수)</label>
+            <input type="text" id="orderName" name="orderName" value="${sessionScope.vo.userName}" required>
         </div>
         <div class="form-group">
-            <label for="orderPhone">전화번호</label>
-            <input type="tel" id="orderPhone" name="orderPhone" required>
+            <label for="orderPhone">전화번호 (필수)</label>
+            <input type="tel" id="orderPhone" name="orderPhone" value="${sessionScope.vo.userPhonenumber}" required>
         </div>
         <div class="form-group">
-            <label for="jangsick">기본 배송지</label>
-            <input type="text" id="ShowAddress" value="${uvo.address }" placeholder="우편번호" readonly="readonly">
-   			<input type="text" id="ShowStreetAddress" value="${uvo.streetAddress }"  placeholder="주소" readonly="readonly"><br>
-   			<input type="text" id="ShowDetailAddress" value="${uvo.detailAddress }" placeholder="상세주소" readonly="readonly">
-            <button type="button" onclick="addrChange();">배송지 변경</button>
+            <label for="jangsick">기본 배송지 (필수)</label>
+            <input type="text" id="ShowAddress" value="${sessionScope.vo.address }" placeholder="우편번호" disabled="disabled">
+   			<input type="text" id="ShowStreetAddress" value="${sessionScope.vo.streetAddress }"  placeholder="주소" disabled="disabled"><br>
+   			<input type="text" id="ShowDetailAddress" value="${sessionScope.vo.detailAddress }" placeholder="상세주소" disabled="disabled">
+            <button type="button" onclick="addrChange();">배송지 입력(변경)</button>
         </div>
         <div class="form-group" id="newAddr">
             <div class="input-group">
 				<label for="userAddress">주소</label> 
-				<input type="text" id="address" name="address" value="${uvo.address }" placeholder="우편번호">
+				<input type="text" id="address" name="address" value="${sessionScope.vo.address }" placeholder="우편번호">
    				<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-   				<input type="text" id="streetAddress" name="streetAddress" value="${uvo.streetAddress }"  placeholder="주소"><br>
-   				<input type="text" id="detailAddress" name="detailAddress" value="${uvo.detailAddress }" placeholder="상세주소">
+   				<input type="text" id="streetAddress" name="streetAddress" value="${sessionScope.vo.streetAddress }"  placeholder="주소"><br>
+   				<input type="text" id="detailAddress" name="detailAddress" value="${sessionScope.vo.detailAddress }" placeholder="상세주소">
     			<input type="hidden" id="sample6_extraAddress" placeholder="참고항목">
 			</div>
         </div>
@@ -73,7 +73,7 @@
         <input type="checkbox" name="userCheck" value="1">
         </div>
         <div class="form-group">
-            <label for="userDeposit">계좌번호</label>
+            <label for="userDeposit">계좌번호 (선택)</label>
             <input type="text" id="userDeposit" name="userDeposit" required>
         </div>
     </section>
@@ -82,6 +82,7 @@
     <section class="payment-info-section">
     	<h2>포인트 할인</h2>
     	<div class="form-group">
+    		<p>사용 가능 포인트 : ${sessionScope.vo.userPoint}</p>
     		<select name="point">
     			<option value="0">0</option>
     			<option value="100">100</option>
@@ -121,8 +122,8 @@
     </div>
 
     </div>
-
+	<jsp:include page="../layout/footer.jsp" />
 </body>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script type="text/javascript" src="/resources/js/shop/shopBuyList.js"></script>
+<script type="text/javascript" src="/resources/js/shop/shopBuyOne.js"></script>
 </html>

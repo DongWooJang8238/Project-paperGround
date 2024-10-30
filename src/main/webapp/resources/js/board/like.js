@@ -3,12 +3,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const likeBtn = document.getElementById('like-btn');
     if (likeBtn) {
         likeBtn.addEventListener('click', function() {
+        	if(mno.value === ""){
+        		alert('로그인이 필요한 기능입니다!');
+        		return;
+        	}else{
             const boardno = this.getAttribute('data-boardno');
-            const mno = this.getAttribute('data-mno');
             
             const likeData = {
                 boardno: boardno,
-                mno: mno
+                mno: mno.value
             };
             console.log(JSON.stringify(likeData));
             
@@ -29,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => console.error('Error:', error));
+        	}
         });
     }
 
@@ -48,12 +52,11 @@ document.addEventListener('DOMContentLoaded', function() {
         replyLikeBtn.addEventListener('click', function() {
             const replyno = this.getAttribute('data-replyno');
             const boardno = this.getAttribute('data-boardno');
-            const mno = this.getAttribute('data-mno');
             
             const likeData = {
                 replyno: replyno,
                 boardno: boardno,
-                mno: mno
+                mno: mno.value
             };
             console.log(JSON.stringify(likeData));
             

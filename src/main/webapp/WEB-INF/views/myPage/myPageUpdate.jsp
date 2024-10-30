@@ -158,16 +158,16 @@
 			<div class="header">
 				<h1
 					style="color: #ffffff; text-align: center; font-size: 24px; margin-bottom: 20px;">
-					${vo.userId }님은 기본 등급입니다. 수정페이지에용</h1>
+					${sessionScope.vo.userId }님은 기본 등급입니다. 수정페이지에용</h1>
 			</div>
 
 			<div class="input-group">
 				<label for="username">아이디</label> 
-				<input type="text" id="userId" name="userId" value="${vo.userId}" readonly>
+				<input type="text" id="userId" name="userId" value="${sessionScope.vo.userId}" readonly>
 			</div>
 
 			<div class="input-group">
-				<label for="userName">이름</label> <input type="text" id="userName" name="userName" value="${vo.userName }" readonly>
+				<label for="userName">이름</label> <input type="text" id="userName" name="userName" value="${sessionScope.vo.userName }" readonly>
 			</div>
 			
 
@@ -187,25 +187,25 @@
 
 			<div class="input-group">
 				<label for="userAddress">주소</label> 
-				<input type="text" id="address" name="address" value="${vo.address }" placeholder="우편번호">
+				<input type="text" id="address" name="address" value="${sessionScope.vo.address }" placeholder="우편번호">
    				<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-   				<input type="text" id="streetAddress" name="streetAddress" value="${vo.streetAddress }"  placeholder="주소"><br>
-   				<input type="text" id="detailAddress" name="detailAddress" value="${vo.detailAddress }" placeholder="상세주소">
+   				<input type="text" id="streetAddress" name="streetAddress" value="${sessionScope.vo.streetAddress }"  placeholder="주소"><br>
+   				<input type="text" id="detailAddress" name="detailAddress" value="${sessionScope.vo.detailAddress }" placeholder="상세주소">
     			<input type="hidden" id="sample6_extraAddress" placeholder="참고항목">
 			</div>
 			
 
 			<div class="input-group">
 				<label for="userPhonenumber">전화번호</label> <input type="tel" id="userPhonenumber"
-					name="userPhonenumber" placeholder="전화번호 ( ' - ' 제외 )[선택]" maxlength="11" value="${vo.userPhonenumber}" required>
+					name="userPhonenumber" placeholder="전화번호 ( ' - ' 제외 )[선택]" maxlength="11" value="${sessionScope.vo.userPhonenumber}" required>
 			</div>
 			
 
 			<div class="input-group">
 				  <label for="userDate">생년월일:</label>
 				  <c:choose>
-				  	<c:when test="${not empty vo.userDate }">
-	     			  <input type="date" id="userDate" name="userDate" value="${vo.userDate }" min="1900-01-01" max="2024-12-31" required>
+				  	<c:when test="${not empty sessionScope.vo.userDate }">
+	     			  <input type="date" id="userDate" name="userDate" value="${sessionScope.vo.userDate }" min="1900-01-01" max="2024-12-31" required>
 				  	</c:when>
 				  	<c:otherwise>
 	     			  <input type="date" id="userDate" name="userDate" value="1900-01-01" min="1900-01-01" max="2024-12-31" required>
@@ -215,7 +215,7 @@
 			</div>
 			
 		    <div class="gender-group">
-                <label id="gender" gender="${vo.userGender }">성별</label>
+                <label id="gender" gender="${sessionScope.vo.userGender }">성별</label>
                 <input type="radio" id="userGender" name="userGender" value="man" checked="checked" required>
                 <label for="man">남</label>
                 <input type="radio" id="userGender" name="userGender" value="woman" required>
@@ -230,7 +230,7 @@
 						onclick="toggleSubMenu('shopping-info')">쇼핑정보</a>
 						<ul id="shopping-info" class="sub-menu">
 							<li><a id="myOrder"
-								href="/User/OrderSelect?mno=${vo.mno }">주문목록/배송조회</a></li>
+								href="/User/OrderSelect?mno=${sessionScope.vo.mno }">주문목록/배송조회</a></li>
 							<li><a href="#">취소/반품/교환 내역</a></li>
 						</ul></li>
 					<li><a href="#" onclick="toggleSubMenu('benefit-management')">혜택관리</a>
@@ -241,7 +241,7 @@
 					<li><a href="userInfo" onclick="toggleSubMenu('member-info')">회원정보</a>
 						<ul id="member-info" class="sub-menu">
 							<li><a id="checkPage"
-								href="/User/checkPassword?userId=${vo.userId }">회원정보 수정</a></li>
+								href="/User/checkPassword?userId=${sessionScope.vo.userId }">회원정보 수정</a></li>
 							<li><a href="#">배송지 관리</a></li>
 						</ul></li>
 					<li><a href="/report/selectReport"

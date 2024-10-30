@@ -2,6 +2,8 @@ package org.joonzis.mapper;
 
 import java.util.List;
 
+import org.joonzis.domain.ChatRoomDTO;
+import org.joonzis.domain.ChattingDTO;
 import org.joonzis.domain.Criteria;
 import org.joonzis.domain.UsedBookVO;
 import org.joonzis.domain.usedBookImgVO;
@@ -34,5 +36,20 @@ public interface UsedShopMapper {
 	public UsedBookVO getuBookOne(int ubno);
 	// 중고 상품 이미지 보기 by.ubno
 	public List<usedBookImgVO> getuBookImgByUbno(int ubno);
+	// ===========================================================
+	
+	// ==================실시간 채팅 영역=============================
+	// 실시간 채팅방 존재 유무 check
+	public int chatingRoomCheck(ChatRoomDTO chat);
+	// 채팅 방 insert
+	public int chatingRoomInsert(ChatRoomDTO chat);
+	// 채팅 방 번호 조회
+	public int getChattingNumber(ChatRoomDTO chat);
+	// 채팅 방 내용 insert
+	public int insertChattingContent(ChattingDTO chat);
+	// 채팅 내용 조회
+	public List<ChattingDTO> getChattingContent(int chatno);
+	// 채팅 방 조회 ( 판매자용 )
+	public List<ChatRoomDTO> selectSellChatRoomList(ChatRoomDTO chat);
 	// ===========================================================
 }

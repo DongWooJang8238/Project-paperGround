@@ -1,5 +1,4 @@
 let f = document.forms[0];
-const mno = new URLSearchParams(location.search).get('mno');
 // 총 결제 금액 계산
 let totalPrice = 0;
 
@@ -65,7 +64,7 @@ document.querySelector('select[name="point"]').addEventListener('change', e => {
 });
 // 상품 삭제
 function deleteCart(bno) {
-	location.href = '/shop/deleteCart?bno=' + bno + "&mno=" + mno;
+	location.href = '/shop/deleteCart?bno=' + bno + "&mno=" + mno.value;
 }
 // 결제 버튼 이벤트
 document.querySelector('.pay-button').addEventListener('click', a => {
@@ -145,6 +144,11 @@ function sample6_execDaumPostcode() {
 
 // 신용카드 결제
 function cardPay() {
+	// 사용자 입력 정보 확인
+	if(f.orderName.value === '' || f.orderPhone.value === '' || f.address.value === '' || f.streetAddress.value === '' || f.detailAddress.value === ''){
+		alert('(필수) 항목이 비어있습니다.');
+		return;
+	}
 	// 신용카드 관련 로직 실행
 //	alert('mno = ' + mno);
 	const img = document.querySelectorAll('img');
@@ -163,7 +167,7 @@ function cardPay() {
 			listData.push({ "bno" : bno, "count" : count});
 		});
 		const orderData = {
-			    mno: mno,
+			    mno: mno.value,
 			    bno: bnoOne[0].value,
 			    bookTypeCount : products.length,
 			    orderMainBookName : orderMainBookName[0].getAttribute('data-title'),
@@ -202,7 +206,7 @@ function cardPay() {
 				console.log("비동기 결과 : " + data);
 				if(data === 'success'){
 					if(confirm('상품 상세 페이지로 이동하시겠습니까? ( 거절 시 상품 목록으로 이동 )')){
-						location.href = "/order/orderDetail?mno=" + mno
+						location.href = "/order/orderDetail?mno=" + mno.value;
 					}else {
 						location.href = "/shop/list";
 					}

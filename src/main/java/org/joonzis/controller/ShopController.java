@@ -249,6 +249,45 @@ public class ShopController {
 		return result >= 1 ? new ResponseEntity<String>("success",HttpStatus.OK) : new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
+	@Transactional
+	@ResponseBody
+	@PostMapping(value = "/buySuccessOne/{check}", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> buySuccessOne(@RequestBody OrderDetailVO odvo, @PathVariable("check") int check) {
+		log.warn("컨트롤러 구매성공시 넘어온 데이터.." + odvo.getMno());
+		// mno 데이터가 잘 넘어왔다면, mno 저장
+		int mno = odvo.getMno();
+		log.warn("컨트롤러 구매성공시 넘어온 데이터.." + odvo.getTotalPrice());
+		log.warn("컨트롤러 구매성공시 넘어온 데이터.." + odvo.getOrderName());
+		log.warn("컨트롤러 구매성공시 넘어온 데이터.." + odvo.getOrderPhone());
+		log.warn("컨트롤러 구매성공시 넘어온 데이터.." + odvo.getOrderAddress());
+		log.warn("컨트롤러 구매성공시 넘어온 데이터.." + odvo.getOrderStreetAddress());
+		log.warn("컨트롤러 구매성공시 넘어온 데이터.." + odvo.getOrderDetailAddress());
+		log.warn("컨트롤러 구매성공시 넘어온 데이터.." + odvo.getPoint());
+		log.warn("컨트롤러 구매성공시 넘어온 데이터.." + odvo.getBookTypeCount());
+		log.warn("컨트롤러 구매성공시 넘어온 데이터.." + odvo.getOrderMainBookName());
+		if(odvo.getUserDeposit() == "") {
+			log.warn("컨트롤러 구매성공시 넘어온 데이터.. ( 가공 전 )" + odvo.getUserDeposit());
+			odvo.setUserDeposit("미입력");
+		}
+		log.warn("컨트롤러 구매성공시 넘어온 데이터.. ( 가공 후 )" + odvo.getUserDeposit());
+		int result = service.insertOrderDetailOne(odvo, check);
+		log.warn("컨트롤러 상세주문정보 입력 체크.." + result);
+		// 저장이 잘 됬다면 odvo2 셀렉트 후 저장
+		int odno = service.selectOrderDetail(mno);
+		log.warn("컨트롤러 주문한 책 리스트 입력을 위한 odno.." + odno);
+		int listResult = 0;
+		for (OrderBookListVO oblvo : odvo.getList()) {
+			oblvo.setOdno(odno);
+			log.warn("oblvo 정보 .. " + oblvo.getBno());
+			log.warn("oblvo 정보 .. " + oblvo.getOdno());
+			log.warn("oblvo 정보 .. " + oblvo.getCount());
+			listResult = service.insertOrderBookList(oblvo);
+			log.warn("컨트롤러 책 리스트 입력 결과.." + listResult);
+		}
+		
+		return result >= 1 ? new ResponseEntity<String>("success",HttpStatus.OK) : new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
 	// 단일 상품 결제 완료 후
 //	@ResponseBody
 //	@PostMapping(value = "/buyOneSuccess", produces = MediaType.TEXT_PLAIN_VALUE)

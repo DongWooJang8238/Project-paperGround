@@ -1,20 +1,29 @@
 package org.joonzis.controller;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
+import org.joonzis.domain.ChatRoomDTO;
 import org.joonzis.domain.Criteria;
 import org.joonzis.domain.PageDTO;
 import org.joonzis.domain.UsedBookVO;
-import org.joonzis.domain.chatRoomDTO;
+import org.joonzis.domain.UserVO;
 import org.joonzis.domain.usedBookImgVO;
 import org.joonzis.service.UsedShopService;
 import org.joonzis.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.extern.log4j.Log4j;
 
@@ -92,11 +101,36 @@ public class UsedShopController {
 		log.warn("ubno : " + ubno);
 		log.warn("sellmno : " + sellmno);
 		log.warn("buymno : " + buymno);
-		chatRoomDTO chat = new chatRoomDTO();
+		ChatRoomDTO chat = new ChatRoomDTO();
 		chat.setUbno(ubno);
 		chat.setSellmno(sellmno);
 		chat.setBuymno(buymno);
 		model.addAttribute("numbers", chat);
 		return "/test";
+	}
+	
+	@ResponseBody
+	@GetMapping(value = "/sellChat/{ubno}/{mno}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<List<ChatRoomDTO>> myChattingList(@PathVariable("ubno") int ubno, @PathVariable("mno") int mno){
+		log.warn("넘어 온 데이터 1 : " + ubno);
+		log.warn("넘어 온 데이터 2 : " + mno);
+		
+		ChatRoomDTO chat = new ChatRoomDTO();
+		chat.setUbno(ubno);
+		chat.setSellmno(mno);
+		
+		List<ChatRoomDTO> list = service.selectSellChatRoomList(chat);
+		for (ChatRoomDTO dto : list) {
+			log.warn("구매자 정보 조회를 위한 buymno : " + dto.getBuymno());
+			UserVO vo = userService.userSelectOne(dto.getBuymno());
+			log.warn("구매자 정보 조회 결과 닉네임 : " + vo.getNickName());
+			dto.setUserName(vo.getNickName());
+		}
+		
+		for (int i = 0; i < list.size(); i++) {
+			log.warn("구매자 번호 : " + list.get(i).getBuymno());
+			log.warn("구매자 이름 : " + list.get(i).getUserName());
+		}
+		return list != null ? new ResponseEntity<List<ChatRoomDTO>>(list, HttpStatus.OK) : new ResponseEntity<List<ChatRoomDTO>>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

@@ -8,14 +8,29 @@ document.querySelectorAll('button').forEach(btn => {
 	btn.addEventListener('click', a => {
 		if(btn.id === 'shopingList'){
 			// 장바구니 담기 ( 비동기로 데이터 db에 저장? )
-			shopingList();
+			if(mno.value === ""){
+				alert('로그인이 필요한 기능입니다!');
+				return;
+			}else{
+				shopingList();
+			}
 		}else if(btn.id === 'buy'){
 			// 구매 페이지로 바로 이동 ( 현재 페이지 데이터 )
 			console.log(inputCount[0]);
-			location.href = "/shop/buy?mno=" + 1 + "&bno=" + bno + "&count=" + inputCount[0].value;
+			if(mno.value === ""){
+				alert('로그인이 필요한 기능입니다!');
+				return;
+			}else{
+				location.href = "/shop/buy?mno=" + mno.value + "&bno=" + bno + "&count=" + inputCount[0].value;
+			}
 		}else if(btn.id === 'cu'){
 			// 찜하기 ( 비동기로 유저 데이터와 도서 데이터 연결해서 저장 )
-			cuNext();
+			if(mno.value === ""){
+				alert('로그인이 필요한 기능입니다!');
+				return;
+			}else{
+				cuNext();
+			}
 		}else if(btn.id === 'goShopList'){
 			// 목록으로 이동 ( 보고있던 page, 카테고리 유지 )
 			let pageData = getStorageData();
@@ -57,7 +72,12 @@ document.querySelectorAll('button').forEach(btn => {
 		        behavior: 'smooth'  // Smooth scrolling
 		    });
 		}else if(btn.id === 'goDelete'){
-			location.href = "/shop/delete?bno=" + bno;
+			if(mno.value === ""){
+				alert('로그인이 필요한 기능입니다!');
+				return;
+			}else{
+				location.href = "/shop/delete?bno=" + bno;
+			}
 		}
 	});
 });
@@ -84,10 +104,8 @@ function applyStarRatings() {
     });
 }
 function shopingList() {
-//	const mno = document.querySelector().getAttribute('mno');
-	const mno = 1;
 	const count = inputCount[0].value;
-	let sendData = `${bno}/${mno}/${count}`;
+	let sendData = `${bno}/${mno.value}/${count}`;
 	
 	console.log(sendData);
 
@@ -119,10 +137,8 @@ function shopingList() {
 }
 
 function cuNext() {
-	// 임시 mno
-	const mno = 1;
 	// 비동기로 데이터 저장
-	fetch(`/shop/cu/${bno}/${mno}`)
+	fetch(`/shop/cu/${bno}/${mno.value}`)
 		.then(response => response.text())
 		.then(result => {
 			console.log(result);

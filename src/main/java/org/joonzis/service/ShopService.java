@@ -31,6 +31,8 @@ public interface ShopService {
 	public int selectOrderDetail(int mno);
 
 	public int insertOrderDetail(OrderDetailVO vo, int check);
+	
+	public int insertOrderDetailOne(OrderDetailVO vo, int check);
 
 	public int insertOrderBookList(OrderBookListVO vo);
 	

@@ -46,28 +46,31 @@
 	</div> -->
 
 	<div class="panel-body">
-		<c:forEach var="vo" items="${list}">
-			<div class="card" onclick="goGet(${vo.bno})">
-				<img src="${vo.bookcover }" alt="책 이미지">
+		<c:forEach var="bvo" items="${list}">
+			<div class="card" onclick="goGet(${bvo.bno})">
+				<img src="${bvo.bookcover }" alt="책 이미지">
 				<div class="card-title">
-					<a href="${vo.bno}">${vo.title}</a>
+					<a href="${bvo.bno}">${bvo.title}</a>
 				</div>
-				<div class="card-price">${vo.bookPrice}원</div>
-				<div class="card-author">${vo.writer}</div>
+				<div class="card-price">${bvo.bookPrice}원</div>
+				<div class="card-author">${bvo.writer}</div>
 				<!-- 평점 표시 부분 -->
 				<div class="card-rating">
-					<div class="stars" data-rating="${vo.avgRating}">
+					<div class="stars" data-rating="${bvo.avgRating}">
 						<span class="star">&#9733;</span> 
 						<span class="star">&#9733;</span>
 						<span class="star">&#9733;</span> 
 						<span class="star">&#9733;</span>
 						<span class="star">&#9733;</span>
 					</div>
-					<div class="avg-rating">평균 평점: ${vo.avgRating}(${vo.likeCount})</div>
+					<div class="avg-rating">평균 평점: ${bvo.avgRating}(${bvo.likeCount})</div>
 				</div>
 
 			</div>
 		</c:forEach>
+		
+		<!-- 시큐리티 적용 시 판매권한 있는 유저에게만 할당하기! -->
+		<button type="button" onclick="goShopInsert();">상품 등록</button>
 	</div>
 
 	<!-- page -->

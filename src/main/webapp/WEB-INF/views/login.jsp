@@ -135,7 +135,7 @@ body {
 			</div>
 			<button type="button" class="signup-btn" id="gologin">로그인</button>
 			<button type="button" class="signup-btn" id="goSignup">회원가입</button>
-			<a href="/User/findId">아이디 찾기</a> / 
+			<a href="/User/findId">아이디 찾기</a>
  		    <a href="/User/findPw">비밀번호 찾기</a>
 		</form>
 	</div>

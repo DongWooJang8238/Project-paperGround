@@ -10,7 +10,12 @@ document.head.appendChild(linkEle);
 
 // 새 게시글 등록 클릭 이벤트
 document.querySelector("#registerBtn").addEventListener('click', ()=> {
-	location.href = '/board/register';
+	if(mno.value === ""){
+		alert('로그인이 필요한 기능입니다!');
+		return;
+	}else{
+		location.href = '/board/register';
+	}
 });
 
 // 게시글 제목 클릭 이벤트 - 조회

@@ -46,6 +46,12 @@ public class ReviewServiceImpl implements ReviewService{
 		return mapper.getReviewList(bno);
 	}
 	
+	@Override
+	public String getUserName(int mno) {
+		log.warn("서비스 리뷰 이름 조회.." + mno);
+		return mapper.getUserName(mno);
+	}
+	
 	@Transactional
 	@Override
 	public int deleteReview(ReviewVO rvo) {

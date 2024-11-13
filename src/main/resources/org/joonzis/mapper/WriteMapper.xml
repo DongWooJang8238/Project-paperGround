@@ -8,6 +8,10 @@
 		select * from tbl_writing order by views desc
 	</select>
 	
+	<select id="selectWriteByMno" parameterType="int" resultType="org.joonzis.domain.WriteVO">
+		select * from tbl_writing where mno = #{mno} order by updatedate desc
+	</select>
+	
 	<select id="userNickName" parameterType="int" resultType="String">
 		select nickname from tbl_user where mno = #{mno}
 	</select>
@@ -17,11 +21,19 @@
 	</select>
 	<insert id="writeInsert" parameterType="org.joonzis.domain.WriteVO">
 		insert into tbl_writing values 
-		(seq_writing_wno.nextval, #{mno}, #{writeType}, #{genre}, #{title}, #{description}, #{coverImage}, '연재중', sysdate, sysdate)
+		(seq_writing_wno.nextval, #{mno}, #{writeType}, #{genre}, #{title}, #{description}, #{coverImage}, '연재중', sysdate, sysdate, 0, 0 , 0, #{writer})
 	</insert>
 	
 	<select id="writeWnoSelect" parameterType="int" resultType="int">
 		select max(wno) from tbl_writing where mno = #{mno}
+	</select>
+	
+	<select id="selectEpisodeByWno" parameterType="int" resultType="org.joonzis.domain.WriteEpisodeVO">
+		select * from tbl_writeepisode where wno = #{wno}
+	</select>
+	
+	<select id="selectWriteByWno" parameterType="int" resultType="org.joonzis.domain.WriteVO">
+		select * from tbl_writing where wno = #{wno}
 	</select>
 	
 	<select id="episodeCount" parameterType="int" resultType="int">
@@ -32,4 +44,23 @@
 		insert into tbl_writeepisode values 
 		(seq_episode_epno.nextval, #{wno}, #{episodeCount}, #{episodeTitle}, #{content}, #{episodeComment}, sysdate)
 	</insert>
+	
+	<select id="selectEpisodeByEpno" parameterType="int" resultType="org.joonzis.domain.WriteEpisodeVO">
+		select * from tbl_writeepisode where episodeno = #{episodeno}
+	</select>
+	
+	<update id="writeUpdateEpisode" parameterType="org.joonzis.domain.WriteEpisodeVO">
+		update tbl_writeepisode set 
+			episodeTitle = #{episodeTitle},
+			content = #{content},
+			episodeComment = #{episodeComment},
+			epdate = sysdate
+		where episodeno = #{episodeno}
+	</update>
+	
+	<update id="updateWriteDate" parameterType="int">
+		update tbl_writing set
+			updateDate = sysdate
+			where wno = #{wno}
+	</update>
 </mapper>

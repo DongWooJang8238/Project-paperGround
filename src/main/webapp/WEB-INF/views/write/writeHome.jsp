@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -64,340 +66,33 @@
 								<div class="slick-list" style="padding: 0px 245px;">
 									<div class="slick-track"
 										style="width: 7224px; left: -2580px; opacity: 1;">
-										<div data-index="-2" tabindex="-1"
-											class="slick-slide slick-cloned" aria-hidden="true"
-											style="width: 516px;">
-											<div>
-												<div tabindex="-1"
-													style="width: 100%; display: inline-block;">
-													<a href="#" data-testid="joa-slideBanner-link" data-idx="4"
-														data-banner-idx="30143"
-														data-uri="/bridge/request/itemshop-cash" data-target=""
-														class=""><div class="thumb">
-															<img
-																src="https://cf.joara.com/banner_file/20240619_150343.jpg"
-																alt="배너">
-														</div>
-														<div class="title">
-															<div class="badge-txt">
-																<span>아이템샵</span><span>첫 결제 혜택</span>
-															</div>
-															<div class="tit">첫 결제요? 딱지 더 받아가요!</div>
-															<p class="txt">웰컴! 첫 결제자는 딱지 30% 추가 지급</p>
-														</div></a>
-												</div>
-											</div>
-										</div>
-										<div data-index="-1" tabindex="-1"
-											class="slick-slide slick-cloned" aria-hidden="true"
-											style="width: 516px;">
-											<div>
-												<div tabindex="-1"
-													style="width: 100%; display: inline-block;">
-													<a href="#" data-testid="joa-slideBanner-link" data-idx="5"
-														data-banner-idx="30142"
-														data-uri="/bridge/request/itemshop-cash" data-target=""
-														class=""><div class="thumb">
-															<img
-																src="https://cf.joara.com/banner_file/20240619_150315.jpg"
-																alt="배너">
-														</div>
-														<div class="title">
-															<div class="badge-txt">
-																<span>정주행 대비 </span><span> 딱지 충전</span>
-															</div>
-															<div class="tit">웹결제 필수공식 [1딱지 = 100원]</div>
-															<p class="txt">추가 수수료 없는 웹결제!</p>
-														</div></a>
-												</div>
-											</div>
-										</div>
-										<div data-index="0" class="slick-slide" tabindex="-1"
-											aria-hidden="true" style="outline: none; width: 516px;">
-											<div>
-												<div tabindex="-1"
-													style="width: 100%; display: inline-block;">
-													<a href="#" data-testid="joa-slideBanner-link" data-idx="0"
-														data-banner-idx="32777" data-uri="/book/1684491"
-														data-target="" class=""><div class="thumb">
-															<img
-																src="https://cf.joara.com/banner_file/20241104_222411.jpg"
-																alt="배너">
-														</div>
-														<div class="title">
-															<div class="badge-txt">
-																<span>공포</span><span>프리미엄</span><span>미스터리</span><span>한국무속</span>
-															</div>
-															<div class="tit">
-																부두술 하나로 <br>노예에서 전설까지!
-															</div>
-															<p class="txt">&lt;부두레코드&gt; 젊은단테</p>
-														</div></a>
-												</div>
-											</div>
-										</div>
-										<div data-index="1" class="slick-slide" tabindex="-1"
-											aria-hidden="true" style="outline: none; width: 516px;">
-											<div>
-												<div tabindex="-1"
-													style="width: 100%; display: inline-block;">
-													<a href="#" data-testid="joa-slideBanner-link" data-idx="1"
-														data-banner-idx="32778" data-uri="/book/1627078"
-														data-target="" class=""><div class="thumb">
-															<img
-																src="https://cf.joara.com/banner_file/20241104_222453.jpg"
-																alt="배너">
-														</div>
-														<div class="title">
-															<div class="badge-txt">
-																<span>공포</span><span>프리미엄</span><span>괴담</span><span>호러</span>
-															</div>
-															<div class="tit">
-																괴담 마니아가 전해주는 <br>무시무시한 이야기
-															</div>
-															<p class="txt">&lt;괴담 바이러스&gt; 전건우</p>
-														</div></a>
-												</div>
-											</div>
-										</div>
-										<div data-index="2" class="slick-slide" tabindex="-1"
-											aria-hidden="true" style="outline: none; width: 516px;">
-											<div>
-												<div tabindex="-1"
-													style="width: 100%; display: inline-block;">
-													<a href="#" data-testid="joa-slideBanner-link" data-idx="2"
-														data-banner-idx="31737" data-uri="/latestbooks?tab=1"
-														data-target="" class=""><div class="thumb">
-															<img
-																src="https://cf.joara.com/banner_file/20240912_183100.jpg"
-																alt="배너">
-														</div>
-														<div class="title">
-															<div class="badge-txt">
-																<span>제10회 판무 테마공모전</span><span>점화</span><span>작품
-																	보러 가기🔥</span>
-															</div>
-															<div class="tit">창작의 불씨를 키울 때!</div>
-															<p class="txt">10. 10(목) 10:00 ~ 11. 27(수) 23:59</p>
-														</div></a>
-												</div>
-											</div>
-										</div>
-										<div data-index="3"
-											class="slick-slide slick-active slick-center slick-current"
+										<c:forEach var="write" items="${list}" varStatus="status" end="3">
+											<div data-index="${status.index}" class="slick-slide slick-active slick-center slick-current"
 											tabindex="-1" aria-hidden="false"
 											style="outline: none; width: 516px;">
-											<div>
-												<div tabindex="-1"
-													style="width: 100%; display: inline-block;">
-													<a href="#" data-testid="joa-slideBanner-link" data-idx="3"
-														data-banner-idx="30144" data-uri="/notice/1000189"
-														data-target="" class=""><div class="thumb">
-															<img
-																src="https://cf.joara.com/banner_file/20240619_150408.jpg"
-																alt="배너">
-														</div>
-														<div class="title">
-															<div class="badge-txt">
-																<span>정기구독</span><span>가격할인</span><span>무제한 연장</span>
+												
+												<div>
+													<div tabindex="-1"
+														style="width: 100%; display: inline-block;">
+														<a href="#" data-testid="joa-slideBanner-link" data-idx="${status.index}"
+															data-banner-idx="30143"
+															data-uri="/bridge/request/itemshop-cash" data-target=""
+															class=""><div class="thumb">
+																<img
+																	src="${write.coverImage}"
+																	alt="배너" onerror="this.onerror=null; this.src='/resources/images/notImg.webp';">
 															</div>
-															<div class="tit">하루 400원대로 만나는 웹소설</div>
-															<p class="txt">노블레스 1달 이용료가 반값!</p>
-														</div></a>
+															<div class="title">
+																<div class="badge-txt">
+																	<span>${write.genre}</span><span>${write.writeType}</span>
+																</div>
+																<div class="tit">${write.title}</div>
+																<p class="txt">${write.writer}</p>
+															</div></a>
+													</div>
 												</div>
 											</div>
-										</div>
-										<div data-index="4" class="slick-slide" tabindex="-1"
-											aria-hidden="true" style="outline: none; width: 516px;">
-											<div>
-												<div tabindex="-1"
-													style="width: 100%; display: inline-block;">
-													<a href="#" data-testid="joa-slideBanner-link" data-idx="4"
-														data-banner-idx="30143"
-														data-uri="/bridge/request/itemshop-cash" data-target=""
-														class=""><div class="thumb">
-															<img
-																src="https://cf.joara.com/banner_file/20240619_150343.jpg"
-																alt="배너">
-														</div>
-														<div class="title">
-															<div class="badge-txt">
-																<span>아이템샵</span><span>첫 결제 혜택</span>
-															</div>
-															<div class="tit">첫 결제요? 딱지 더 받아가요!</div>
-															<p class="txt">웰컴! 첫 결제자는 딱지 30% 추가 지급</p>
-														</div></a>
-												</div>
-											</div>
-										</div>
-										<div data-index="5" class="slick-slide" tabindex="-1"
-											aria-hidden="true" style="outline: none; width: 516px;">
-											<div>
-												<div tabindex="-1"
-													style="width: 100%; display: inline-block;">
-													<a href="#" data-testid="joa-slideBanner-link" data-idx="5"
-														data-banner-idx="30142"
-														data-uri="/bridge/request/itemshop-cash" data-target=""
-														class=""><div class="thumb">
-															<img
-																src="https://cf.joara.com/banner_file/20240619_150315.jpg"
-																alt="배너">
-														</div>
-														<div class="title">
-															<div class="badge-txt">
-																<span>정주행 대비 </span><span> 딱지 충전</span>
-															</div>
-															<div class="tit">웹결제 필수공식 [1딱지 = 100원]</div>
-															<p class="txt">추가 수수료 없는 웹결제!</p>
-														</div></a>
-												</div>
-											</div>
-										</div>
-										<div data-index="6" tabindex="-1"
-											class="slick-slide slick-cloned" aria-hidden="true"
-											style="width: 516px;">
-											<div>
-												<div tabindex="-1"
-													style="width: 100%; display: inline-block;">
-													<a href="#" data-testid="joa-slideBanner-link" data-idx="0"
-														data-banner-idx="32777" data-uri="/book/1684491"
-														data-target="" class=""><div class="thumb">
-															<img
-																src="https://cf.joara.com/banner_file/20241104_222411.jpg"
-																alt="배너">
-														</div>
-														<div class="title">
-															<div class="badge-txt">
-																<span>공포</span><span>프리미엄</span><span>미스터리</span><span>한국무속</span>
-															</div>
-															<div class="tit">
-																부두술 하나로 <br>노예에서 전설까지!
-															</div>
-															<p class="txt">&lt;부두레코드&gt; 젊은단테</p>
-														</div></a>
-												</div>
-											</div>
-										</div>
-										<div data-index="7" tabindex="-1"
-											class="slick-slide slick-cloned" aria-hidden="true"
-											style="width: 516px;">
-											<div>
-												<div tabindex="-1"
-													style="width: 100%; display: inline-block;">
-													<a href="#" data-testid="joa-slideBanner-link" data-idx="1"
-														data-banner-idx="32778" data-uri="/book/1627078"
-														data-target="" class=""><div class="thumb">
-															<img
-																src="https://cf.joara.com/banner_file/20241104_222453.jpg"
-																alt="배너">
-														</div>
-														<div class="title">
-															<div class="badge-txt">
-																<span>공포</span><span>프리미엄</span><span>괴담</span><span>호러</span>
-															</div>
-															<div class="tit">
-																괴담 마니아가 전해주는 <br>무시무시한 이야기
-															</div>
-															<p class="txt">&lt;괴담 바이러스&gt; 전건우</p>
-														</div></a>
-												</div>
-											</div>
-										</div>
-										<div data-index="8" tabindex="-1"
-											class="slick-slide slick-cloned" aria-hidden="true"
-											style="width: 516px;">
-											<div>
-												<div tabindex="-1"
-													style="width: 100%; display: inline-block;">
-													<a href="#" data-testid="joa-slideBanner-link" data-idx="2"
-														data-banner-idx="31737" data-uri="/latestbooks?tab=1"
-														data-target="" class=""><div class="thumb">
-															<img
-																src="https://cf.joara.com/banner_file/20240912_183100.jpg"
-																alt="배너">
-														</div>
-														<div class="title">
-															<div class="badge-txt">
-																<span>제10회 판무 테마공모전</span><span>점화</span><span>작품
-																	보러 가기🔥</span>
-															</div>
-															<div class="tit">창작의 불씨를 키울 때!</div>
-															<p class="txt">10. 10(목) 10:00 ~ 11. 27(수) 23:59</p>
-														</div></a>
-												</div>
-											</div>
-										</div>
-										<div data-index="9" tabindex="-1"
-											class="slick-slide slick-center slick-cloned"
-											aria-hidden="true" style="width: 516px;">
-											<div>
-												<div tabindex="-1"
-													style="width: 100%; display: inline-block;">
-													<a href="#" data-testid="joa-slideBanner-link" data-idx="3"
-														data-banner-idx="30144" data-uri="/notice/1000189"
-														data-target="" class=""><div class="thumb">
-															<img
-																src="https://cf.joara.com/banner_file/20240619_150408.jpg"
-																alt="배너">
-														</div>
-														<div class="title">
-															<div class="badge-txt">
-																<span>정기구독</span><span>가격할인</span><span>무제한 연장</span>
-															</div>
-															<div class="tit">하루 400원대로 만나는 웹소설</div>
-															<p class="txt">노블레스 1달 이용료가 반값!</p>
-														</div></a>
-												</div>
-											</div>
-										</div>
-										<div data-index="10" tabindex="-1"
-											class="slick-slide slick-cloned" aria-hidden="true"
-											style="width: 516px;">
-											<div>
-												<div tabindex="-1"
-													style="width: 100%; display: inline-block;">
-													<a href="#" data-testid="joa-slideBanner-link" data-idx="4"
-														data-banner-idx="30143"
-														data-uri="/bridge/request/itemshop-cash" data-target=""
-														class=""><div class="thumb">
-															<img
-																src="https://cf.joara.com/banner_file/20240619_150343.jpg"
-																alt="배너">
-														</div>
-														<div class="title">
-															<div class="badge-txt">
-																<span>아이템샵</span><span>첫 결제 혜택</span>
-															</div>
-															<div class="tit">첫 결제요? 딱지 더 받아가요!</div>
-															<p class="txt">웰컴! 첫 결제자는 딱지 30% 추가 지급</p>
-														</div></a>
-												</div>
-											</div>
-										</div>
-										<div data-index="11" tabindex="-1"
-											class="slick-slide slick-cloned" aria-hidden="true"
-											style="width: 516px;">
-											<div>
-												<div tabindex="-1"
-													style="width: 100%; display: inline-block;">
-													<a href="#" data-testid="joa-slideBanner-link" data-idx="5"
-														data-banner-idx="30142"
-														data-uri="/bridge/request/itemshop-cash" data-target=""
-														class=""><div class="thumb">
-															<img
-																src="https://cf.joara.com/banner_file/20240619_150315.jpg"
-																alt="배너">
-														</div>
-														<div class="title">
-															<div class="badge-txt">
-																<span>정주행 대비 </span><span> 딱지 충전</span>
-															</div>
-															<div class="tit">웹결제 필수공식 [1딱지 = 100원]</div>
-															<p class="txt">추가 수수료 없는 웹결제!</p>
-														</div></a>
-												</div>
-											</div>
-										</div>
+										</c:forEach>
 									</div>
 								</div>
 								<div class="banner-dots top pc">
@@ -426,15 +121,17 @@
 												alt="자유게시판">
 										</div>
 										<p>자유게시판</p></a></li>
-								<li><a data-testid="joa-mainShort-5"
-									data-link="https://writer.joara.com/bridge/result/token?t=2915afde8952da986c5fad2bb571bd50"
-									data-method="push" data-lnbclose="true" data-target="" href="#"><div
-											class="icon">
-											<img
-												src="https://cf.joara.com/version_3_0/shortcut/20240619_090831.gif"
-												alt="작품등록">
-										</div>
-										<p>작품등록</p></a></li>
+								<li>
+									<a id="myEp" data-testid="joa-mainShort-5"
+										data-link="https://writer.joara.com/bridge/result/token?t=2915afde8952da986c5fad2bb571bd50"
+										data-method="push" data-lnbclose="true" href="/"><div
+												class="icon">
+												<img
+													src="https://cf.joara.com/version_3_0/shortcut/20240619_090831.gif"
+													alt="작품등록">
+											</div>
+											<p>작품등록</p></a>
+								</li>
 							</ul>
 						</div>
 					</div>

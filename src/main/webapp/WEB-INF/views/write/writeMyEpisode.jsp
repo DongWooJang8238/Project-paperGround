@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="/resources/css/writeHome.css">
+<link rel="stylesheet" href="/resources/css/writeMyEp.css">
 </head>
 <body>
 	<jsp:include page="../layout/header.jsp"></jsp:include>
@@ -40,42 +40,50 @@
 						</button>
 					</div>
 					<div class="work-subnav-list">
-						<a class="list-item" href="/books/series"><div>
+						<a class="list-item" href="#">
+							<div>
 								연재작품<img src="/assets/ic/list-item/subnav-list-ic.png" alt="">
 							</div>
-							<div class="number">2</div></a><a class="list-item"
-							href="/books/finish"><div>
+							<div class="number">2</div></a>
+						<a class="list-item"
+							href="#"><div>
 								완결작품<img src="/assets/ic/list-item/subnav-list-ic.png" alt="">
 							</div>
-							<div class="number">0</div></a><a class="list-item"
-							href="/books/study"><div>
+							<div class="number">0</div></a>
+						<a class="list-item"
+							href="#"><div>
 								습작작품<img src="/assets/ic/list-item/subnav-list-ic.png" alt="">
 							</div>
 							<div class="number">1</div></a>
-					</div>
-					<div class="banner-primary">
-						<a
-							href="https://www.joara.com/writers-support?exdest=https%3A%2F%2Fwriter.joara.com%2F"><p>
-								작가와 독자가 모두 만족한<br>작가지원 정책
-							</p>
-							<div class="link">
-								이동하기<img src="/assets/ic/list-item/subnav-list-ic_wt.png" alt="">
-							</div></a>
 					</div>
 					<div class="banner-secondary moduled-bookWrite"
 						data-testid="joa-Mainpage-onClickNewBook">
 						<div class="moduled-bookWrite-left">
 							<p data-testid="joa-Mainpage-onClickNewBook">새 작품 등록</p>
 						</div>
-						<div class="link" data-testid="joa-Mainpage-onClickNewBook">
+						<div id="goWriteInsert" class="link" data-testid="joa-Mainpage-onClickNewBook">
 							이동하기<img src="/assets/ic/list-item/subnav-list-ic.png" alt="">
 						</div>
 					</div>
+						<c:forEach var="write" items="${list}">
+					<div class="banner-secondary moduled-bookWrite"
+						data-testid="joa-Mainpage-onClickNewBook">
+							<div class="moduled-bookWrite-left">
+								<h2 data-wno="${write.wno}" data-testid="joa-Mainpage-onClickNewBook">${write.title}</h2>
+								<p data-testid="joa-Mainpage-onClickNewBook">${write.genre}</p>
+							</div>
+							<div class="link" data-wno="${write.wno}" data-testid="joa-Mainpage-onClickNewBook">
+								<p>마지막 수정일 : ${write.updateDate}</p>
+								연재하기<img src="/assets/ic/list-item/subnav-list-ic.png" alt="">
+							</div>
+					</div>
+						</c:forEach>
 				</div>
 			</div>
 		</div>
 	</div>
 	
-	<jsp:include page="../layout/header.jsp"></jsp:include>
+	<jsp:include page="../layout/footer.jsp"></jsp:include>
 </body>
+<script type="text/javascript" src="/resources/js/write/writeMyEp.js"></script>
 </html>

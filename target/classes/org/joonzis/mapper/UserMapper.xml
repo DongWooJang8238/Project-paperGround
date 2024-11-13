@@ -59,70 +59,171 @@
 	<!-- 새비밀번호 설정 -->
 	<update id="updatePw" parameterType="org.joonzis.domain.UserVO">
 		update tbl_user
-		set userPw = #{userPw}
+		set userPw =
+		#{userPw}
 		where userId = #{userId}
 	</update>
 
 	<!-- 아이콘 업데이트 -->
-	<update id="updateIcon" parameterType="org.joonzis.domain.UserVO">
+	<update id="updateIcon"
+		parameterType="org.joonzis.domain.UserVO">
 		update tbl_user
 		set
 		userIcon = #{userIcon}
-		where USERID = #{userId}
+		where USERID =
+		#{userId}
 	</update>
-	
+
 	<!-- 비밀번호 재확인 -->
-	<select id="checkPassword" parameterType="org.joonzis.domain.UserVO" resultType="org.joonzis.domain.UserVO">
-		select * from tbl_user where userid = #{userId} and userpw = #{userPw}
+	<select id="checkPassword"
+		parameterType="org.joonzis.domain.UserVO"
+		resultType="org.joonzis.domain.UserVO">
+		select * from tbl_user where userid = #{userId} and userpw
+		= #{userPw}
 	</select>
-	
-	<!--유저 정보 업데이트  -->
-	<update id="updateUserInfo" parameterType="org.joonzis.domain.UserVO">
-		UPDATE tbl_user 
-    	SET
-    	useremail = #{userEmail}, address = #{address}, streetAddress = #{streetAddress} , detailAddress = #{detailAddress} , userphonenumber = #{userPhonenumber}, userdate = #{userDate}, usergender = #{userGender}
-    	WHERE userId = #{userId}	
+
+	<!--유저 정보 업데이트 -->
+	<update id="updateUserInfo"
+		parameterType="org.joonzis.domain.UserVO">
+		UPDATE tbl_user
+		SET
+		useremail = #{userEmail}, address = #{address}, streetAddress =
+		#{streetAddress} , detailAddress = #{detailAddress} , userphonenumber
+		= #{userPhonenumber}, userdate = #{userDate}
+		WHERE userId = #{userId}
 	</update>
-	
+
 	<!-- 유저 정보 검색 (by.mno) -->
-	<select id="userSelectOne" parameterType="int" resultType="org.joonzis.domain.UserVO">
+	<select id="userSelectOne" parameterType="int"
+		resultType="org.joonzis.domain.UserVO">
 		select * from tbl_user where mno = #{mno}
 	</select>
-	
+
 	<!-- 유저 탈퇴 -->
 	<delete id="deleteAccount" parameterType="String">
-		delete from tbl_user where userId = #{userId}
+		delete from tbl_user
+		where userId = #{userId}
 	</delete>
-	
+
 	<!-- 포인트 총 내역 -->
-	<select id="selectPoint" parameterType="int" resultType="org.joonzis.domain.UserpointVO">
-		select * from tbl_pointhistory where mno = #{mno}  order by pointgetdate desc
+	<select id="selectPoint" parameterType="int"
+		resultType="org.joonzis.domain.UserpointVO">
+		select * from tbl_pointhistory where mno = #{mno} order by
+		pointgetdate desc
 	</select>
-	
-	<!-- 포인트 한달간 총 보유량-->
+
+	<!-- 포인트 한달간 총 보유량 -->
 	<select id="totalPoint" parameterType="int" resultType="int">
-		SELECT 
-			SUM(point) 
-		FROM tbl_pointhistory 
-		WHERE mno = #{mno } 
-			AND status = '적립'
-			AND pointgetdate 
-		BETWEEN 
-			TRUNC (sysdate -32) 
-			AND sysdate
+		SELECT
+		SUM(point)
+		FROM tbl_pointhistory
+		WHERE mno = #{mno }
+		AND status = '적립'
+		AND pointgetdate
+		BETWEEN
+		TRUNC (sysdate -32)
+		AND sysdate
 	</select>
-	
-		<!-- 포인트 한달간 총 사용량-->
+
+	<!-- 포인트 한달간 총 사용량 -->
 	<select id="totalUsePoint" parameterType="int" resultType="int">
-		SELECT 
-			SUM(point) 
-		FROM tbl_pointhistory 
-		WHERE mno = #{mno } 
-			AND status = '사용'
-			AND pointgetdate 
-		BETWEEN 
-			TRUNC (sysdate -32) 
-			AND sysdate
+		SELECT
+		SUM(point)
+		FROM tbl_pointhistory
+		WHERE mno = #{mno }
+		AND status = '사용'
+		AND pointgetdate
+		BETWEEN
+		TRUNC (sysdate -32)
+		AND sysdate
+	</select>
+
+	<select id="usedBook_select" parameterType="int"
+		resultType="org.joonzis.domain.UsedBookVO">
+		SELECT
+		*
+		FROM
+		tbl_ubook
+		WHERE
+		mno = #{mno}
+	</select>
+
+	<!-- 전체 책 리스트 조회 -->
+	<select id="getuBookList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.UsedBookVO">
+	<![CDATA[
+		SELECT ubno, mno, gno, ubookPrice, title, content, ubookImage, status, ubookDate
+		FROM (
+			SELECT ROWNUM rn, ubno, mno, gno, ubookPrice, title, content, ubookImage, status, ubookDate 
+			FROM (
+				SELECT * FROM tbl_ubook 
+				ORDER BY ubno DESC
+			)
+			WHERE ROWNUM <= #{pageNum} * #{amount}
+		)
+		WHERE rn > (#{pageNum} - 1) * #{amount}
+		AND mno = #{userMno}
+	]]>
+	</select>
+
+	<select id="countGetuBookList" parameterType="org.joonzis.domain.Criteria" resultType="int">
+		SELECT count(*) FROM tbl_ubook 
+				where mno = #{userMno}
+				<choose>
+					<when test="startDate != null and endDate != null">
+						AND ubookdate BETWEEN #{startDate} AND #{endDate}
+					</when>
+					<when test="filterType == 0">
+						AND status = 0
+					</when>
+					<when test="filterType == 1">
+						AND status >= 1
+					</when>
+				</choose>
+				ORDER BY ubno DESC
 	</select>
 	
+	<select id="selectGetuBookList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.UsedBookVO">
+	<![CDATA[
+		SELECT ubno, mno, gno, ubookPrice, title, content, ubookImage, status, ubookDate
+		FROM (
+			SELECT ROWNUM rn, ubno, mno, gno, ubookPrice, title, content, ubookImage, status, ubookDate 
+			FROM (
+				SELECT * FROM tbl_ubook WHERE mno = #{userMno}
+		AND ubookdate BETWEEN #{startDate} AND #{endDate}
+				ORDER BY ubno DESC
+			)
+			WHERE ROWNUM <= #{pageNum} * #{amount}
+		)
+		WHERE rn > (#{pageNum} - 1) * #{amount}
+	]]>
+	</select>
+	
+	<select id="selectGetuBookEndSaleList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.UsedBookVO">
+	<![CDATA[
+		SELECT ubno, mno, gno, ubookPrice, title, content, ubookImage, status, ubookDate
+		FROM (
+			SELECT ROWNUM rn, ubno, mno, gno, ubookPrice, title, content, ubookImage, status, ubookDate 
+			FROM (
+				SELECT * FROM tbl_ubook 
+                where status 
+				]]>
+				<choose>
+					<when test="filterType == 0">
+    	            	= #{filterType}
+					</when>
+					<otherwise>
+	                	>= #{filterType}
+					</otherwise>
+				</choose>
+				<![CDATA[
+                AND mno = #{userMno}
+			)
+			WHERE ROWNUM <= #{pageNum} * #{amount}
+		)
+		WHERE rn > (#{pageNum} - 1) * #{amount}
+        
+	]]>
+	</select>
+	
+
 </mapper>

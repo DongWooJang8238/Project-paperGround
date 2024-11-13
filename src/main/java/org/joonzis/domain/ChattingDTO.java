@@ -15,4 +15,6 @@ public class ChattingDTO {
 	private int chatno, mno;
 	private String content;
 	private Date chatdate;
+	
+	private String nickname;
 }

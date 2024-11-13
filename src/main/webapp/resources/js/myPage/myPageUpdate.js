@@ -1,16 +1,50 @@
 
-console.log(document.querySelector('#gender').getAttribute('gender'));
-console.log(document.querySelector('.gender-group input[value="woman"]'));
-const genderOne = document.querySelector('.gender-group input[value="woman"]');
-const gender = document.querySelector('#gender').getAttribute('gender');
 let userEmailvalue = document.getElementById('userEmail').value;
-let userEmail = document.getElementById('userEmail')
+let userEmail = document.getElementById('userEmail');
+let userPhonenumber = document.getElementById('userPhonenumber');
+//let userId = document.getElementById('userId').value;
+//let userIcon = document.getElementById('userIcon').value;
 
 
+console.log(userPhonenumber);
 console.log(userEmail);
-// 만약 유저 VO에 저장된 값이 woman이라면 checked 코드
-if(gender === "woman"){
-	document.querySelector('.gender-group input[value="woman"]').checked = true;
+//// 만약 유저 VO에 저장된 값이 woman이라면 checked 코드
+//if(gender === "woman"){
+//	document.querySelector('.gender-group input[value="woman"]').checked = true;
+//}
+
+//userPhonenumber.addEventListener('keyup', e => {
+//	let target = e.currentTarget;
+//	console.log(userPhonenumber.value);
+//	userPhonenumber.value
+//	.replace(/[^0-9]/g, '') // 숫자를 제외한 모든 문자 제거
+//	.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+//});
+
+// 하이픈 추가
+const autoHyphen = (target) => {
+	if (target.value.startsWith("02")) {
+		console.log(9);
+		target.value = target.value
+		.replace(/[^0-9]/g, '')
+		  .replace(/^(\d{0,2})(\d{0,3})(\d{0,4})$/g, "$1-$2-$3")
+		   	.replace(/(\-{1,2})$/g, "");
+			target.setAttribute("maxlength", "11");
+	}else if (target.value.startsWith("031")) {
+		console.log(5);
+		target.value = target.value
+		.replace(/[^0-9]/g, '')
+		  .replace(/^(\d{0,3})(\d{0,3})(\d{0,4})$/g, "$1-$2-$3")
+		   	.replace(/(\-{1,2})$/g, "");
+			target.setAttribute("maxlength", "12");
+	}else{
+		target.value = target.value
+		.replace(/[^0-9]/g, '')
+		.replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
+		.replace(/(\-{1,2})$/g, "");
+	}
+//		console.log(target.value);
+	target.setAttribute("value", "target.value");
 }
 
 
@@ -93,12 +127,11 @@ function updateUserInfo(form) {
 	
 	
 	console.log(form.userId.value);
-	console.log(form.userGender.value);
 //	console.log(form.userAddress.value);
 	console.log(form.userDate.value);
 	console.log(form.userPhonenumber.value);
 	console.log(form.userEmail.value);
-	alert("흠냐륑");
+	alert("변경을 완료했습니다.");
 	form.action = "/User/updateUserInfo";
 	form.submit();
 	
@@ -107,3 +140,126 @@ function updateUserInfo(form) {
 //	console.log(userEmail.value);
 	
 }
+
+
+// ------------------------------------------------------------------------
+//img 버튼
+const profileImage = document.getElementById("userIcon"); 
+
+const regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
+const MAX_SIZE = 5242880; // 5MB
+
+console.log(profileImage);
+//console.log(deleteImage);
+//console.log(imageInput);
+
+
+function checkExtension(fileName, fileSize) {
+	if(fileSize >= MAX_SIZE){
+		alert("파일 사이즈 초과");
+		return false;
+	}
+	if(regex.test(fileName)){
+		alert("해당 종류의 파일은 업로드할 수 없습니다.");
+		return false;
+	}
+	return true;
+}
+
+// 모달 열기 함수
+function openModal() {
+  document.getElementById('profileModal').style.display = 'flex';
+}
+
+// 모달 닫기 함수
+function closeModal() {
+  document.getElementById('profileModal').style.display = 'none';
+}
+
+
+
+
+
+// 예제용 버튼 기능
+function selectPhoto(form) {
+//  alert("사진 선택 기능이 호출되었습니다.");
+	document.getElementById('openFile').click();
+	
+	document.getElementById('openFile').addEventListener('change', () =>{
+		const files = openFile.files;
+		if(!checkExtension(files[0].name, files[0].size)){
+			closeModal();
+			return false;
+		}
+	
+	
+	
+	const formData = new FormData();
+	formData.append('userId',form.userId.value);
+	console.log('userIcon',form.userIcon.files[0]);
+	formData.append('userIcon',form.userIcon.files[0]);
+	
+	
+	fetch('/asycn/updateIcon', {
+		method : 'post',
+		body : formData
+	})
+	.then(response => response.text())
+	.then(text => {
+//		console.log(text);
+		if(text == "success"){
+			alert("아이콘을 변경하였습니다.");
+		}
+	})
+	.catch(err => console.log(err));
+	});
+}
+
+function setDefaultPhoto(form) {
+//  alert("기본 이미지로 설정 기능이 호출되었습니다.");
+//  console.log(1234);
+  profileImage.setAttribute("src","../resources/images/usericon.jpg");
+//  goResetIcon(this.form);
+	const formData = new FormData();
+	formData.append('userId',form.userId.value);
+	formData.append('userIcon',profileImage.getAttribute("src"));
+	
+	fetch('/asycn/resetIcon', {
+		method : 'post',
+		body : formData
+	})
+	.then(response => response.text())
+	.then(text => {
+		console.log('TEST1')
+		console.log(text);
+	})
+	.catch(err => console.log(err));
+	
+
+}
+
+function setKakaoProfile() {
+  alert("카카오톡 프로필로 설정 기능이 호출되었습니다.");
+}
+
+
+function goResetIcon(form) {
+//	console.log("dddd" + form.userId.value)
+	const formData = new FormData();
+	formData.append('userId',form.userId.value);
+	formData.append('userIcon',profileImage.getAttribute("src"));
+	
+	fetch('/asycn/resetIcon', {
+		method : 'post',
+		body : formData
+	})
+	.then(response => response.text())
+	.then(text => {
+		console.log('TEST RESET')
+		console.log(text);
+	})
+	.catch(err => console.log(err));
+	
+}
+
+

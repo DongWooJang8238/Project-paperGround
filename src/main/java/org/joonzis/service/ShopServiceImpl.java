@@ -30,9 +30,11 @@ public class ShopServiceImpl implements ShopService {
 	    List<BookVO> list = mapper.getBookList(cri);
 	    list.forEach(vo -> {
 	    	log.warn("서비스 책 평점 조회.." + vo.getBno());
-	    	vo.setLikeCount(mapper.getTotalLikeByBno(vo.getBno()));
+	    	log.warn("서비스 책 평점 조회 결과.." + vo.getTitle());
+	    	log.warn("서비스 책 평점 조회 결과.." + vo.getAvgRating());
 	    	log.warn("서비스 책 평점 조회 결과.." + vo.getLikeCount());
-	    	vo.setAvgRating(mapper.selectAvgRating(vo.getBno()));
+//	    	vo.setLikeCount(mapper.getTotalLikeByBno(vo.getBno()));
+//	    	vo.setAvgRating(mapper.selectAvgRating(vo.getBno()));
 	    });
 	    return list;
 	}
@@ -51,9 +53,9 @@ public class ShopServiceImpl implements ShopService {
 	}
 	
 	@Override
-	public int getTotal() {
+	public int getTotal(Criteria cri) {
 		log.info("토탈스..");
-		return mapper.getTotal();
+		return mapper.getTotal(cri);
 	}
 	
 	@Override

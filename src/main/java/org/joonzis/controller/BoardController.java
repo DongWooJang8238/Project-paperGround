@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.extern.log4j.Log4j;
-
+	
 @Log4j
 @Controller
 @RequestMapping("/board/*")
@@ -36,20 +36,27 @@ public class BoardController {
 		
 //	 전체 게시글 조회 - 기존 방식
 	@GetMapping("/list")
-	public String list(Model model, Criteria cri) {
-		log.info("list...");
-		
-		if(cri.getPageNum() == 0 || cri.getAmount() == 0) {
-			cri.setPageNum(1);
-			cri.setAmount(10);
-		}
-		
-		int total = service.getTotal();
-		log.info("total...." + total);
-		model.addAttribute("pageMaker", new PageDTO(cri, total));
-		model.addAttribute("list", service.getList(cri));
-		return "/board/list";
+	public String list(Model model, Criteria cri, 
+	                   @RequestParam(value = "category", defaultValue = "1") String category) {
+	    log.info("게시판 카테고리: " + category);
+
+	    if (cri.getPageNum() == 0 || cri.getAmount() == 0) {
+	        cri.setPageNum(1);
+	        cri.setAmount(10);
+	    }
+
+	    int total = service.getTotalByCategory(category);
+	    log.warn("보드서비스 리스트 토탈... " + total);
+	    
+	    List<BoardVO> filteredList = service.getListByCategory(cri, category);
+
+	    model.addAttribute("pageMaker", new PageDTO(cri, total));
+	    model.addAttribute("list", filteredList);
+	    model.addAttribute("selectedCategory", category);
+
+	    return "/board/list";
 	}
+
 		
 		// 게시글 조회
 		@GetMapping("/get")
@@ -60,13 +67,14 @@ public class BoardController {
 			log.info("get..." + boardno);
 			model.addAttribute("bvo", service.get(boardno));
 			model.addAttribute("likecount", service.getLikeCount(boardno));
+			model.addAttribute("attachList", service.getAttachList(boardno));
 			return "/board/get";
 		}
 		// 게시글 수정, 수정이 완료되면 board/list로 이동
 		@PostMapping("/modify")
-		public String modify(BoardVO bvo) {
-			log.info("modify..." + bvo);
-			service.modify(bvo);
+		public String modify(BoardVO boardno) {
+			log.info("modify..." + boardno);
+			service.modify(boardno);
 			return "redirect:/board/list";
 		}
 		// modify(수정) 게시글 이동
@@ -90,10 +98,8 @@ public class BoardController {
 		public String register(BoardVO bvo, RedirectAttributes rttr) {
 			log.warn("123412341234");
 			log.info("register.... " + bvo);
-			log.info("아타치아타치" + bvo.getAttachList());
+			log.info("게시글 등록" + bvo.getAttachList());
 			service.register(bvo);
-			log.warn(service.register(bvo));
-			
 			
 			if(bvo.getAttachList() != null) {
 				bvo.getAttachList().forEach(attach -> log.info("아타치이타치" + attach));
@@ -120,7 +126,7 @@ public class BoardController {
 			service.getAttachList(boardno).forEach(action -> {
 				log.info("업로드" + action);
 			});
-			
+			log.warn("아타치 등록 결과 : " + boardno);
 			return new ResponseEntity<List<BoardAttachVO>>(service.getAttachList(boardno), HttpStatus.OK);
 		}
 	    

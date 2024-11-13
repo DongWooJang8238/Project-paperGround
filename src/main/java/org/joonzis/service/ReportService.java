@@ -16,11 +16,16 @@ public interface ReportService {
 
 	public int insertDR(DrVO drvo);
 
-	public int getTotal();
+	public int DRsubmit(DrVO drvo);
 
-	public List<ReportBoardVO> getList(Criteria cri);
+	public int getDrTotal();
+	public List<DrVO> getDrList(Criteria cri);
 
-	public int insertReport(ReportBoardVO reportBoard);
-	
+	public DrVO getDR(int DRNo);
+
+	public int updateStatus(DrVO drVO);
+
+
+
 
 }

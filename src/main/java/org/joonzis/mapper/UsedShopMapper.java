@@ -38,6 +38,18 @@ public interface UsedShopMapper {
 	public List<usedBookImgVO> getuBookImgByUbno(int ubno);
 	// ===========================================================
 	
+	// ==================상품 수정 영역==========================
+	// 상품 정보 수정
+	public int updateUbook(UsedBookVO ubvo);
+	// 상품 판매상태 수정
+	public int successSell(int ubno);
+	// ===========================================================
+	
+	// ==================상품 삭제 영역==========================
+	// 상품 삭제
+	public int deleteUbook(int ubno);
+	// ===========================================================
+	
 	// ==================실시간 채팅 영역=============================
 	// 실시간 채팅방 존재 유무 check
 	public int chatingRoomCheck(ChatRoomDTO chat);
@@ -51,5 +63,14 @@ public interface UsedShopMapper {
 	public List<ChattingDTO> getChattingContent(int chatno);
 	// 채팅 방 조회 ( 판매자용 )
 	public List<ChatRoomDTO> selectSellChatRoomList(ChatRoomDTO chat);
+	// ===========================================================
+
+	// ==================찜하기 관련 영역=============================
+	// 찜한 상품 조회
+	public int selectWishList(UsedBookVO vo);
+	// 찜한 상품 저장
+	public int insertWishList(UsedBookVO vo);
+	// 찜한 상품 삭제
+	public int deleteWishList(UsedBookVO vo);
 	// ===========================================================
 }

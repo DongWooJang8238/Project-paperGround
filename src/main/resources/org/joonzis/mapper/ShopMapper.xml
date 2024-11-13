@@ -6,9 +6,36 @@
 	<!-- 전체 책 리스트 조회 -->
 	<select id="getBookList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.BookVO">
 		<![CDATA[
-		select bno, gno, inventory, bookPrice, writer, title, publisher, shortText, isbn, bookcover, status, ordDate, avgRating from
-		(select rownum rn, bno, gno, inventory, bookPrice, writer, title, publisher, shortText, isbn, bookcover, status, ordDate, avgRating from
-		(select * from tbl_book ORDER BY status desc)
+		select bno, gno, inventory, bookPrice, writer, title, publisher, shortText, isbn, bookcover, status, ordDate, avgRating, likecount, sellcount from
+		(select rownum rn, bno, gno, inventory, bookPrice, writer, title, publisher, shortText, isbn, bookcover, status, ordDate, avgRating, likecount, sellcount from
+		(select * from tbl_book 
+		]]> 
+		<choose>
+			<when test="gener != null and gener.length > 0">where gno in 
+				<foreach collection="gener" item="gno" separator="," open="(" close=")">
+					#{gno}
+				</foreach> 
+					<if test="selectOption != null and selectValue != null">
+						and ${selectOption} like '${selectValue}'
+					</if>
+			</when>
+			<otherwise>
+		        <if test="selectOption != null and selectValue != null">
+		            where ${selectOption} like '${selectValue}'
+		        </if>
+			</otherwise>
+		</choose> 
+		<![CDATA[
+		 ORDER BY ]]>
+						<choose>
+							<when test="filterType == 'sellcount'">sellcount DESC</when>
+							<when test="filterType == 'avgrating'">avgRating DESC</when>
+							<when test="filterType == 'likecount'">likecount DESC</when>
+							<when test="filterType == 'maxbookprice'">bookPrice DESC</when>
+							<when test="filterType == 'minbookprice'">bookPrice ASC</when>
+							<otherwise>status DESC</otherwise>
+						</choose>
+						<![CDATA[)
 		where rownum <= #{pageNum} * #{amount})
 		where rn > (#{pageNum} - 1) * #{amount}
 		]]>
@@ -58,8 +85,25 @@
 		like #{selectValue}
 	</select>
 	<!-- 전체 책 개수 조회 -->
-	<select id="getTotal" resultType="int">
+	<select id="getTotal" resultType="int" parameterType="org.joonzis.domain.Criteria">
 		 select count(*) from tbl_book
+		 <choose>
+			<when test="gener != null and gener.length > 0">
+				where gno in
+				<foreach collection="gener" item="gno" separator="," open="("
+					close=")">
+					#{gno}
+				</foreach>
+				<if test="selectOption != null and selectValue != null">
+					and ${selectOption} like '${selectValue}'
+				</if>
+			</when>
+			<otherwise>
+				<if test="selectOption != null and selectValue != null">
+					where ${selectOption} like '${selectValue}'
+				</if>
+			</otherwise>
+		</choose>
 	</select>
 	
 	<!-- 카테고리 별 책 개수 조회 -->

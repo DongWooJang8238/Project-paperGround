@@ -3,6 +3,8 @@ package org.joonzis.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.joonzis.domain.Criteria;
+import org.joonzis.domain.UsedBookVO;
 import org.joonzis.domain.UserVO;
 import org.joonzis.domain.UserpointVO;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,9 +53,24 @@ public interface UserMapper {
 	public List<UserpointVO> selectPoint(int mno);
 	
 	// 이번달 적립된 포인트 보유량
-	public int totalPoint(int mno);
+	public Integer totalPoint(int mno);
 	
 	// 이번달 사용한 포인트 보유량
-	public int totalUsePoint(int mno);
+	public Integer totalUsePoint(int mno);
+	
+	// 중고책 조회
+	public List<UsedBookVO> usedBook_select(int mno);
+	
+	// 책 목록 리스트
+	public List<UsedBookVO> getuBookList(Criteria cri);
+	
+	// 책 목록 리스트 카운트
+	public int countGetuBookList(Criteria cri);
+	
+	// 중고 날짜 조회 판매중
+	public List<UsedBookVO> selectGetuBookList(Criteria cri);
+	
+	// 중고 판매완료 조회
+	public List<UsedBookVO> selectGetuBookEndSaleList(Criteria cri);
 	
 }

@@ -5,32 +5,38 @@
 <mapper namespace="org.joonzis.mapper.UsedShopMapper">
 	
 	<!-- 전체 책 리스트 조회 -->
-<select id="getuBookList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.UsedBookVO">
-	<![CDATA[
-		SELECT ubno, mno, gno, ubookPrice, title, content, ubookImage, status, ubookDate
-		FROM (
-			SELECT ROWNUM rn, ubno, mno, gno, ubookPrice, title, content, ubookImage, status, ubookDate 
-			FROM (
-				SELECT * FROM tbl_ubook 
-				ORDER BY ubno DESC
-			)
-			WHERE ROWNUM <= #{pageNum} * #{amount}
-		)
-		WHERE rn > (#{pageNum} - 1) * #{amount}
-	]]>
-</select>
-
-	
-	<!-- 카테고리 별 책 리스트 조회 -->
-	<!-- <select id="getuBookListGe" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.UsedBookVO">
-		<![CDATA[
-		select ubno, mno, gno, ubookPrice, title, content, ubookImage, status, ubookDate from
-		(select rownum rn, ubno, mno, gno, ubookPrice, title, content, ubookImage, status, ubookDate from
-		(select * from tbl_ubook where gno = #{gener} ORDER BY status DESC)
-		where rownum <= #{pageNum} * #{amount})
-		where rn > (#{pageNum} - 1) * #{amount}
-		]]>
-	</select> -->
+	<select id="getuBookList"
+		parameterType="org.joonzis.domain.Criteria"
+		resultType="org.joonzis.domain.UsedBookVO">
+		SELECT * FROM tbl_ubook
+		<choose>
+			<when test="gener != null and gener.length > 0">
+				where gno in
+				<foreach collection="gener" item="gno" separator=","
+					open="(" close=")">
+					#{gno}
+				</foreach>
+				<if test="selectValue != null">
+					and title like '${selectValue}'
+				</if>
+			</when>
+			<otherwise>
+				<if test="selectValue != null">
+					where title like '${selectValue}'
+				</if>
+			</otherwise>
+		</choose>
+		ORDER BY
+		<choose>
+			<when test="filterType == 'newdate'">ubookdate DESC</when>
+			<when test="filterType == 'olddate'">ubookdate ASC</when>
+			<when test="filterType == 'minbookprice'">ubookPrice ASC</when>
+			<when test="filterType == 'maxbookprice'">ubookPrice DESC</when>
+			<when test="filterType == 'goodstatus'">status ASC</when>
+			<when test="filterType == 'badstatus'">status DESC</when>
+			<otherwise>ubookdate DESC</otherwise>
+		</choose>
+	</select>
 	
 	<!-- 전체 책 개수 조회 -->
 	<select id="getTotal" resultType="int">
@@ -67,6 +73,23 @@
 		select * from tbl_ubook_image where ubno = #{ubno}
 	</select>
 	
+	<!-- 중고 상품 수정 -->
+	<update id="updateUbook" parameterType="org.joonzis.domain.UsedBookVO">
+		update tbl_ubook set 
+		title = #{title} , ubookPrice = #{ubookPrice}, content = #{content}, 
+		status = #{status}, ubookImage = #{ubookImage} where ubno = #{ubno}
+	</update>
+	
+	<!-- 중고 상품 거래완료 처리(수정) -->
+	<update id="successSell" parameterType="int">
+		update tbl_ubook set status = 0 where ubno = #{ubno}
+	</update>
+	
+	<!-- 중고 상품 삭제 -->
+	<delete id="deleteUbook">
+		delete from tbl_ubook where ubno = #{ubno}
+	</delete>
+	
 	<!-- 실시간 채팅 방 유무 check -->
 	<select id="chatingRoomCheck" parameterType="org.joonzis.domain.ChatRoomDTO" resultType="int">
 		select count(*) from tbl_chat_room where ubno = #{ubno} AND sellmno = #{sellmno} AND buymno = #{buymno}
@@ -94,5 +117,19 @@
 	<!-- 판매자용 채팅 방 리스트 -->
 	<select id="selectSellChatRoomList" parameterType="org.joonzis.domain.ChatRoomDTO" resultType="org.joonzis.domain.ChatRoomDTO">
 		select * from tbl_chat_room where ubno = #{ubno} and sellmno = #{sellmno}
+	</select>
+	
+	<!-- 찜데이터 저장 -->
+	<insert id="insertWishList" parameterType="org.joonzis.domain.UsedBookVO">
+		insert into tbl_ubook_wishlist values ( #{mno}, #{ubno} )
+	</insert>
+	
+	<!-- 찜데이터 삭제 -->
+	<delete id="deleteWishList" parameterType="org.joonzis.domain.UsedBookVO">
+		delete from tbl_ubook_wishlist where ubno = #{ubno} and mno = #{mno}
+	</delete>
+	
+	<select id="selectWishList" parameterType="org.joonzis.domain.UsedBookVO" resultType="int">
+		select count(*) from tbl_ubook_wishlist where mno = #{mno} and ubno = #{ubno}
 	</select>
 </mapper>

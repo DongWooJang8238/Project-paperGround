@@ -1,34 +1,33 @@
 package org.joonzis.controller;
 
-import java.util.List;
 
-import org.joonzis.domain.BoardAttachVO;
-import org.joonzis.domain.BoardVO;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.joonzis.domain.Criteria;
 import org.joonzis.domain.PageDTO;
-import org.joonzis.service.BoardService;
+import org.joonzis.domain.ReportBoardVO;
+import org.joonzis.service.ReportBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.extern.log4j.Log4j;
 
 @Log4j
 @Controller
-@RequestMapping("/reportboard/*")
+@RequestMapping("/reportBoard/*")
 public class ReportBoardController {
+	
 	@Autowired
-	public BoardService service;
+	public ReportBoardService reportBoardService;
 		
 //	 전체 게시글 조회 - 기존 방식
 	@GetMapping("/list")
@@ -40,66 +39,99 @@ public class ReportBoardController {
 			cri.setAmount(10);
 		}
 		
-		int total = service.getTotal();
+		int total = reportBoardService.getTotal();
 		log.info("total...." + total);
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
-		model.addAttribute("list", service.getList(cri));
-		return "/board/list";
+		model.addAttribute("list", reportBoardService.getList(cri));
+		return "/reportBoard/list";
 	}
+	@GetMapping("/listCategory")
+	public String listByCategory(@RequestParam("reportCategory") String reportCategory, Model model, Criteria cri) {
+	    if (reportCategory == null) {
+	        reportCategory = "";  // 기본값 설정
+	    }
+	    log.info("list by category...");
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("reportCategory", reportCategory);
+	    params.put("pageNum", cri.getPageNum());
+	    params.put("amount", cri.getAmount());
+	    
+	    List<ReportBoardVO> posts = reportBoardService.getPostsByCategory(params);
+
+	    model.addAttribute("selectedCategory", reportCategory);
+
+	    // 페이지 번호 및 항목 수 초기화
+	    if (cri.getPageNum() == 0 || cri.getAmount() == 0) {
+	        cri.setPageNum(1);
+	        cri.setAmount(10);
+	    }
+
+	    // 카테고리별 총 게시글 수
+	    int total = reportBoardService.getTotalByCategory(reportCategory);
+	    log.info("total...." + total);
+
+	    // 카테고리별 게시글 목록
+
+	    model.addAttribute("list", posts);
+	    model.addAttribute("pageMaker", new PageDTO(cri, total));
+
+	    return "/reportBoard/list";  // 결과적으로 list 페이지로 포워딩
+	}
+
+
 		
 		// 게시글 조회
 		@GetMapping("/get")
-		public String get(@RequestParam("boardno") int boardno, Model model) {
+		public String get(@RequestParam("reportBoardno") int reportBoardno, Model model) {
 			// 조회수 증가
-			service.boardReadCount(boardno);
+			reportBoardService.boardReadCount(reportBoardno);
 			
-			log.info("get..." + boardno);
-			model.addAttribute("vo", service.get(boardno));
-			return "/board/get";
+			log.info("get..." + reportBoardno);
+			model.addAttribute("rbvo", reportBoardService.get(reportBoardno));
+			return "/reportBoard/get";
 		}
+		
 		// 게시글 수정, 수정이 완료되면 board/list로 이동
 		@PostMapping("/modify")
-		public String modify(BoardVO vo) {
-			log.info("modify..." + vo);
-			service.modify(vo);
-			return "redirect:/board/list";
+		public String modify(ReportBoardVO rbvo) {
+			log.info("modify 수정..." + rbvo);
+			reportBoardService.modify(rbvo);
+			return "redirect:/reportBoard/list";
 		}
+		
 		// modify(수정) 게시글 이동
 		@GetMapping("/modify")
-		public String modify(@RequestParam("boardno") int boardno, Model model) {
-			log.info("modify..." + boardno);
-			model.addAttribute("vo", service.get(boardno));
-			return "/board/modify";
+		public String modify(@RequestParam("reportBoardno") int reportBoardno, Model model) {
+			log.info("modify 이동..." + reportBoardno);
+			model.addAttribute("rbvo", reportBoardService.get(reportBoardno));
+			return "/reportBoard/modify";
 		}
+		
 		// 게시글 삭제
 		@PostMapping("/remove")
-		public String remove(@RequestParam("boardno") int boardno) {
-			log.info("게시글 삭제..." + boardno);
-			service.remove(boardno);
-			return "redirect:/board/list";
+		public String remove(@RequestParam("reportBoardno") int reportBoardno) {
+			log.info("게시글 삭제..." + reportBoardno);
+			reportBoardService.remove(reportBoardno);
+			return "redirect:/reportBoard/list";
 		}
 		
 		
 		// 게시글 등록
 		@PostMapping("/register")
-		public String register(BoardVO vo, RedirectAttributes rttr) {
-			log.info("register.... " + vo);
-			log.info("아타치아타치" + vo.getAttachList());
-			service.register(vo);
-			
-			if(vo.getAttachList() != null) {
-				vo.getAttachList().forEach(attach -> log.info("아타치이타치" + attach));
-			}
+		public String register(ReportBoardVO rbvo, RedirectAttributes rttr) {
+			log.info("register.... " + rbvo);
+			reportBoardService.register(rbvo);
 			
 			rttr.addFlashAttribute("result", "success");
 			
-			return "redirect:/board/list";
+			return "redirect:/reportBoard/list";
 		}
+		
 		// 게시글 등록으로 이동
 		@GetMapping("/register")
 		public String register2() {
 			log.info("register2 게시글 등록 이동...");
-			return "/board/register";
+			return "/reportBoard/register";
 		}
 		
 }

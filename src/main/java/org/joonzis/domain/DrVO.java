@@ -10,8 +10,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DrVO {
-	private int DRNo;
+	private int drno, mno;
 	private String DRtitle;
 	private String DRcategory;
 	private String DRcontent;
+	private String status;
 }

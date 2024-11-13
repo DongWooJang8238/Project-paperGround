@@ -3,6 +3,7 @@ package org.joonzis.service;
 import java.util.List;
 
 import org.joonzis.domain.ReplyVO;
+import org.joonzis.mapper.BoardLikeMapper;
 import org.joonzis.mapper.BoardMapper;
 import org.joonzis.mapper.ReplyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class ReplyServiceImpl implements ReplyService{
 	
 	@Autowired
 	private BoardMapper boardMapper;
-
+	
 	
 	@Transactional
 	@Override

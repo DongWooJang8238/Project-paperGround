@@ -26,7 +26,6 @@ import lombok.extern.log4j.Log4j;
 @ServerEndpoint("/sellserver.do")
 public class SocketServer2 {
 
-    private static Set<Session> sessions = Collections.synchronizedSet(new HashSet<>());
     private UsedShopService service;
 
     public SocketServer2() {
@@ -36,36 +35,34 @@ public class SocketServer2 {
 
     @OnOpen
     public void handelOpen(Session session) {
-        sessions.add(session);
         log.warn("채팅방 오픈 췍췤췤췤");
         
-        int chatno = Integer.parseInt(session.getRequestParameterMap().get("chatno").get(0));
-        System.out.println("클라이언트가 접속했습니다. chatno: " + chatno);
-
-        // 채팅 내역을 조회하고 전송
-        List<ChattingDTO> list = service.getChattingContent(chatno);
-        
-        if (list != null && !list.isEmpty()) {
-            ObjectMapper mapper = new ObjectMapper();
-            try {
-                String chatHistory = mapper.writeValueAsString(list);
-                session.getBasicRemote().sendText(chatHistory);
-            } catch (Exception e) {
-                log.error("채팅 내역 전송 오류: " + e.getMessage());
-            }
-        } else {
-            log.warn("채팅 내역이 존재하지 않습니다.");
-            try {
-                session.getBasicRemote().sendText(String.valueOf(chatno));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        int chatno = Integer.parseInt(session.getRequestParameterMap().get("chatno").get(0));
+//        System.out.println("클라이언트가 접속했습니다. chatno: " + chatno);
+//
+//        // 채팅 내역을 조회하고 전송
+//        List<ChattingDTO> list = service.getChattingContent(chatno);
+//        
+//        if (list != null && !list.isEmpty()) {
+//            ObjectMapper mapper = new ObjectMapper();
+//            try {
+//                String chatHistory = mapper.writeValueAsString(list);
+//                session.getBasicRemote().sendText(chatHistory);
+//            } catch (Exception e) {
+//                log.error("채팅 내역 전송 오류: " + e.getMessage());
+//            }
+//        } else {
+//            log.warn("채팅 내역이 존재하지 않습니다.");
+//            try {
+//                session.getBasicRemote().sendText(String.valueOf(chatno));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     @OnClose
     public void handleClose(Session session) {
-        sessions.remove(session);
         log.warn("세션 종료됨: " + session.getId());
     }
 
@@ -108,16 +105,6 @@ public class SocketServer2 {
         Date sqlDate = new Date(nowTime);
         String responseMessage = "[" + sqlDate + "] : " + msg;
 
-        // 모든 세션에 메시지 브로드캐스트
-        synchronized (sessions) {
-            for (Session s : sessions) {
-                try {
-                    s.getBasicRemote().sendText(responseMessage);
-                } catch (IOException e) {
-                    log.error("메시지 전송 오류: " + e.getMessage());
-                }
-            }
-        }
     }
 
     @OnError

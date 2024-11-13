@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,9 +32,9 @@
 				</div>
 				<div class="avg-rating">평균 평점:
 					${bvo.avgRating}(${bvo.likeCount})</div>
-				<h3 class="price">₩${bvo.bookPrice}</h3>
+				<h3 class="price">₩<fmt:formatNumber value="${bvo.bookPrice}" type="number" pattern="#,###" /></h3>
 				<div class="total-price">
-					총 가격: ₩<span bp="${bvo.bookPrice}">${bvo.bookPrice}</span>
+					총 가격: ₩<span bp="${bvo.bookPrice}"><fmt:formatNumber value="${bvo.bookPrice}" type="number" pattern="#,###" /></span>
 				</div>
 				<div class="quantity-control">
 					<button id="minus">-</button>
@@ -115,7 +117,6 @@
 		</div>
 
 		<div class="review-input">
-			<input type="text" class="user-id" placeholder="사용자 ID" value="${sessionScope.vo.userId}"/>
 			<textarea class="review-body" placeholder="리뷰 내용을 입력하세요..."></textarea>
 			<input type="hidden" name="ReviewImgUuid"> <input
 				type="hidden" name="ReviewImgName">
@@ -138,7 +139,7 @@
 
 	<div class="fixed-bar">
 		<div class="total-price">
-			총 가격: ₩<span bp="${bvo.bookPrice}">${bvo.bookPrice}</span>
+			총 가격: ₩<span bp="${bvo.bookPrice}"><fmt:formatNumber value="${bvo.bookPrice}" type="number" pattern="#,###" /></span>
 		</div>
 		<div class="quantity-control">
 			<button id="minus">-</button>

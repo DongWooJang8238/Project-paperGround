@@ -18,7 +18,7 @@ public interface ShopMapper {
 	public List<BookVO> getBookListCe(Criteria cri);
 
 	// 전체 게시글 수
-	public int getTotal();
+	public int getTotal(Criteria cri);
 
 	// 전체 게시글 수
 	public int getTotalByGno(int[] gno);

@@ -47,13 +47,16 @@ public class BoardLikeServiceImpl implements BoardLikeService {
 	// 댓글
 	@Override
 	public int cominsertLike(BoardCommentLikeVO bvo) {
-		log.info("댓글insertLike... " + bvo);
+		log.warn("댓글insertLike... " + bvo);
+		log.warn("댓글insertLike... " + bvo.getBoardno());
+		log.warn("댓글insertLike... " + bvo.getReplyno());
+		log.warn("댓글insertLike... " + bvo.getMno());
         return mapper.cominsertLike(bvo);
 	}
 
 	@Override
 	public int comdeleteLike(BoardCommentLikeVO bvo) {
-		log.info("댓글deleteLike... " + bvo);
+		log.warn("댓글deleteLike... " + bvo.getReplyno());
 		return mapper.comdeleteLike(bvo);
 	}
 

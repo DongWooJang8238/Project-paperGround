@@ -10,21 +10,22 @@
 <body>
 <jsp:include page="../layout/header.jsp"></jsp:include>
 
-<h2>1대1 문의</h2>
+<h2>신고하기</h2>
 
 <form method="post">
     <table>
         <tr>
             <td><label for="title">제목:</label></td>
             <td><input type="text" id="title" name="DRtitle" required /></td>
+            <td><input type="hidden" id="mno" name="mno" value="${sessionScope.vo.mno }" /></td>
         </tr>
         <tr>
             <td><label for="category">카테고리:</label></td>
             <td>
                 <select id="category" name="DRcategory">
-                    <option value="reportUser">회원 문의</option>
-                    <option value="reportWriter">작가 문의</option>
-                    <option value="reportSystem">시스템 문의</option>
+                    <option value="reportUser">회원 신고</option>
+                    <option value="reportWriter">작가 신고</option>
+                    <option value="reportSystem">시스템 신고</option>
                     <option value="reportShop">구매 문의</option>
                     <option value="reportRefund">환불 문의</option>
                     <option value="reportProfile">프로필 문의</option>
@@ -39,22 +40,15 @@
             <td><textarea id="content" name="DRcontent" rows="5" cols="50" required></textarea></td>
         </tr>
         <tr>
-            <td colspan="2">
-                <button type="submit" onclick="kakk()">확인</button>
-                <button type="reset">초기화</button>
+            <td colspan="3">
+               <button type="button" class="btn btn-fir" id="registerBtn">1대 1 문의 등록하기</button>
+               <button type="button" class="btn btn-fir" id="resetBtn">초기화</button>
             </td>
         </tr>
     </table>
 </form>
 
-<c:if test="${not empty successMessage}">
-    <p style="color: green;">${successMessage}</p>
-</c:if>
-
-<c:if test="${not empty errorMessage}">
-    <p style="color: red;">${errorMessage}</p>
-</c:if>
- <jsp:include page="../layout/footer.jsp"></jsp:include>
+<jsp:include page="../layout/footer.jsp"></jsp:include>
 <script type="text/javascript" src="/resources/js/report/directReport.js"></script>
 </body>
 </html>

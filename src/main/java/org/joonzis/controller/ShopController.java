@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -67,6 +69,7 @@ public class ShopController {
 				checkGener += "," + cri.getGener()[i];
 				log.warn("generCheck : " + checkGener);
 			}
+			model.addAttribute("checkCategorys", checkGener);
 		}
 		log.warn("generCheckFinal : " + checkGener);
 		
@@ -75,24 +78,51 @@ public class ShopController {
 		
 		// 1,2,3,4
 		
-		model.addAttribute("list", service.getBookListGe(cri));
+		model.addAttribute("list", service.getBookList(cri));
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
-		model.addAttribute("checkCategorys", checkGener);
 		return "/shop/shopList";
 	}
 	
 	// 쇼핑 리스트 이동 ( 페이징 / 카테고리 선택 )
 	@GetMapping("/list")
-	public String listGe(Criteria cri, Model model) {
+	public String list(Criteria cri, Model model) {
 		
 		if (cri.getPageNum() == 0 || cri.getAmount() == 0) {
 			cri.setPageNum(1);
 			cri.setAmount(20);
 		}
 		
+		String checkGener = null;
+		// gener이 null이 아닌 경우
+		if(cri.getGener() != null) {
+			log.warn("generOne : " + cri.getGener()[0]);
+			checkGener = "" + cri.getGener()[0];
+			
+			for (int i = 1; i < cri.getGener().length; i++) {
+				log.warn("generTwo : " + cri.getGener()[i]);
+				checkGener += "," + cri.getGener()[i];
+				log.warn("generCheck : " + checkGener);
+			}
+			model.addAttribute("checkCategorys", checkGener);
+		}
+		log.warn("generCheckFinal : " + checkGener);
+		
+		if(cri.getSelectValue() != null) {
+			log.warn("검색 옵션 : " + cri.getSelectOption());
+			log.warn("검색 내용 : " + cri.getSelectValue());
+				
+			String returnValue = cri.getSelectValue();
+			String selectValue = "%" + cri.getSelectValue() + "%";
+			cri.setSelectValue(selectValue);
+			log.warn("검색 옵션 : " + cri.getSelectOption());
+			log.warn("검색 내용 : " + cri.getSelectValue());
+	
+			model.addAttribute("selectValue", returnValue);
+		
+		}
+		
 		log.warn("컨트롤러 필터 타입3 : " + cri.getFilterType());
-			int total = service.getTotal();
-			log.info("total..." + total);
+			int total = service.getTotal(cri);
 			log.info("total..." + total);
 			
 		model.addAttribute("list", service.getBookList(cri));
@@ -104,19 +134,22 @@ public class ShopController {
 	// 쇼핑 리스트 이동 ( 검색 )
 	@GetMapping("/listSelect")
 	public String listSelect(String selectOption, String selectValue, Model model) {
+		String returnValue = selectValue;
 		selectValue = "%" + selectValue + "%";
 		log.warn("검색 옵션 : " + selectOption);
 		log.warn("검색 내용 : " + selectValue);
 		SelectDTO sel = new SelectDTO(selectOption, selectValue);
 		
 	 	model.addAttribute("list", service.getBookListSelect(sel));
+	 	model.addAttribute("selectValue", returnValue);
+	 	model.addAttribute("selectOption", selectOption);
 		return "/shop/shopList";
 	}
-	@GetMapping("/goInsert")
-	public String shopGoInsert() {
-		log.warn("인서트 드가좌..");
-		return "/shop/shopGetInsert";
-	}
+//	@GetMapping("/goInsert")
+//	public String shopGoInsert() {
+//		log.warn("인서트 드가좌..");
+//		return "/shop/shopGetInsert";
+//	}
 	
 	@GetMapping("/insert")
 	public String shopInsert(BookVO vo) {
@@ -126,6 +159,15 @@ public class ShopController {
 		return "redirect:/shop/list";
 	}
 	
+	// 인증된 사용자라면 true
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/goInsert")
+	public String register2() {
+		log.info("register...");
+
+		return "/shop/shopGetInsert";
+	}
+
 	// 상품 보기 페이지 이동
 	@GetMapping("/get")
 	public String get(int bno, Model model) {

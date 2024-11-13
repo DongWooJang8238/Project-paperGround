@@ -22,21 +22,26 @@
             margin: 20px; /* 여백 추가 */
         }
 
-         .buttons {
-            display: flex;
-            justify-content: space-around; /* 버튼 간격 조정 */
-            position: fixed; /* 버튼 고정 위치 */
-            top: 50%; /* 수직 중앙 위치 */
-            left: 50%; /* 수평 중앙 위치 */
-            transform: translate(-50%, -50%); /* 중앙 정렬 조정 */
-            width: 20%; /* 버튼 간격을 위해 너비 조정 */
-        }
+ .buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 60%; /* 버튼 영역을 더 넓게 */
+    margin: 30px auto; /* 화면 가운데 정렬 및 위아래 여백 */
+    padding: 0 30px; /* 버튼과 화면 끝 간격 확보 */
+    box-sizing: border-box;
+}
 
-        .btn-o, .btn-x {
-            font-size: 3em; /* 버튼 크기: 1.5배 증가 */
-            padding: 30px 60px; /* 버튼 패딩 증가 */
-            cursor: pointer; /* 마우스 커서 변경 */
-        }
+.btn-o, .btn-x {
+    font-size: 2.5em; /* 버튼 크기 조정 */
+    padding: 30px 60px; /* 버튼 패딩 증가로 더 크게 보이도록 */
+    cursor: pointer;
+    flex: 1;
+    margin: 0 15px; /* 버튼 사이 간격을 조금 더 넓게 */
+    text-align: center;
+    border-radius: 10px; /* 버튼 모서리를 둥글게 */
+}
+
 
         .btn-o {
             background-color: blue; /* O 버튼 색상 */
@@ -54,6 +59,8 @@
 
     <h1>게임 모드: easy</h1>
     <h2>장르: ${gameJenre}</h2>
+     <h3>진행사항 : <span id="currentIndexDisplay">0</span> / 5</h3>
+
 
     <div id="questContainer">
         <c:forEach var="gvo" items="${questList}">

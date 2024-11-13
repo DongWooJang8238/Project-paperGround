@@ -5,7 +5,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import javax.servlet.ServletContext;
+
+import org.joonzis.domain.Criteria;
 import org.joonzis.domain.OrderDetailVO;
+import org.joonzis.domain.UsedBookVO;
 import org.joonzis.domain.UserOrderVO;
 import org.joonzis.domain.UserVO;
 import org.joonzis.domain.UserpointVO;
@@ -43,6 +47,9 @@ public class UserAsycnController {
 	
 	@Autowired
 	private UserOrderService uoservice;
+	
+	@Autowired
+    private ServletContext servletContext;
 	
 	@GetMapping(value="/validateId/{userid}")
 	public ResponseEntity<String> selectUsername(@PathVariable("userid") String userid){
@@ -146,8 +153,9 @@ public class UserAsycnController {
 		log.warn("아이콘 업데이트 for userId: " + userId);
 		log.warn("아이콘 업데이트 for userIcon: " + userIcon);
 		
-		String uploadFolder = "C:\\dev\\workspace\\workSpace_spring\\project_paperGround\\src\\main\\webapp\\resources\\images";
-		
+//		String uploadFolder = "C:\\Users\\sdedu\\Desktop\\project_paperGround\\src\\main\\webapp\\resources\\images";
+		String relativePath = "/resources/images";
+        String uploadFolder = servletContext.getRealPath(relativePath);
 		
 		log.warn("-----------" + userIcon.getName());
 
@@ -259,7 +267,9 @@ public class UserAsycnController {
 		
 		return list != null ? new ResponseEntity<List<UserOrderVO>>(list, HttpStatus.OK) : new ResponseEntity<List<UserOrderVO>>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-}
+
+
+
 	
 //	@ResponseBody
 //	@GetMapping(value = "selectPointList/{mno}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -283,6 +293,49 @@ public class UserAsycnController {
 //		return new ResponseEntity<List<UserpointVO>>(allList,HttpStatus.OK);
 //	}ㄴ
 //}
+
+@ResponseBody
+@GetMapping(value="/selectUsedCalendar/{mno}/{startDate}/{endDate}", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
+public ResponseEntity<List<UsedBookVO>> selectUsedCalendar(
+		@PathVariable("mno") int mno,
+		@PathVariable("startDate") String startDate,
+		@PathVariable("endDate") String endDate){
+		log.warn("startDate : " + startDate );
+		log.warn("endDate : " + endDate );
+		
+		Criteria cri = new Criteria();
+		cri.setStartDate(startDate);
+		cri.setEndDate(endDate);
+		cri.setUserMno(mno);
+		if (cri.getPageNum() == 0 || cri.getAmount() == 0) {
+			cri.setPageNum(1);
+			cri.setAmount(5);
+		}
+		log.warn("기간별 검색 중고 : " + cri.getUserMno());
+		log.warn("기간별 검색 중고 : " + cri.getPageNum());
+		log.warn("기간별 검색 중고 : " + cri.getAmount());
+		log.warn("기간별 중고 날짜 : " + cri.getEndDate());
+		log.warn("기간별 중고 날짜 : " + cri.getStartDate());
+		
+		List<UsedBookVO> list = service.selectGetuBookList(cri);
+		log.warn(list.size());
+		if(list.size() > 0) {
+			list.forEach(action -> {
+				log.warn("list : " + action.getUbookPrice());
+				log.warn("list : " + action.getTitle());
+				log.warn("list : " + action.getStartDate());
+				log.warn("list : " + action.getEndDate());
+				log.warn("list : " + action.getMno());
+			});
+		}
+		
+		
+	return list != null ?
+			new ResponseEntity<List<UsedBookVO>>(list, HttpStatus.OK) :
+				new ResponseEntity<List<UsedBookVO>>(HttpStatus.INTERNAL_SERVER_ERROR);
+}
+}
+
 
 
 

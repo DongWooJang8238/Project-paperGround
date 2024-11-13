@@ -16,17 +16,13 @@
          <table>
             <tbody>
                <tr>
-                  <th>글 번호</th>
-                  <td><input type="text" name="boardno" value="${bvo.boardno}" readonly></td>
-               </tr>
-               <tr>
-                  <th>제목</th>
-                  <td><input type="text" name="title" value="${bvo.title }"></td>
-               </tr>
-               <tr>
-                  <th>작성자</th>
-                  <td><input type="text" name="writer" value="${bvo.writer }" readonly></td>
-               </tr>
+						<th>제목
+						</th>
+						<td><input type="hidden" name="boardno" value="${bvo.boardno}" readonly> 
+							<input type="text" name="title" value="${bvo.title}" > 
+							<input type="hidden" name="writer" value="${bvo.writer}" readonly> 
+						</td>
+					</tr>
                <tr>
                   <th>내용</th>
                   <td>

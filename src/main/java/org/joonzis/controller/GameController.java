@@ -93,7 +93,7 @@ public class GameController {
 			if (differenceInHours > 12.0) {
 				result = gameservice.gameDone(mno);
 				history = gameservice.pointHistory(mno);
-				System.out.println("포인트 부여 성공" + result);
+				System.out.println("포인트 부여 공" + result);
 				result = gameservice.updatePGdate(mno);
 			} else {
 				 System.out.println("다음 포인트 획득 가능 시간은 "+(12-differenceInHours)+" 시간 입니다.");

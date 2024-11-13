@@ -54,14 +54,14 @@ button:hover {
 
 .file-header .file-title a {
     font-weight: bold;
-    font-size: 18px;
+    font-size: 15px;
     color: #333;
 }
 
 .file-body {
-    background-color: #f8f9fa;
+    background-color: #fff;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #fff;
     border-radius: 4px;
 }
 
@@ -113,6 +113,10 @@ button:hover {
     font-weight: bold;
     font-size: 16px;
     margin-bottom: 5px;
+}
+
+.pull-right {
+    float: right;
 }
 
 .reply-like-section {
@@ -223,4 +227,29 @@ button:hover {
     position: absolute;
     right: 0;
     top: 10px;
+}
+.title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 5px 0;
+}
+
+.title {
+    width: 860px; /* title-container와 같은 너비로 설정 */
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.writer {
+    font-size: 16px;
+    color: #555;
+}
+
+.regDate {
+    font-size: 14px;
+    color: #999;
 }

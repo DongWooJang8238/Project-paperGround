@@ -18,4 +18,8 @@ public class UsedBookVO {
 	private Date ubookDate; 
 	
 	private List<usedBookImgVO> usedBookImgs;
+	
+	private int userMno; // mno  
+	private String startDate;
+	private String endDate;
 }

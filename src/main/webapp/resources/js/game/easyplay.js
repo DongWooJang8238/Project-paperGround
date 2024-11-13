@@ -8,6 +8,8 @@ function showNextQuest() {
     if (currentIndex < questList.length) {
         questList[currentIndex].style.display = 'block';
     }
+    document.getElementById("currentIndexDisplay").textContent = currentIndex + 1; // Add 1 to show as 1-based index
+
 }
 
 function checkAnswer(answer) {

@@ -53,7 +53,7 @@ body {
 }
 
 .input-group input[type="text"], .input-group input[type="password"],
-	.input-group input[type="email"], .input-group input[type="date"],
+	.input-group input[type="date"],
 	.input-group input[type="tel"] {
 	width: 100%;
 	padding: 10px;
@@ -61,30 +61,45 @@ body {
 	border-radius: 4px;
 	box-sizing: border-box;
 }
+.email-input {
+  width: calc(100% - 110px); /* 전체 폭에서 '@'와 도메인 입력란의 너비를 뺀 나머지 부분 */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+
+/* 이메일 입력 컨테이너 */
+.email-input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* @와 이메일 도메인 입력란 간의 간격 */
+  margin-bottom: 15px;
+}
 
 /* 이메일 입력란 스타일 */
 .email-group {
 	margin-bottom: 15px; /* 아래쪽 여백 */
 }
 
-.email-input {
-	width: calc(100% - 110px); /* 전체 폭에서 셀렉트 박스 너비만큼 뺌 */
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	box-sizing: border-box;
-	margin-right: 10px; /* 셀렉트와의 간격 조정 */
-	display: inline-block; /* 인라인 블록으로 표시 */
+span {
+  font-size: 18px;
+  color: #333;
 }
 
 .email-select {
-	width: 100px; /* 고정 폭 */
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	box-sizing: border-box;
-	height: 40px; /* 높이 일치 */
-	display: inline-block; /* 인라인 블록으로 표시 */
+  width: 120px; /* 고정 너비 */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.invalid-feedback {
+  color: red;
+  font-size: 12px;
+  display: block;
 }
 
 .gender-group {
@@ -112,12 +127,45 @@ body {
 .signup-btn:hover {
 	background-color: #45a049;
 }
+
+.input-group input.is-invalid {
+	border-color: red; /* 잘못된 입력 필드에 빨간색 테두리 추가 */
+}
+
+.input-group input.is-valid {
+	border-color: green; /* 선택 사항: 올바른 입력 필드에 녹색 테두리 추가 */
+}
+
+#modal {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	justify-content: center;
+	align-items: center;
+}
+
+#modal div {
+	background: white;
+	padding: 20px;
+	max-width: 600px;
+	width: 90%;
+	position: relative;
+}
+
+button {
+	cursor: pointer;
+}
 </style>
 </head>
 <body>
 	<div class="signup-container">
 		<div class="logo">
-			<a href="/"><img src="/resources/images/PAGE_GROUND.png" style="width: 100px; height: 100px;"></a>
+			<a href="/"><img src="/resources/images/PAGE_GROUND.png"
+				style="width: 100px; height: 100px;"></a>
 		</div>
 		<h2>회원가입</h2>
 
@@ -131,9 +179,8 @@ body {
 			</div>
 
 			<div class="input-group">
-				<label for="userPw">비밀번호</label> <input type="password"
-					id="userPw" name="userPw"
-					placeholder="영문, 숫자, 특수문자 중 2가지 이상 조합하여 10자~20자" required>
+				<label for="userPw">비밀번호</label> <input type="password" id="userPw"
+					name="userPw" placeholder="8 ~ 16자 영문, 숫자 조합" required>
 				<div class="invalid-feedback" id="mPwValidState"></div>
 			</div>
 
@@ -150,23 +197,25 @@ body {
 				<div class="invalid-feedback" id="mUserNameValudState"></div>
 			</div>
 
-			<div class="email-group">
-				<label for="userEmail">메일</label>
-				<div style="display: flex; align-items: center;">
-					<input type="userEmail" id="userEmail" name="userEmail" placeholder="이메일 주소"
-						class="email-input" required> @ 
-						<input list="emailOptions" id="emailDomain" placeholder="이메일을 선택하거나 입력하세요">
-							<datalist id="emailOptions">
-								<option value="naver.com">
-								<option value="gmail.com">
-								<option value="daum.net">
-								<option value="nate.com">
-							</datalist>
-	
-				</div>
-			</div>
-
-			<!--        <div class="gender-group">
+		<!-- 이메일 입력란 -->
+<div class="input-group">
+  <label for="userEmail">메일</label>
+  <div style="display: flex; align-items: center;">
+    <input type="email" id="userEmail" name="userEmail"
+      placeholder="이메일 주소" class="email-input" required>
+    <div class="invalid-feedback" id="mUserEmailValudState"></div> <!-- 에러 메시지 -->
+  </div>
+  <span>@</span>
+  <input list="emailOptions" id="emailDomain" placeholder="이메일을 선택하거나 입력하세요" class="email-select">
+  <div class="invalid-feedback" id="mUserDomainValudState"></div>
+  <datalist id="emailOptions">
+    <option value="naver.com">
+    <option value="gmail.com">
+    <option value="daum.net">
+    <option value="nate.com">
+  </datalist>
+</div>
+		<!--        <div class="gender-group">
                 <label>성별</label>
                 <input type="radio" id="man" name="gender" value="man" required>
                 <label for="man">남</label>
@@ -174,7 +223,7 @@ body {
                 <label for="woman">여</label>
             </div> -->
 
-			<!--         <div class="input-group">
+						<!--         <div class="input-group">
                 <label for="address">주소</label>
                 <input type="text" id="address" name="address" placeholder="주소 입력" required>
             </div>
@@ -188,26 +237,44 @@ body {
                 <label for="birthdate">생년월일</label>
                 <input type="date" id="birthdate" name="birthdate" required>
             </div> -->
-            
-            <div style="display: flex; align-items: center;">
-            <input type="checkbox" id="termsCheckbox" name="terms">
-            <label for="termsCheckbox">[필수] 페이버그라운드 이용약관</label>
-            <button type="button" onclick="goToDetailPage('terms')">></button>
-        </div>
-        <div style="display: flex; align-items: center;">
-            <input type="checkbox" id="privacyCheckbox" name="privacy">
-            <label for="privacyCheckbox">[필수] 커뮤니티 이용약관</label>
-            <button type="button" onclick="goToDetailPage('privacy')">></button>
-        </div>
-        <div style="display: flex; align-items: center;">
-            <input type="checkbox" id="marketingCheckbox" name="marketing">
-            <label for="marketingCheckbox">[필수] 개인정보 수집 및 이용동의</label>
-            <button type="button" onclick="goToDetailPage('marketing')">></button>
-        </div>
-            
+			<div style="display: flex; align-items: center;">
+				<input type="checkbox" id="selectAllCheckbox"
+								onclick="toggleAll(this)"> <label
+								for="selectAllCheckbox">전체
+					선택</label>
+			</div>
+
+			<div style="display: flex; align-items: center;">
+				<input type="checkbox" id="termsCheckbox" name="terms"> <label
+								for="termsCheckbox">[필수] 페이버그라운드 이용약관</label>
+				<button type="button" onclick="goToDetailPage('페이퍼그라운드')">></button>
+			</div>
+			<div style="display: flex; align-items: center;">
+				<input type="checkbox" id="privacyCheckbox" name="privacy">
+				<label for="privacyCheckbox">[필수] 커뮤니티 이용약관</label>
+				<button type="button" onclick="goToDetailPage('커뮤니티')">></button>
+			</div>
+			<div style="display: flex; align-items: center;">
+				<input type="checkbox" id="marketingCheckbox" name="marketing">
+				<label for="marketingCheckbox">[필수] 개인정보 수집 및 이용동의</label>
+				<button type="button" onclick="goToDetailPage('마케팅')">></button>
+			</div>
+
+			<!-- 모달 창 -->
+			<div id="modal"
+							style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center;">
+				<div
+								style="background: white; padding: 20px; max-width: 600px; width: 90%; position: relative;">
+					<h3 id="modalTitle"></h3>
+					<p id="modalContent"></p>
+					<button onclick="closeModal()"
+									style="position: absolute; bottom: 10px; right: 10px;">창 닫기</button>
+				</div>
+			</div>
 
 			<button type="button" class="signup-btn" onclick="signup()">회원가입</button>
-		</form>
+		
+					</form>
 	</div>
 </body>
 <script type="text/javascript" src="/resources/js/signup.js"></script>

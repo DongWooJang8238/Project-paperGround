@@ -116,5 +116,18 @@ public class BoardServiceImpl implements BoardService {
 		return mapper.getLikeCount(boardno);
 	}
 	
+	@Override
+	public List<BoardVO> getListByCategory(Criteria cri, String category) {
+	    log.warn("getListByCategory..." + category);
+	    cri.setCategory(category);
+	    return mapper.getListByCategory(cri);
+	}
+	
+	@Override
+	public int getTotalByCategory(String category) {
+		log.warn("getTotalByCategory... " + category);
+	    return mapper.getTotalByCategory(category);
+	}
+
 	
 }

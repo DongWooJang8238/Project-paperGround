@@ -37,13 +37,13 @@ document.querySelectorAll('button').forEach(btn => {
 			let sendData = `pageNum=${pageData.pageNum}&amount=${pageData.amount}&gener=${pageData.gener}`;
 			console.log(sendData);
 			
-			location.href = "/shop/list?" + sendData;
+			location.href = "/shop/list";
 		}else if(btn.id === 'minus'){
 //			console.log(document.querySelector('.quantity-control input').value - 1);
 			for (let i = 0; i < inputCount.length; i++) {
 				if(inputCount[i].value > 1){
 					inputCount[i].value -= 1;
-					spanText[i].innerHTML -= spanText[i].getAttribute('bp');
+					spanText[i].innerHTML = (Number(spanText[i].innerHTML.replace(/,/g, '')) - Number(spanText[i].getAttribute('bp'))).toLocaleString();
 				}
 			}
 //			if(inputCount.value > 1){
@@ -53,7 +53,7 @@ document.querySelectorAll('button').forEach(btn => {
 		}else if(btn.id === 'plus'){
 			for (let i = 0; i < inputCount.length; i++) {
 				if(inputCount[i].value < 100){
-					spanText[i].innerHTML = Number(spanText[i].innerHTML) + Number(spanText[i].getAttribute('bp'));
+					spanText[i].innerHTML = (Number(spanText[i].innerHTML.replace(/,/g, '')) + Number(spanText[i].getAttribute('bp'))).toLocaleString();
 					inputCount[i].value = Number(inputCount[i].value) + 1;
 				}
 			}

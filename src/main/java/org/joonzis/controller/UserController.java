@@ -14,7 +14,10 @@ import javax.mail.internet.MimeMessage;
 import javax.print.attribute.standard.Severity;
 import javax.servlet.http.HttpSession;
 
+import org.joonzis.domain.Criteria;
 import org.joonzis.domain.OrderDetailVO;
+import org.joonzis.domain.PageDTO;
+import org.joonzis.domain.UsedBookVO;
 import org.joonzis.domain.UserOrderVO;
 import org.joonzis.domain.UserVO;
 import org.joonzis.domain.UserpointVO;
@@ -23,6 +26,8 @@ import org.joonzis.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +48,9 @@ public class UserController {
 	
 	@Autowired
 	private UserOrderService orderService;
+	
+	@Autowired
+	private PasswordEncoder pwencoder;
 	
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -119,6 +127,10 @@ public class UserController {
 	// 새 비밀번호 설정 완료 - 메인페이지
 	@PostMapping("/pwChange")
 		public String pwChange(UserVO vo) {
+		log.warn("인코더 전 비밀번호 : " + vo.getUserPw());
+		String inCoderPw = pwencoder.encode(vo.getUserPw());
+		log.warn("인코더 후 비밀번호 : " + inCoderPw);
+		vo.setUserPw(inCoderPw);
 		int result = service.updatePw(vo);
 		log.info("새 비밀번호 설정 완료 : " + result);
 		
@@ -178,37 +190,6 @@ public class UserController {
 	}
 	
 	// 유저 정보 수정 페이지 이동
-	@GetMapping("/checkPassword")
-		public String checkPassword(Model model,String userId) {
-		log.warn("wjiofahjfiafesfgejsif" + userId);
-		UserVO result = service.selectUserId(userId);
-//		service.checkPassword(result);
-		
-		// 이메일 가져오기 코드
-		String email = result.getUserEmail();
-		String saveEmail = null;
-		String saveDomain = null;	
-		String[] arr = email.split("@");
-		for (int i = 0; i < arr.length; i++) {
-			log.info("문자열 자르기잉이이인ㅋ : " + arr[i]);
-			saveEmail = arr[0];
-			saveDomain = arr[1];
-		}
-		log.info("이메일 : " + saveEmail);
-		log.info("도메인 : " + saveDomain);
-		
-		model.addAttribute("saveEmail", saveEmail);
-		model.addAttribute("saveDomain", saveDomain);
-		
-		model.addAttribute("result", result);
-		log.info("비밀번호 확인 : " + result.getUserId());
-		log.info("비밀번호 확인 : " + result.getUserPw());
-		
-		return "/myPage/checkPassword";
-	}
-	
-	
-	// 유저 정보 수정 페이지 이동
 	@GetMapping("/myPageUpdate")
 		public String myPageUpdate(Model model,String userId) {
 		log.warn("유저 정보 수정 페이지 이동" + userId);
@@ -264,6 +245,9 @@ public class UserController {
 		log.warn("유저정보 업데이트 :" + vo.getUserPhonenumber());
 		int result = service.updateUserInfo(vo);
 		log.warn("dsadasdsadasdadwadwad" + result);
+		
+		
+		
 		// 이메일 가져오기 코드
 		String email = vo.getUserEmail();
 		String saveEmail = null;
@@ -418,17 +402,29 @@ public class UserController {
 		log.warn("포인트 : " + mno);
 		UserVO vo = service.userSelectOne(mno);
 		log.warn("vo" + vo.getUserName());
-		List<UserpointVO> list = service.selectPoint(mno);
-		int totalPoint = service.totalPoint(mno);
-		int totalUsePoint = service.totalUsePoint(mno);
-		
-		list.forEach(action -> {
+		List<UserpointVO> list = null;
+		int totalPoint = 0;
+		int totalUsePoint = 0;
+		if(service.selectPoint(mno).size() > 0) {
+			list = service.selectPoint(mno);
+			totalPoint = service.totalPoint(mno);
+			totalUsePoint = service.totalUsePoint(mno);
+		}
+		log.warn("dddddddddddddddddddd1" + list);
+		log.warn("dddddddddddddddddddd2" + totalPoint);
+		log.warn("dddddddddddddddddddd3" + totalUsePoint);
+
+		if(list == null) {
+			model.addAttribute("vo",vo);
+			model.addAttribute("mno", mno);
+		}else {
+			list.forEach(action -> {
 //			String timeCheck = action.getPointGetDate().toString();
-			log.warn("전체 포인트 내역 MNO : " + action.getMno());
-			log.warn("전체 포인트 내역 POINT : " + action.getPoint());
-			log.warn("전체 포인트 내역 AREA : " + action.getPointArea());
-			log.warn("전체 포인트 내역 STATUS : " + action.getStatus());
-			log.warn("전체 포인트 내역 DATE : " + action.getPointGetDate());
+				log.warn("전체 포인트 내역 MNO : " + action.getMno());
+				log.warn("전체 포인트 내역 POINT : " + action.getPoint());
+				log.warn("전체 포인트 내역 AREA : " + action.getPointArea());
+				log.warn("전체 포인트 내역 STATUS : " + action.getStatus());
+				log.warn("전체 포인트 내역 DATE : " + action.getPointGetDate());
 //			Timestamp currentDate = new Timestamp(System.currentTimeMillis());
 //			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 //			try {
@@ -437,14 +433,125 @@ public class UserController {
 //			} catch (ParseException e) {
 //				e.printStackTrace();
 //			}
+				
+			});
+			model.addAttribute("totalUsePoint", totalUsePoint);
+			model.addAttribute("totalPoint", totalPoint);
+			model.addAttribute("list", list);
+			model.addAttribute("vo",vo);
+			model.addAttribute("mno", mno);
+		}
+		
+		
+		return "myPage/myPoint";
+	}
+	
+	// 중고 주문조회 페이지
+	@GetMapping("myUsedProductsSelect")
+	public String myUsedProductsSelect(Criteria cri, Model model) {
+		log.warn("중고 주문조회 페이지 이동");
+//		Criteria cri = new Criteria();
+		
+		if (cri.getPageNum() == 0 || cri.getAmount() == 0) {
+			cri.setPageNum(1);
+			cri.setAmount(5);
+		}
+		
+		log.warn("mno 중고 확인 : " + cri.getUserMno());
+		log.warn("1 : " + cri.getAmount() );
+		log.warn("1 : " + cri.getPageNum() );
+		List<UsedBookVO> list = service.getuBookList(cri);
+		UserVO vo = service.userSelectOne(cri.getUserMno());
+		int total = service.countGetuBookList(cri);
+		log.warn("mno 중고 : " + cri.getUserMno() );
+		list.forEach(book -> {
+			log.error(book.getTitle());
+			log.error(book.getStatus());
+			log.error(book.getUbookDate());
+			log.error(book.getUbookPrice());
+			log.error(book.getUsedBookImgs());
+			log.error("--------------------------");
+		});
+		model.addAttribute("list", list);
+		model.addAttribute("vo", vo);
+		model.addAttribute("pageMaker", new PageDTO(cri, total));
+		return "myPage/myUsedProductsSelect";
+	}
+	
+	// 중고 날짜별 조회
+	@GetMapping("selectUsedProductDate")
+	public String selectUsedProductDate(Criteria cri, Model model) {
+		
+		if (cri.getPageNum() == 0 || cri.getAmount() == 0) {
+			cri.setPageNum(1);
+			cri.setAmount(5);
+		}
+		
+		log.warn("mno 중고 확인 날짜별 조회 : " + cri.getUserMno());
+		log.warn("1 날짜별 조회 : " + cri.getAmount() );
+		log.warn("1 날짜별 조회 : " + cri.getPageNum() );
+		log.warn("1 날짜별 조회 : " + cri.getStartDate() );
+		log.warn("1 날짜별 조회 : " + cri.getEndDate() );
+		
+		List<UsedBookVO> list = service.selectGetuBookList(cri);
+		UserVO vo = service.userSelectOne(cri.getUserMno());
+		int total = service.countGetuBookList(cri);
+		log.warn("mno 중고  날짜별 조회: " + cri.getUserMno() );
+		log.warn("토탈 : " + total );
+		log.warn("토탈 list : " + list.size() );
+		
+		list.forEach(book -> {
+			log.error(book.getTitle());
+			log.error(book.getStatus());
+			log.error(book.getUbookDate());
+			log.error(book.getUbookPrice());
+			log.error(book.getUsedBookImgs());
+		});
+		model.addAttribute("list", list);
+		model.addAttribute("vo", vo);
+		model.addAttribute("pageMaker", new PageDTO(cri, total));
+		
+		return "myPage/myUsedProductsSelect";
+	}
+	
+	@GetMapping("saleEnd")
+	public String usedBookSaleEnd(Criteria cri, Model model) {
+		log.error("판매완료 중고 조회 이동");
+		if (cri.getPageNum() == 0 || cri.getAmount() == 0) {
+			cri.setPageNum(1);
+			cri.setAmount(5);
+		}
+		
+		log.warn("mno 중고 확인 날짜별 조회 : " + cri.getUserMno());
+		log.warn("판매완료 날짜별 조회 : " + cri.getAmount() );
+		log.warn("판매완료 날짜별 조회 : " + cri.getPageNum() );
+		log.warn("판매완료 날짜별 조회 : " + cri.getStartDate() );
+		log.warn("판매완료 날짜별 조회 : " + cri.getEndDate() );
+		log.warn("판매완료필터타입 : " + cri.getFilterType());
+		
+		// 날짜조회 + 주문완료 쿼리
+		List<UsedBookVO> list = service.selectGetuBookEndSaleList(cri);
+		UserVO vo = service.userSelectOne(cri.getUserMno());
+		// 토탈 카운트 쿼리
+		int total = service.countGetuBookList(cri);
+		log.warn("mno 중고  날짜별 조회: " + cri.getUserMno() );
+		log.warn("토탈 : " + total );
+		log.warn("토탈 list : " + list.size() );
+		
+		list.forEach(book -> {
+			log.error(book.getTitle());
+			log.error("상태값 : " + book.getStatus());
+			log.error(book.getUbookDate());
+			log.error(book.getUbookPrice());
+			log.error(book.getUsedBookImgs());
 			
 		});
 		
-		model.addAttribute("totalUsePoint", totalUsePoint);
-		model.addAttribute("totalPoint", totalPoint);
+		log.warn("ddd" + cri.getFilterType());
 		model.addAttribute("list", list);
-		model.addAttribute("vo",vo);
-		model.addAttribute("mno", mno);
-		return "myPage/myPoint";
+		model.addAttribute("vo", vo);
+		model.addAttribute("pageMaker", new PageDTO(cri, total));
+		
+		return "myPage/myUsedProductsSelect";
 	}
 }

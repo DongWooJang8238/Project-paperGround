@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,7 +32,7 @@
 								</p>
 								<p>
 									<strong>가격:</strong> ₩<span class="bookPrice"
-										data-price="${item.key.bookPrice}">${item.key.bookPrice * item.value}</span>
+										data-price="${item.key.bookPrice}"><fmt:formatNumber value="${item.key.bookPrice * item.value}" type="number" pattern="#,###" /></span>
 								</p>
 								<p>
 									<strong>수량:</strong>
@@ -59,28 +61,28 @@
 				<h2>구매자 정보</h2>
 				<div class="form-group">
 					<label for="orderName">이름 (필수)</label> <input type="text" id="orderName"
-						name="orderName" value="${sessionScope.vo.userName}" required>
+						name="orderName" value="<sec:authentication property="principal.user.userName"/>" required>
 				</div>
 				<div class="form-group">
 					<label for="orderPhone">전화번호 (필수)</label> <input type="tel"
-						id="orderPhone" name="orderPhone" value="${sessionScope.vo.userPhonenumber}" required>
+						id="orderPhone" name="orderPhone" value="<sec:authentication property="principal.user.userPhonenumber"/>" required>
 				</div>
 				<div class="form-group">
-					<label for="jangsick">기본 배송지 (필수)</label><input type="text" id="ShowAddress" value="${sessionScope.vo.address }" placeholder="우편번호" disabled="disabled">
-   					<input type="text" id="ShowStreetAddress" value="${sessionScope.vo.streetAddress }"  placeholder="주소" disabled="disabled"><br>
-   					<input type="text" id="ShowDetailAddress" value="${sessionScope.vo.detailAddress }" placeholder="상세주소" disabled="disabled">
+					<label for="jangsick">기본 배송지 (필수)</label><input type="text" id="ShowAddress" value="<sec:authentication property="principal.user.address"/>" placeholder="우편번호" disabled="disabled">
+   					<input type="text" id="ShowStreetAddress" value="<sec:authentication property="principal.user.streetAddress"/>"  placeholder="주소" disabled="disabled"><br>
+   					<input type="text" id="ShowDetailAddress" value="<sec:authentication property="principal.user.detailAddress"/>" placeholder="상세주소" disabled="disabled">
             		<button type="button" onclick="addrChange();">배송지 입력(변경)</button>
 				</div>
 				<div class="form-group" id="newAddr">
 					<div class="input-group">
 						<label for="userAddress">신규 배송지</label> <input type="text"
-							id="address" name="address" value="${sessionScope.vo.address }"
+							id="address" name="address" value="<sec:authentication property="principal.user.address"/>"
 							placeholder="우편번호"> <input type="button"
 							onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
 						<input type="text" id="streetAddress" name="streetAddress"
-							value="${sessionScope.vo.streetAddress }" placeholder="주소"><br>
+							value="<sec:authentication property="principal.user.streetAddress"/>" placeholder="주소"><br>
 						<input type="text" id="detailAddress" name="detailAddress"
-							value="${sessionScope.vo.detailAddress }" placeholder="상세주소">
+							value="<sec:authentication property="principal.user.detailAddress"/>" placeholder="상세주소">
 						<input type="hidden" id="sample6_extraAddress" placeholder="참고항목">
 					</div>
 				</div>
@@ -98,7 +100,7 @@
 			<section class="payment-info-section">
 				<h2>포인트 할인</h2>
 				<div class="form-group">
-					<p>사용 가능 포인트 : ${sessionScope.vo.userPoint}</p>
+					<p>사용 가능 포인트 : <sec:authentication property="principal.user.userPoint"/></p>
 					<select name="point">
 						<option value="0">0</option>
 						<option value="100">100</option>
@@ -110,7 +112,7 @@
 						<option value="700">700</option>
 						<option value="800">800</option>
 						<option value="900">900</option>
-						<option value="1000">1000</option>
+						<option value="1000">1,000</option>
 					</select>
 				</div>
 				<h2>결제 방식</h2>

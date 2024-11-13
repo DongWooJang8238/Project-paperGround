@@ -4,36 +4,125 @@
 
 <mapper namespace="org.joonzis.mapper.ReportMapper">
 
-<select id="getCategoryData" parameterType="int" resultType="org.joonzis.domain.QnaVO">
-SELECT * FROM reportQNA WHERE qnaCategory = #{qnaCategory} 
-</select>
+	<select id="getCategoryData" parameterType="int"		resultType="org.joonzis.domain.QnaVO">
+		SELECT * FROM reportQNA WHERE qnaCategory = #{qnaCategory}
+	</select>
 
-<select id="getAllQnaData" resultType="org.joonzis.domain.QnaVO">
-    SELECT * FROM reportQNA
-</select>
-<select id="selectQnaByCategory" parameterType="int" resultType="org.joonzis.domain.QnaVO">
-    SELECT * FROM reportQNA WHERE qnaCategory = #{qnaCategory}
-</select>
+	<select id="getAllQnaData" resultType="org.joonzis.domain.QnaVO">
+		SELECT * FROM reportQNA
+	</select>
+	
+	<select id="selectQnaByCategory" parameterType="int"		resultType="org.joonzis.domain.QnaVO">
+		SELECT * FROM reportQNA WHERE qnaCategory = #{qnaCategory}
+	</select>
 
-<insert id="insertDR" parameterType="org.joonzis.domain.DrVO">
-	insert into tbl_directReport values(dr_seq.NEXTVAL,#{DRtitle}, #{DRcategory},#{DRcontent})
-</insert>
-<select id="getTotal" resultType="int">
-		select count(*) from tbl_reportboard
-</select>	
-<select id="getList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.ReportBoardVO">
+	<insert id="DRsubmit" parameterType="org.joonzis.domain.DrVO">
+		insert into tbl_directReport values(#{mno},dr_seq.NEXTVAL,#{DRtitle},
+		#{DRcategory},#{DRcontent},'')
+	</insert>
+
+	<select id="getTotal" resultType="int">
+		select count(*) from
+		tbl_reportboard
+	</select>
+	<select id="getTotalByCategory" resultType="int">
+		select count(*) from
+		tbl_reportboard where reportCategory = #{category}
+	</select>
+	
+	<select id="getDrTotal" resultType="int">
+		select count(*) from
+		tbl_directReport
+	</select>
+	
+
+	<select id="getList" parameterType="org.joonzis.domain.Criteria"
+		resultType="org.joonzis.domain.ReportBoardVO">
 		<![CDATA[
-			select boardNO, writer, title, regdate, replyCount, readCount 
-			from (select rownum rn, boardNO, writer, title, regdate, replyCount, readCount
-  			  from (select * from tbl_reportboard order by boardNO desc)
+			select reportBoardno, writer, title, regdate, replyCount, readCount ,reportCategory
+			from (select rownum rn, reportBoardno, writer, title, regdate, replyCount, readCount, reportCategory
+  			  from (select * from tbl_reportboard order by reportBoardno desc)
      		   where rownum <= #{pageNum} * #{amount})
 			where rn > (#{pageNum} - 1) * #{amount}
 		]]>
+	</select>	
+	
+	<select id="getPostsByCategory" parameterType="map" resultType="org.joonzis.domain.ReportBoardVO">
+    <![CDATA[
+        select reportBoardno, writer, title, regdate, replyCount, readCount, reportCategory
+        from (
+            select rownum rn, reportBoardno, writer, title, regdate, replyCount, readCount, reportCategory
+            from (
+                select * 
+                from tbl_reportboard 
+                where (#{reportCategory} IS NULL OR reportCategory = #{reportCategory})  
+                order by reportBoardno desc
+            )
+            where rownum <= #{pageNum} * #{amount}
+        )
+        where rn > (#{pageNum} - 1) * #{amount}
+    ]]>
 </select>
 
-<insert id="insertReport" parameterType="org.joonzis.domain.ReportBoardVO">
-	insert into tbl_reportboard (boardNO, mno, title, content, writer, readCount, regdate, updatedate, replyCount  ) values(#{boardNO}, #{mno}, #{title}, #{content}, #{writer}, 0, sysdate,sysdate, 0)
-</insert>
+	
+	<select id="getDrList" parameterType="org.joonzis.domain.Criteria"
+		resultType="org.joonzis.domain.DrVO">
+		<![CDATA[
+			select DRNo, DRtitle, DRcategory, DRcontent ,mno,status
+			from (select rownum rn, DRNo, DRtitle, DRcategory, DRcontent,mno,status
+  			  from (select * from tbl_directReport order by DRNo desc)
+     		   where rownum <= #{pageNum} * #{amount})
+			where rn > (#{pageNum} - 1) * #{amount}
+		]]>
+	</select>
+	
+	
+	<select id="get" parameterType="int" resultType="org.joonzis.domain.ReportBoardVO">
+		select * from tbl_reportboard WHERE reportBoardno =
+		#{reportBoardno}
+	</select>
+	<select id="getDR" parameterType="int" resultType="org.joonzis.domain.DrVO">
+		select * from tbl_directReport WHERE DRNo =
+		#{DRNo}
+	</select>
+
+	<insert id="register"		parameterType="org.joonzis.domain.ReportBoardVO">
+		<selectKey keyProperty="reportBoardno" resultType="int"	order="BEFORE">
+			SELECT tbl_reportboard_seq.nextval FROM dual
+		</selectKey>
+		insert into tbl_reportboard(reportBoardno, mno, title, content,
+		writer, REGDATE, UPDATEDATE,reportCategory,readCount,replyCount) values(
+		#{reportBoardno}, #{mno},
+		#{title}, #{content}, #{writer}, sysdate, sysdate,#{reportCategory},0,0)
+	</insert>
+	
+	<update id="modify" parameterType="org.joonzis.domain.ReportBoardVO">
+		update tbl_reportboard set title = #{title},
+		content=#{content}, writer=#{writer}, UPDATEDATE = sysdate
+		where reportBoardno = #{reportBoardno}
+	</update>
+
+
+	<delete id="remove" parameterType="int">
+		delete from tbl_reportboard
+		where reportBoardno = #{reportBoardno}
+	</delete>
+
+	<update id="boardReadCount" parameterType="int">
+		UPDATE tbl_reportboard
+		SET readCount = readCount + 1 WHERE reportBoardno = #{reportBoardno}
+	</update>
+	
+	<update id="updateReplyCnt" parameterType="int">
+		UPDATE tbl_reportboard
+		SET replyCount = replyCount + #{amount} WHERE reportBoardno = #{reportBoardno}
+	</update>
+	
+	<update id="updateStatus" parameterType="org.joonzis.domain.DrVO">
+		UPDATE tbl_directReport
+		SET status = #{status} , DRTITLE = DRTITLE || ' [처리완료]' WHERE DRNo = #{drno}
+	</update>
+	
 
 
 

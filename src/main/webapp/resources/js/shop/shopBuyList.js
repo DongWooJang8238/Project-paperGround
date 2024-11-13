@@ -8,7 +8,7 @@ document.querySelectorAll('.product-details').forEach(item => {
     totalPrice += bookPrice * quantity;
 });
 
-document.querySelector('#totalPrice').innerHTML = totalPrice;
+document.querySelector('#totalPrice').innerHTML = totalPrice.toLocaleString();
 
 // 수량 증가/감소 버튼 이벤트 리스너 추가
 document.querySelectorAll('.product-details').forEach(item => {
@@ -25,7 +25,7 @@ document.querySelectorAll('.product-details').forEach(item => {
 
             // 가격 업데이트
             const newPrice = Number(bookPriceElement.getAttribute('data-price')) * currentCount;
-            bookPriceElement.innerHTML = newPrice;
+            bookPriceElement.innerHTML = newPrice.toLocaleString();
 
             // 총 결제 금액 업데이트
             updateTotalPrice();
@@ -41,7 +41,7 @@ document.querySelectorAll('.product-details').forEach(item => {
 
             // 가격 업데이트
             const newPrice = Number(bookPriceElement.getAttribute('data-price')) * currentCount;
-            bookPriceElement.innerHTML = newPrice;
+            bookPriceElement.innerHTML = newPrice.toLocaleString();
 
             // 총 결제 금액 업데이트
             updateTotalPrice();
@@ -52,15 +52,15 @@ document.querySelectorAll('.product-details').forEach(item => {
 function updateTotalPrice() {
     totalPrice = 0;
     document.querySelectorAll('.product-details').forEach(item => {
-        const bookPrice = Number(item.querySelector('.bookPrice').innerHTML);
+        const bookPrice = Number(item.querySelector('.bookPrice').innerHTML.replace(/,/g, ''));
         totalPrice += bookPrice;
     });
-    document.querySelector('#totalPrice').innerHTML = totalPrice;
+    document.querySelector('#totalPrice').innerHTML = totalPrice.toLocaleString();
 }
 
 document.querySelector('select[name="point"]').addEventListener('change', e => {
 	const point = document.querySelector('select[name="point"]').value;
-	document.querySelector('#totalPrice').innerHTML = totalPrice - point;
+	document.querySelector('#totalPrice').innerHTML = (totalPrice - point).toLocaleString();
 });
 // 상품 삭제
 function deleteCart(bno) {

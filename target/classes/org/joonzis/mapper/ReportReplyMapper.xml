@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.joonzis.mapper.ReportReplyMapper">
+	<insert id="reportinsert" parameterType="org.joonzis.domain.ReportReplyVO">
+		 insert into tbl_reportreply VALUES(table_comments_seq.nextval, #{reportBoardno}, #{mno}, #{reply}, #{replyer}, sysdate, sysdate)
+	</insert>
+	
+	<select id="reportgetList" parameterType="int" resultType="org.joonzis.domain.ReportReplyVO">
+		SELECT * FROM tbl_reportreply WHERE reportBoardno = #{reportBoardno} ORDER BY replyno
+	</select>
+	
+	<select id="reportread" parameterType="int" resultType="org.joonzis.domain.ReportReplyVO">
+		SELECT * FROM tbl_reportreply WHERE replyno = #{replyno}
+	</select>
+	
+	<delete id="reportdelete" parameterType="int">
+		DELETE FROM tbl_reportreply where replyno = #{replyno}
+	</delete>
+	
+	<delete id="reportboardDelete" parameterType="int">
+		DELETE FROM tbl_reportreply where reportBoardno = #{reportBoardno}
+	</delete>
+	
+	<update id="reportupdate" parameterType="org.joonzis.domain.ReportReplyVO">
+		UPDATE tbl_reportreply set reply = #{reply}, updatedate = sysdate where replyno = #{replyno}
+	</update>
+	
+</mapper>

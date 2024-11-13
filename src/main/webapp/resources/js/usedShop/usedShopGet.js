@@ -1,13 +1,60 @@
-
-
+// 목록으로 가기
+function goList() {
+	shopUsedList();
+}
 // 찜 하기 기능
 function jjim(ubno, mno) {
-	if(mno.value === ""){
+	if(mno === 0){
 		alert('로그인이 필요한 기능입니다!');
 		return;
-	}else{
+	}else if(mno > 0){
 		console.log(ubno);
 		console.log(mno);
+		let jjim = {ubno : ubno, mno : mno};
+		fetch('/used/wishList', {
+			method: 'POST',
+			headers: {
+		        'Content-Type': 'application/json',
+		    },
+		    body: JSON.stringify(jjim)
+		})
+		.then(response => response.text())
+		.then(result => {
+			console.log("비동기 결과 : " + result);
+			if(result === "success"){
+				alert('찜 목록에 추가되었습니다.');
+				let wish = document.querySelector('.wishList');
+				wish.style.color = "red";
+			}else if(result === "false"){
+				if(confirm('이미 찜 목록에 있습니다. 삭제하시겠습니까?')){
+					
+					fetch('/used/unWishList',{
+						method : 'POST',
+						headers : {
+							'Content-Type': 'application/json'
+						},
+						body : JSON.stringify(jjim)
+					})
+						.then(response => response.text())
+						.then(result => {
+							console.log(result);
+							let wish = document.querySelector('.wishList');
+							wish.style.color = "white";
+						})
+						.catch(err => console.log(err));
+					
+				}else{
+					console.log('찜취소');
+				}
+			}else {
+				alert('에러 : ' + result);
+			}
+		})
+		.catch(err => {
+			console.log(err);
+		});
+	}else {
+		alert("로그인이 필요한 기능입니다.");
 	}
 }
 
@@ -18,15 +65,73 @@ function closeChatModal() {
 }
 
 
-// 판매 완료 버튼
+//판매 완료 버튼
 function sellSuccess(ubno) {
-	if(mno.value === ""){
-		alert('로그인이 필요한 기능입니다!');
-		return;
-	}else{
-		console.log(ubvo);
-	}
+  if (mno.value === "") {
+    alert('로그인이 필요한 기능입니다!');
+    return;
+  } else {
+    // 판매 완료 모달 표시
+    document.getElementById('sellSuccessModal').style.display = 'flex';
+
+    // 버튼 클릭 이벤트 설정
+    document.getElementById('sellCompleteBtn').onclick = function() {
+      // 판매 완료 처리 로직
+      console.log('판매 완료 처리:', ubno);
+      fetch('/used/successSell',{
+			method : 'POST',
+			headers : {
+				'Content-Type': 'application/json'
+			},
+			body : ubno
+		})
+      	.then(response => response.text())
+      	.then(result => {
+      		closeSellModal();
+      		console.log(result);
+      		if(result === "success"){
+      			if(confirm("목록으로 이동하시겠습니까?")){
+      				location.href = "/used/list";
+      			}else {
+      				console.log('그냥있기');
+      			}
+      		}else {
+      			alert('뭔가문제임');ㅣ
+      		}
+      	})
+      	.catch(err => console.log(err));
+    };
+
+    document.getElementById('sellDeleteBtn').onclick = function() {
+      // 삭제 처리 로직
+      console.log('삭제 처리:', ubno);
+      fetch('/used/deleteUbook',{
+			method : 'POST',
+			headers : {
+				'Content-Type': 'application/json'
+			},
+			body : ubno
+		})
+    	.then(response => response.text())
+    	.then(result => {
+    		closeSellModal();
+    		if(result === "success"){
+    			alert('삭제 완료');
+    			location.href = '/used/list';
+    		}
+    	})
+    	.catch(err => console.log(err));
+    };
+
+    document.getElementById('sellCancelBtn').onclick = closeSellModal;
+  }
 }
+
+// 판매 완료 모달 닫기 함수
+function closeSellModal() {
+  document.getElementById('sellSuccessModal').style.display = 'none';
+}
+
 
 // 상품 삭제 버튼
 function deleteUsed(ubno) {

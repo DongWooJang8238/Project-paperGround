@@ -14,7 +14,7 @@ public interface ShopService {
 
 	public List<BookVO> getBookListGe(Criteria cri);
 
-	public int getTotal();
+	public int getTotal(Criteria cri);
 
 	public int getTotalByGno(int[] gno);
 

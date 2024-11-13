@@ -1,8 +1,10 @@
 package org.joonzis.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,7 +51,8 @@ public class BoardUploadController {
 		
 		// make folder --------- 날짜별 폴더를 생성
 		File uploadPath = new File(uploadFolder, getFolder());
-		log.info("uploadPath : " + uploadPath);
+		log.info("uploadPath : " + uploadPath);	
+		log.warn("uploadPath : " + uploadPath);
 		
 		if(!uploadPath.exists()) {
 			uploadPath.mkdirs(); // makeDirectris의 약자
@@ -57,7 +60,7 @@ public class BoardUploadController {
 		
 		for(MultipartFile multipartFile : uploadFile) {
 			log.info("---------------");
-			log.info("Upload File Name : " + multipartFile.getOriginalFilename());
+			log.warn("Upload File Name : " + multipartFile.getOriginalFilename());
 			log.info("Upload File Size : " + multipartFile.getSize());
 			
 			String uploadFileName = multipartFile.getOriginalFilename();
@@ -139,5 +142,4 @@ public class BoardUploadController {
 		String str = sdf.format(date);
 		return str.replace("-", File.separator);
 	}
-	
 }

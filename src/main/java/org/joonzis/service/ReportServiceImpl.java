@@ -5,7 +5,6 @@ import java.util.List;
 import org.joonzis.domain.Criteria;
 import org.joonzis.domain.DrVO;
 import org.joonzis.domain.QnaVO;
-import org.joonzis.domain.ReportBoardVO;
 import org.joonzis.mapper.ReportMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,19 +41,31 @@ public class ReportServiceImpl implements ReportService{
 		return reportmapper.insertDR(drvo);
 	}
 	@Override
-	public int getTotal() {
-		log.warn("get total loading...");
-		return reportmapper.getTotal();
+	public int DRsubmit(DrVO drvo) {
+		log.warn("DRsubmit one loading...");
+		return reportmapper.DRsubmit(drvo);
 	}
 	@Override
-	public List<ReportBoardVO> getList(Criteria cri) {
-		log.warn("getList loading...");
-		return reportmapper.getList(cri);
+	public int getDrTotal() {
+		log.warn("getDrTotal one loading...");
+		return reportmapper.getDrTotal();
 	}
 	@Override
-	public int insertReport(ReportBoardVO reportBoard) {
-		log.warn("insertReport loading...");
-		return reportmapper.insertReport(reportBoard);
+	public List<DrVO> getDrList(Criteria cri) {
+		log.warn("getDrList one loading...");
+		return reportmapper.getDrList(cri);
+	}
+	@Override
+	public DrVO getDR(int DRNo) {
+		log.warn("getDR one loading...");
+		return reportmapper.getDR(DRNo);
+	}
+	@Override
+	public int updateStatus(DrVO drVO) {
+		log.warn("getDR one loading...");
+		log.warn("업데이트 : " + drVO.getStatus());
+		log.warn("업데이트 : " + drVO.getDrno());
+		return reportmapper.updateStatus(drVO);
 	}
 
 }

@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.joonzis.domain.Criteria;
+import org.joonzis.domain.UsedBookVO;
 import org.joonzis.domain.UserVO;
 import org.joonzis.domain.UserpointVO;
 import org.joonzis.mapper.UserMapper;
@@ -121,20 +123,68 @@ public class UserServiceImpl implements UserService {
 	// 포인트 총 내역
 	@Override
 	public List<UserpointVO> selectPoint(int mno) {
+		log.warn("mno 서비스 : " + mno);
+		List<UserpointVO> list = null;
+		log.warn("포인트조회서비스 : " + userMapper.selectPoint(mno).size());
+		log.warn("포인트조회서비스 : " + list);
+		if(userMapper.selectPoint(mno).size() > 0) {
+			list = userMapper.selectPoint(mno);
+		}
+		
 		return userMapper.selectPoint(mno);
 	}
 	
 	@Override
-	public int totalPoint(int mno) {
-		log.warn("mno : " + mno);
+	public Integer totalPoint(int mno) {
+		log.warn("토탈포인트 : " + mno);
+		
 		return userMapper.totalPoint(mno);
 	}
 	
 	@Override
-	public int totalUsePoint(int mno) {
-		log.warn("mno : " + mno);
+	public Integer totalUsePoint(int mno) {
+		log.warn("토탈사용포인트 : " + mno);
 		return userMapper.totalUsePoint(mno);
 	}
 	
+	@Override
+	public List<UsedBookVO> usedBook_select(int mno) {
+		log.warn("중고 주문내역 : " + mno);
+		return userMapper.usedBook_select(mno);
+	}
+	
+	@Override
+	public List<UsedBookVO> getuBookList(Criteria cri) {
+		log.warn("중고 판매 페이징 처리에용" + cri);
+		return userMapper.getuBookList(cri);
+	}
+	
+	@Override
+	public int countGetuBookList(Criteria cri) {
+		return userMapper.countGetuBookList(cri);
+	}
+	
+	@Override
+	public List<UsedBookVO> selectGetuBookList(Criteria cri) {
+		log.warn("이이이이잉" + cri.getUserMno());
+		List<UsedBookVO> list = userMapper.selectGetuBookList(cri);
+		log.warn(list.size());
+		if(list.size() > 0) {
+			list.forEach(action -> {
+				log.warn("list : " + action.getUbookPrice());
+				log.warn("list : " + action.getTitle());
+				log.warn("list : " + action.getStartDate());
+				log.warn("list : " + action.getEndDate());
+				log.warn("list : " + action.getMno());
+			});
+		}
+		return list;
+	}
+	
+	@Override
+	public List<UsedBookVO> selectGetuBookEndSaleList(Criteria cri) {
+		log.warn("주문완료 중고 서비스 " + cri.getUserMno());
+		return userMapper.selectGetuBookEndSaleList(cri);
+	}
 	
 }

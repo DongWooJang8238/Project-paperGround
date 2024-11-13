@@ -3,6 +3,7 @@ package org.joonzis.controller;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.joonzis.domain.DrVO;
 import org.joonzis.domain.PageDTO;
@@ -22,10 +23,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.extern.log4j.Log4j;
 
@@ -106,54 +109,97 @@ public class ReportController {
 
 	//1대1 맞다이
 	@GetMapping("/directReport")
-	public String oneonetwo(int mno, Model model) {
+	public String oneonetwo(int mno, Model model, Criteria cri) {
 		log.warn("directReport...............................");
 		log.warn("mno..............................."+mno);
+		
+		if(mno == 1) {
+			if(cri.getPageNum() == 0 || cri.getAmount() == 0) {
+				cri.setPageNum(1);
+				cri.setAmount(10);}
+			int total = reportservice.getDrTotal();
+			log.info("total...." + total);
+			model.addAttribute("pageMaker", new PageDTO(cri, total));
+			model.addAttribute("list", reportservice.getDrList(cri));
+			return "/report/directReportList";}
 		
 		model.addAttribute("mno", mno);
 		return "/report/directReport";  
 	}
 	
 	@PostMapping("/DRsubmit")
-	public String DRsubmit(DrVO drvo) {
+	public String DRsubmit(DrVO drvo, RedirectAttributes rttr) {
 		log.warn("DRsubmit...............................");
+		rttr.addFlashAttribute("result", "success");
 		log.warn("DRsubmit..............................."+drvo);
 		log.warn("DRsubmit..............................."+drvo.getDRtitle());
-		log.warn("DRsubmit..............................."+drvo.getDRtitle());
 		log.warn("DRsubmit..............................."+drvo.getDRcategory());
-		int count = reportservice.insertDR(drvo);
+		int count = reportservice.DRsubmit(drvo);
 		log.warn("---------------------------" + count);
-		return "/report/directReport";  
+		return "redirect:/";  
+	}
+	@GetMapping("/getDR")
+	public String getDR(@RequestParam("drno") int drno, Model model) {
+		reportservice.getDR(drno);
+		
+		log.info("get..." + drno);
+		model.addAttribute("drvo", reportservice.getDR(drno));
+		return "/report/getDR";
 	}
 	
-	//문의 게시판
-	@GetMapping("/reportBoard")
-	public String reportBoard(int mno, Criteria cri ,Model model) {
-		log.warn("reportBoard...............................");
-		if(cri.getPageNum() == 0 || cri.getAmount() == 0) {
+	@GetMapping("/entrance")
+	public String entrance(@RequestParam("mno") int mno, Model model) {
+		log.info("entrance...");
+		
+		
+		model.addAttribute("mno", mno);
+		return "/report/directReportEntrance";
+	}
+	
+	@GetMapping("/directReportList")
+	public String directReportList(int mno, Model model, Criteria cri) {
+		log.warn("directReport...............................");
+		log.warn("mno..............................." + mno);
+
+		if (cri.getPageNum() == 0 || cri.getAmount() == 0) {
 			cri.setPageNum(1);
 			cri.setAmount(10);
 		}
+		int total = reportservice.getDrTotal();
 		
-		int total = reportservice.getTotal();
 		log.info("total...." + total);
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
-		model.addAttribute("list", reportservice.getList(cri));
+		model.addAttribute("list", reportservice.getDrList(cri));
+
 		model.addAttribute("mno", mno);
-		return "/report/reportBoard";  
-	}
-	@GetMapping("/insertReport")
-	public String insert() {
-		log.info("insert..." );
-		return "/report/reportBoardInsert";
+		return "/report/directReportList";
 	}
 	
-	@PostMapping("/insert")
-    public String insertReport(@ModelAttribute("reportBoard") ReportBoardVO reportBoard) {
-		log.info("insertReport..." );
-		reportservice.insertReport(reportBoard);
-        return "redirect:/report/reportBoard";
-    }
+	@ResponseBody
+	@PostMapping(value = "/updateStatus", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> updateStatus(@RequestBody DrVO drVO) {
+		log.warn("dr수정페이지컨트롤러");
+		log.warn("dr수정페이지컨트롤러" + drVO.getStatus());
+		log.warn("dr수정페이지컨트롤러" + drVO.getDrno());
+	    // 서비스 레이어에서 상태 업데이트 수행
+		try {
+	    int isUpdated = reportservice.updateStatus(drVO);
+	    log.warn(isUpdated);
+	    if (isUpdated > 0) {
+	        return ResponseEntity.ok("Success");
+	    } else {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed");
+	    }
+		
+    } catch (Exception e) {
+    	   e.printStackTrace(); // 스택 트레이스 출력
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+       }
+	    
+	}
+
+	
+	
 	
 
 }

@@ -25,51 +25,55 @@ function getStorageData(){
 // 버튼 이벤트
 document.querySelectorAll("button").forEach(btn => {
     btn.addEventListener('click', (e) => {
-        
-		// 버튼의 id 속성 값 확인
         let type = btn.getAttribute('id');
-
-        if (type === 'indexBtn') {// 목록으로 이동
-        	let pageData = getStorageData();
-			let sendData = `pageNum=${pageData.pageNum}&amount=${pageData.amount}`;
-			location.href = '/board/list?' + sendData; // 목록으로 이동
-        } else if (type === 'modifyBtn') {// 게시글 수정 버튼
-        	if(mno.value === ""){
-        		alert('로그인이 필요한 기능입니다!');
-        		return;
-        	}else{
-        		let boardno = f.boardno.value;
-        		location.href = '/board/modify?boardno=' + boardno;
-        	}
-		}else if(type === 'addReplyBtn'){
-			// 댓글 등록 실행
-			if(mno.value === ""){
-				alert('로그인이 필요한 기능입니다!');
-				return;
-			}else{
-				registerReply();
-			}
-		}else if(type === 'closeModalBtn'){// 댓글 등록창 닫기
-			closeModal();
-		}else if(type === 'modifyReplyBtn'){
-			// 댓글 수정 실행 버튼
-			if(mno.value === ""){
-				alert('로그인이 필요한 기능입니다!');
-				return;
-			}else{
-				modifyReply();
-			}
-		}else if(type === 'removeReplyBtn'){
-			// 댓글 삭제 실행 버튼
-			if(mno.value === ""){
-				alert('로그인이 필요한 기능입니다!');
-				return;
-			}else{
-				removeReply();
-			}
-		}
+        let replyMno = btn.getAttribute('data-replymno');
+        let boardMno = btn.getAttribute('data-boardmno');
+        let delreplyMno = btn.getAttribute('data-delreplymno');
         
-	});
+        if (type === 'indexBtn') {
+            // 목록으로 이동
+            let pageData = getStorageData();
+            let sendData = `pageNum=${pageData.pageNum}&amount=${pageData.amount}`;
+            location.href = '/board/list?' + sendData;
+        } else if (type === 'modifyBtn') {
+            if (boardMno !== mno.value) {
+                alert('작성자만 수정 가능합니다');
+                return;
+            }
+            let boardno = f.boardno.value;
+            location.href = '/board/modify?boardno=' + boardno;
+        } else if (type === 'addReplyBtn') {
+            // 댓글 등록 실행
+            registerReply();
+        } else if (type === 'closeModalBtn') {
+            // 댓글 등록창 닫기
+            closeModal();
+        } else if (type === 'modifyReplyBtn') {
+        	if(mno.value == ''){
+        		alert("로그인시 댓글 수정 가능합니다.");
+        		return;
+        	}
+        	if (replyMno !== mno.value) {
+        		console.log("modifyReplyBtn" + replyMno);
+        		console.log("modifyReplyBtn" + mno.value);
+                alert('작성자만 수정 가능합니다');
+                return;
+            }
+            // 댓글 수정 실행 버튼
+            modifyReply();
+        } else if (type === 'removeReplyBtn') {
+        	if(mno.value == ''){
+        		alert("로그인시 댓글 삭제 가능합니다.");
+        		return;
+        	}
+        	if (delreplyMno !== mno.value) {
+                alert('작성자만 삭제 가능합니다');
+                return;
+            }
+            // 댓글 삭제 실행 버튼
+            removeReply();
+        }
+    });
 });
 
 //------------댓글 관련 스크립트------------
@@ -86,20 +90,21 @@ function showList(){
 		 let msg = '';
 		 
 		 data.forEach(bvo => {
-			 msg += '<li data-replyno="' + bvo.replyno + '" onclick="modifyModalPage(this)">';
-			 msg +=  '<div>';
-			 msg += 	'<div class="chat-header">';
-			 msg += 	 '<strong class="primary-font">' + bvo.replyer + '</strong>';
-		     msg += 	 '<small class="pull-right">' +displayTime(bvo.replyDate)+ '</small>';
-			 msg += 	'</div>';
-			 msg += 	'<p>' + bvo.reply + '</p>';
-	            msg += '<div class="reply-like-section">';
-	            msg += '<div class="reply-like-count" id="reply-like-count-' + bvo.replyno + '">' + bvo.comLikeCount + '</div>';
-//	            msg += '<button type="button" class="reply-like-btn" data-replyno="' + bvo.replyno + '">👍</button>';
-	            msg += '</div>';
-	            msg += '</div>';
-	            msg += '</li>';
-	        });
+				msg += '<li data-replyno="' + bvo.replyno + '">';
+				msg +=  '<div>';
+				msg += 	'<div class="chat-header">';
+				msg += 		 '<strong class="primary-font">' + bvo.replyer + '</strong>';
+				msg += 		 '<small class="pull-right">' + displayTime(bvo.replyDate) + '</small>';
+				msg += 	'</div>';
+				msg += 	'<p>' + bvo.reply + '</p>';
+		        msg += 	'<div class="reply-like-section">';
+		        msg += 	'<div class="reply-like-count" id="reply-like-count-' + bvo.replyno + '">' + bvo.comLikeCount + '</div>';
+		        msg += 	'<button type="button" class="reply-like-btn" data-replyno="' + bvo.replyno + '">👍</button>';
+		        msg += 	'<button type="button" class="openModalBtn" onclick="modifyModalPage(this.closest(\'li\'))">수정</button>';
+		        msg += 	'</div>';
+		        msg += '</div>';
+		        msg += '</li>';
+		    });
 		 
 		 
 		 replyUL.innerHTML = msg;
@@ -148,7 +153,6 @@ function resisterModalPage(){
 	
 	// input 입력창 내용 초기화
 	inputReply.value = ''; // 댓글 등록 후 댓글 등록창 댓글 내용 초기화
-	inputReplyer.value = ''; // 댓글 등록 후 댓글 등록창 작성자 내용 초기화
 	
 	openModal();
 }
@@ -161,11 +165,22 @@ function regReplyModalStyle(){
 	inputReplydate.closest('div').classList.add('hide');
 	inputReplyer.removeAttribute('readonly');
 }
+
+function resetReplyForm() {
+    document.querySelector('#reply input[name="reply"]').value = '';
+}
+
 // 실제 댓글 등록 함수
 function registerReply(){
-
-	if(inputReply.value == '' || inputReplyer.value == ''){
-		alert('모든 내용을 입력하세요.');
+	if(mno.value == ''){
+		alert("로그인시 댓글작성 가능합니다.");
+		return;
+	}else if(inputReply.value == ''){
+		alert('댓글 내용을 입력하세요.');
+		return;
+	}else if(inputReplyer.value == ''){
+		console.log(inputReplyer.value);
+		alert('작성자를 입력하세요.');
 		return;
 	}
 	
@@ -174,34 +189,38 @@ function registerReply(){
 				reply : inputReply.value,
 				replyer : inputReplyer.value,
 				boardno : f.boardno.value,
-				mno : 1
+				mno : mno.value
 			},
 			function(result){
 				console.log("result : " + result);
 
 				showList();
 				// 입력후 댓글창 리스트 업데이트
+				resetReplyForm(); 
 			}
 	);
 }
 
 // 댓글 리스트 클릭 이벤트
 let replyno;
-function modifyModalPage(li){
-	modifyReplyModalStyle();
-	
-	// 입력 내용
-	replyno = li.getAttribute('data-replyno');
-	const parent = document.querySelector('li[data-replyno="'+replyno+'"] div');
-	const data_reply = parent.lastChild.innerText;
-	const data_replyer = parent.firstChild.firstChild.innerText;
-	const data_replydate = parent.firstChild.lastChild.innerText;
-	
-	modalinputReply.value = data_reply;		 // 댓글 수정창에서 기존 데이터가 바인딩 됨
-	modalinputReplyer.value = data_replyer;
-	modalinputReplydate.value = data_replydate;
-	
-	openModal();
+function modifyModalPage(li) {
+    modifyReplyModalStyle();
+
+    // 입력 내용
+    replyno = li.getAttribute('data-replyno');
+    const parent = document.querySelector('li[data-replyno="'+replyno+'"] div');
+    const data_reply = parent.querySelector('p').innerText;
+    const data_replyer = parent.firstChild.firstChild.innerText;
+    const data_replydate = parent.firstChild.lastChild.innerText;
+
+    console.log("댓글 번호 : " + replyno);
+    console.log("댓글 내용 : " + data_reply);
+
+    modalinputReply.value = data_reply;
+    modalinputReplyer.value = data_replyer;
+    modalinputReplydate.value = data_replydate;
+
+    openModal();
 }
 // 댓글 리스트 클릭 시 스타일 변경 함수
 function modifyReplyModalStyle(){
@@ -216,7 +235,8 @@ function modifyReplyModalStyle(){
 // 댓글 수정
 function modifyReply(){
 	// 수정할 내용 필수 입력 검증
-	if(inputReply.value == ''){
+	if(modalinputReply.value == ''){
+		console.log(inputReply.value);
 		alert('수정할 내용을 입력하세요.');
 		return;
 	}
@@ -253,69 +273,52 @@ function removeReply(){
 fetch('/board/getAttachList/' + f.boardno.value)
 	.then(response => response.json())
 	.then(result =>{
-		console.log(result);
-		showUploadFile(result);
+		if(result.length === 0){ // 첨부파일 없을시 첨부파일칸 없앰
+			const fileBody = document.querySelector('.file-container');
+			fileBody.style.display = 'none';
+		}else{
+			showUploadFile(result);
+			console.log(144444);
+		}
 	})
 	.catch(err => console.log(err));
 
 let uploadResult = document.querySelector('.uploadResult ul');
-function showUploadFile(uploadResultArr){
-	
-	if(!uploadResultArr || uploadResultArr.length==0) return;
-	
-	let str = '';
-	uploadResultArr.forEach( file => {
-		let fileCallPath = encodeURIComponent(file.uploadPath + "/" +
-											file.uuid + "_" + file.fileName);
-		
-		
-		str += `<li path="${file.uploadPath}" uuid="${file.uuid}" fileName="${file.fileName}">`;
-		str += '<a href="/download?fileName=' + fileCallPath + '">';
-		//str += '<a>';
-		str += file.fileName;
-		str += "</a>";
-		//str += "<span data-file='" + fileCallPath + "'> X </span>";
-		str += "</li>";
-	});
-	uploadResult.innerHTML = str;
+function showUploadFile(uploadResultArr) {
+    if (!uploadResultArr || uploadResultArr.length == 0) return;
+
+    let str = '';
+    uploadResultArr.forEach(file => {
+        let fileCallPath = encodeURIComponent(file.uploadPath + "/" + file.uuid + "_" + file.fileName);
+        str += `<li path="${file.uploadPath}" uuid="${file.uuid}" fileName="${file.fileName}">`;
+
+        // 이미지 파일인지 확인
+        if (file.fileName.endsWith('.png') || file.fileName.endsWith('.jpg') || file.fileName.endsWith('.jpeg')) {
+            str += `<img src="/download?fileName=${fileCallPath}" alt="${file.fileName}" style="width: 100px; height: auto; margin-right: 10px;">`;
+        } else {
+            str += '<a href="/download?fileName=' + fileCallPath + '">' + file.fileName + '</a>';
+        }
+
+        str += "</li>";
+    });
+    uploadResult.innerHTML = str;
+
 }
 
-//
-//rs.add(
-//		{
-//			reply : inputReply.value,
-//			replyer : inputReplyer.value,
-//			bno : f.bno.value
-//		},
-//		function(result){
-//			console.log("result : " + result);
-//			closeModal();
-//			// 입력후 댓글입력창 닫기
-//			showList();
-//			// 입력후 댓글창 리스트 업데이트
-//		}
-//rs.getList(f.bno.value, function(data){
-//data.forEach(vo => {
-//console.log(vo);
-//});
-//});
-//
-//let rno = 10;
-//rs.remove(rno, data => {
-//console.log(data);
-//});
-//
-//rs.update({
-//reply : '테스트',
-//rno : 12
-//} , function(result) {
-//console.log(result);
-//}); 
-//
-//
-//rs.get(11, data => {
-//	console.log(data);
-//});
+fetch('/board/getAttachList/' + f.boardno.value)
+.then(response => response.json())
+.then(result => {
+    if (result.length === 0) {
+        const fileBody = document.querySelector('.file-container');
+        fileBody.style.display = 'none';
+    } else {
+        showUploadFile(result);
+    }
+})
+.catch(err => {
+    console.error(err);
+    alert('첨부파일 목록을 가져오는 중 오류가 발생했습니다.');
+});
 
 
 

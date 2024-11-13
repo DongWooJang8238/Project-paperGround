@@ -57,8 +57,9 @@
 </head>
 <body>
 	<jsp:include page="../layout/header.jsp"></jsp:include>
-	 <h1>게임 모드: nomal</h1>
+	 <h1>게임 모드: Nomal</h1>
     <h2>장르: ${gameJenre}</h2>
+    <h3>진행사항 : <span id="currentIndexDisplay">0</span> / 3</h3>
 
 	<input type="hidden" class="userMno" value="${sessionScope.vo.mno}" />
 
@@ -78,7 +79,8 @@
     </div>
     
 	<div>	
-   		<button id="backButton" class="backButton"  onclick="goBack()">뒤로가기</button>
+   		<button id="backButton" class="backButton"  onclick="goBack()">이전문제 보기</button>
+   		<button type="button" onclick="location.href='/game/JenreCheck?gameMode=1&mno=${sessionScope.vo.mno}'">장르 선택으로 가기</button>
 	 </div>
 	 
 <jsp:include page="../layout/footer.jsp"></jsp:include>

@@ -27,7 +27,6 @@ import lombok.extern.log4j.Log4j;
 public class SocketServer {
 
 	private UsedShopService service;
-	private static Set<Session> sessions = new HashSet<>();
 	
 	public SocketServer() {
         ApplicationContext context = ApplicationContextProvider.getApplicationContext();
@@ -37,7 +36,6 @@ public class SocketServer {
 	@OnOpen
 	public void handelOpen(Session session) {
 		log.warn("채팅방 오픈 췍췤췍췤");
-		sessions.add(session);
 
 		int ubno = Integer.parseInt(session.getRequestParameterMap().get("ubno").get(0));
 		int sellmno = Integer.parseInt(session.getRequestParameterMap().get("sellmno").get(0));
@@ -70,18 +68,18 @@ public class SocketServer {
 			// 3. 채팅 내역이 존재하는지 유무 확인
 			if(list != null && !list.isEmpty()) {
 				// 3-1. 채팅 내역이 존재한다면 출력되는지 로그를 찍어 확인
-				for (ChattingDTO chattingDTO : list) {
-					log.warn("채팅 내역 : " + chattingDTO.getContent());
-				}
-				
-				// ObjectMapper를 사용하여 List를 JSON으로 변환
-				ObjectMapper mapper = new ObjectMapper();
-				try {
-					String chatHistory = mapper.writeValueAsString(list);
-					session.getBasicRemote().sendText(chatHistory);
-				} catch (Exception e) {
-					log.error("채팅 내역 전송 오류: " + e.getMessage());
-				}
+//				for (ChattingDTO chattingDTO : list) {
+//					log.warn("채팅 내역 : " + chattingDTO.getContent());
+//				}
+//				
+//				// ObjectMapper를 사용하여 List를 JSON으로 변환
+//				ObjectMapper mapper = new ObjectMapper();
+//				try {
+//					String chatHistory = mapper.writeValueAsString(list);
+//					session.getBasicRemote().sendText(chatHistory);
+//				} catch (Exception e) {
+//					log.error("채팅 내역 전송 오류: " + e.getMessage());
+//				}
 			}else {
 				// 3-2. 채팅 내역이 존재하지 않을 때 출력 할 로그
 				log.warn("채팅 내역이 존재하지 않습니다.");
@@ -107,7 +105,6 @@ public class SocketServer {
 
 	@OnClose
 	public void handleClose(Session session) {
-		sessions.remove(session);
 		System.out.println("클라이언트가 종료했습니다.");
 	}
 
@@ -154,13 +151,6 @@ public class SocketServer {
         Date sqlDate = new Date(nowTime);
         String responseMessage = "[" + sqlDate + "] : " + msg;
 
-        for (Session s : sessions) {
-            try {
-                s.getBasicRemote().sendText(responseMessage);
-            } catch (IOException e) {
-                log.error("브로드캐스트 메시지 전송 오류: " + e.getMessage());
-            }
-        }
     }
 
 

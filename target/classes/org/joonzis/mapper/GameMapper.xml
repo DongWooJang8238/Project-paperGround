@@ -38,7 +38,7 @@
 	select pgdate from gameuser where mno = #{mno}
 </select>
 <insert id="pointHistory" parameterType="int">
-	insert into tbl_pointHistory (mno, point, pointarea, pointgetDate, status) values( #{mno}, 150, '게임', sysdate, '포인트획득')
+	insert into tbl_pointHistory (mno, point, pointarea, pointgetDate, status) values( #{mno}, 150, '게임', sysdate, '적립')
 </insert>
 
 	

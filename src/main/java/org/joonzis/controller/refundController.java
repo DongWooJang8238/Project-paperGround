@@ -27,7 +27,6 @@ public class refundController {
 	public String entrance(@RequestParam("mno") int mno, Model model) {
 		log.info("refund.......");
 		
-		
 		model.addAttribute("mno", mno);
 		return "/refund/refund";
 	}

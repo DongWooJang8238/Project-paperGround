@@ -43,11 +43,11 @@
                   <th>제품상태</th>
                   <td>
                   	<select name="status">
-                  		<option value="new">미개봉 새상품</option>
-                  		<option value="excellent">새 상품에 가까움</option>
-                  		<option value="good">사용감 적음, 컨디션 양호</option>
-                  		<option value="fair">사용감 있음, 컨디션 양호</option>
-                  		<option value="worn">사용감 많음, 스크레치 등 존재</option>
+                  		<option value="1">미개봉 새상품</option>
+                  		<option value="2">새 상품에 가까움</option>
+                  		<option value="3">사용감 적음, 컨디션 양호</option>
+                  		<option value="4">사용감 있음, 컨디션 양호</option>
+                  		<option value="5">사용감 많음, 스크레치 등 존재</option>
                   	</select> 
                   </td>
                </tr>

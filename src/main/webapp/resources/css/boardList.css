@@ -1,3 +1,30 @@
+.categoryList {
+    width: 200px; /* 사이드바 너비 */
+    height: 335px;
+    background-color: #ffffff; /* 사이드바 배경색 */
+    padding: 20px; /* 패딩 추가 */
+    position: fixed; /* 고정 위치로 변경 */
+    top: 150px; /* 헤더 아래 위치 */
+    bottom: 120px; /* 푸터 위 위치 */
+    overflow-y: auto; /* 스크롤 가능 */
+    left: 0; /* 화면 왼쪽에 고정 */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* 사이드바 그림자 */
+}
+
+.categoryList h3 {
+    margin-top: 0; /* 제목 상단 여백 제거 */
+}
+
+.categoryList a {
+    display: block; /* 링크를 블록 요소로 설정하여 전체 너비를 차지하게 함 */
+    padding: 10px; /* 링크 패딩 */
+    color: #333; /* 링크 글자 색상 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+.categoryList a:hover {
+    background-color: #ddd; /* 마우스 오버 시 배경색 변경 */
+}
 /* 기본 스타일 */
 body {
     font-family: Arial, sans-serif;
@@ -27,6 +54,7 @@ h1.page-header {
 .btn-fir {
     background-color: #007bff;
     color: white;
+    float: right; /* Add this line to move the button to the right */
 }
 
 .btn-fir:hover {
@@ -112,13 +140,33 @@ a:hover {
         border-bottom: none;
     }
 }
-.sidebar {
-    width: 200px; /* 사이드바의 너비 */
-    background-color: #ffffff; /* 사이드바 배경색 */
-    padding: 20px; /* 패딩 추가 */
-    position: absolute; /* 절대 위치로 설정 */
-    top: 150px; /* 헤더 아래 위치 (헤더 높이에 따라 조정) */
-    bottom: 120px; /* 푸터 위 위치 (푸터 높이에 따라 조정) */
-    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 가능 */
+
+.board-container {
+    padding-left: 220px; /* 사이드바 너비만큼 왼쪽 패딩 */
+    padding-right: 220px; /* 사이드바 너비만큼 왼쪽 패딩 */
+    margin-top: 20px;
 }
+
+.board-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    table-layout: fixed; /* 열 너비를 고정 */
+}
+
+.board-table th, .board-table td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    width: calc(100% / 6); /* 각 열의 너비를 동일하게 설정 (6열) */
+    height: 50px;
+}
+
+.board-table th {
+    background-color: #f1f1f1;
+    color: #333;
+}
+
+
+
 

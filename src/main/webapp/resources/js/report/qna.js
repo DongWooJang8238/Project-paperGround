@@ -42,7 +42,7 @@ function updateQnaList(qnaList) {
         const categoryCell = document.createElement('td');
         const questionCell = document.createElement('td');
 
-        categoryCell.textContent = `[${qna.qnaQuestion}] ${qna.qnaQuestion}`;
+        categoryCell.textContent = `${qna.qnaQuestion}`;
         questionCell.textContent = qna.qnaAnswer;
 
         row.appendChild(categoryCell);

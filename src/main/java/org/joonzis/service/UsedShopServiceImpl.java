@@ -146,4 +146,50 @@ public class UsedShopServiceImpl implements UsedShopService{
 		return mapper.selectSellChatRoomList(chat);
 	}
 	
+	@Override
+	public int selectWishList(UsedBookVO vo) {
+		return mapper.selectWishList(vo);
+	}
+	
+	@Override
+	public int insertWishList(UsedBookVO vo) {
+		log.warn("찜 서비스 넘어온 데이터 : " + vo);
+		log.warn("찜 서비스 넘어온 데이터 : " + vo.getMno());
+		log.warn("찜 서비스 넘어온 데이터 : " + vo.getUbno());
+		return mapper.insertWishList(vo);
+	}
+	
+	@Override
+	public int deleteWishList(UsedBookVO vo) {
+		log.warn("찜 삭제 서비스 넘어온 데이터 : " + vo);
+		log.warn("찜 삭제 서비스 넘어온 데이터 : " + vo.getMno());
+		log.warn("찜 삭제 서비스 넘어온 데이터 : " + vo.getUbno());
+		return mapper.deleteWishList(vo);
+	}
+	
+	@Override
+	public int successSell(int ubno) {
+		log.warn("서비스 판매완료" + ubno);
+		return mapper.successSell(ubno);
+	}
+	
+	@Override
+	public int deleteUbook(int ubno) {
+		log.warn("서비스 상품 삭제 : " + ubno);
+		return mapper.deleteUbook(ubno);
+	}
+	
+	@Override
+	public int updateUbook(UsedBookVO ubvo) {
+		log.warn("서비스 업데이트 : " + ubvo);
+		log.warn("서비스 업데이트 : " + ubvo.getUbno());
+		log.warn("서비스 업데이트 : " + ubvo.getMno());
+		log.warn("서비스 업데이트 : " + ubvo.getContent());
+		log.warn("서비스 업데이트 : " + ubvo.getStatus());
+		log.warn("서비스 업데이트 : " + ubvo.getTitle());
+		log.warn("서비스 업데이트 : " + ubvo.getUbookImage());
+		log.warn("서비스 업데이트 : " + ubvo.getUbookPrice());
+		return mapper.updateUbook(ubvo);
+	}
+	
 }

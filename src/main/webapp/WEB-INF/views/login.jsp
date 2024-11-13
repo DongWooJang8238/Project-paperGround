@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -121,19 +122,27 @@ body {
 		</div>
 		<h2>로그인</h2>
 
-		<form method="post">
+		<form action="/login" method="post">
 			<div class="input-group">
 				<label for="username">아이디</label> <input type="text" id="userId"
-					name="userId" placeholder="아이디 입력" required>
+					name="username" placeholder="아이디 입력" required>
 					<div class="invalid-feedback" id="mIdValidState"></div>
 			</div>
 
 			<div class="input-group">
 				<label for="userPw">비밀번호</label> <input type="password"
-					id="userPw" name="userPw" placeholder="비밀번호 입력" required>
+					id="userPw" name="password" placeholder="비밀번호 입력" required>
 					<div class="invalid-feedback" id="mPwValidState"></div>
 			</div>
-			<button type="button" class="signup-btn" id="gologin">로그인</button>
+			<c:if test="${param.error != null}">
+			    <div class="alert alert-danger" style="color: red;">아이디 또는 비밀번호를 확인하세요.</div>
+			</c:if>
+			<div>
+				<input type="checkbox" name="remember-me"> 아이디 기억
+			</div>
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+			<input type="submit" class="signup-btn" value="로그인">
+			<!-- <button type="button" class="signup-btn" id="gologin">로그인</button> -->
 			<button type="button" class="signup-btn" id="goSignup">회원가입</button>
 			<a href="/User/findId">아이디 찾기</a>
  		    <a href="/User/findPw">비밀번호 찾기</a>

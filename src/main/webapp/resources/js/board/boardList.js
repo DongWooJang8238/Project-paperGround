@@ -10,12 +10,11 @@ document.head.appendChild(linkEle);
 
 // 새 게시글 등록 클릭 이벤트
 document.querySelector("#registerBtn").addEventListener('click', ()=> {
-	if(mno.value === ""){
-		alert('로그인이 필요한 기능입니다!');
+	if(mno.value == ''){
+		alert("로그인시 글작성 가능합니다.");
 		return;
-	}else{
-		location.href = '/board/register';
 	}
+	location.href = '/board/register';
 });
 
 // 게시글 제목 클릭 이벤트 - 조회
@@ -31,26 +30,26 @@ document.querySelectorAll("tbody a").forEach( a => {
 });
 
 //카테고리 클릭 이벤트 - 조회
-document.querySelectorAll('.sidebar a').forEach(a => {
-	a.addEventListener('click', e => {
-		e.preventDefault();
-		
-		gener = a.getAttribute('href');
-		filterType = a.getAttribute('filterType');
-		if(gener === null){
-			gener = new URLSearchParams(location.search).get('gener');
-		}
-		if(filterType === null){
-			filterType = new URLSearchParams(location.search).get('filterType');
-		}
-		setStorageData(pageNum, amount, gener, filterType);
-		
-		let sendData = `pageNum=1&amount=${amount}&gener=${gener}&filterType=${filterType}`;
-		console.log(sendData);
-		
-		location.href = `/board/list?${sendData}`;
-	});
-});
+//document.querySelectorAll('.sidebar a').forEach(a => {
+//	a.addEventListener('click', e => {
+//		e.preventDefault();
+//		
+//		gener = a.getAttribute('href');
+//		filterType = a.getAttribute('filterType');
+//		if(gener === null){
+//			gener = new URLSearchParams(location.search).get('gener');
+//		}
+//		if(filterType === null){
+//			filterType = new URLSearchParams(location.search).get('filterType');
+//		}
+//		setStorageData(pageNum, amount, gener, filterType);
+//		
+//		let sendData = `pageNum=1&amount=${amount}&gener=${gener}&filterType=${filterType}`;
+//		console.log(sendData);
+//		
+//		location.href = `/board/list?${sendData}`;
+//	});
+//});
 
 function setStorageData(pageNum, amount){
 	let pageData = {
@@ -74,18 +73,19 @@ setStorageData(pageNum, amount);
 
 
 // 페이지 버튼 클릭 이벤트
-document.querySelectorAll(".page-nation li a").forEach( a => {
-	a.addEventListener('click', e=>{
-		e.preventDefault();
-		
-		pageNum = a.getAttribute('href');
-		setStorageData(pageNum, amount);
-		
-		let sendData = `pageNum=${pageNum}&amount=${amount}`;
-		
-		location.href = `/board/list?${sendData}`;
-		
-	});
+document.querySelectorAll(".page-nation li a").forEach(a => {
+    a.addEventListener('click', e => {
+        e.preventDefault();
+        
+        const pageNum = a.getAttribute('href');
+        const category = new URLSearchParams(window.location.search).get("category") || "free"; // 기본값을 "free"로 설정
+        
+        setStorageData(pageNum, amount);
+        
+        let sendData = `pageNum=${pageNum}&amount=${amount}&category=${category}`;
+        
+        location.href = `/board/list?${sendData}`;
+    });
 });
 
 

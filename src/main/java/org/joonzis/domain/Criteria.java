@@ -14,5 +14,13 @@ public class Criteria {
 	private int amount;		// 가져올 게시글 수
 	private int[] gener;		// 장르 번호
 	private String filterType; // 필터 타입
+	private String selectOption, selectValue;
+	
+	private String category;
+	
+	private int userMno;
+	
+	private String startDate;
+	private String endDate;
 	
 }

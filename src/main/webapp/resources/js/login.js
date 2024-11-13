@@ -105,7 +105,7 @@ function login(){
 	.then(response => response.text())
 	.then(data => {
 		if(data === "find the ID&PW"){
-			f.action = "/User/goLogin";
+			f.action = "/login";
 			f.submit();
 		}else if(data === "password is wrong"){
 			invalidated(f.userPw,mPwValidState,'비밀번호가 틀립니다.');
@@ -120,8 +120,6 @@ function login(){
 	
 	
 }
-	
-
 	
 	
 	

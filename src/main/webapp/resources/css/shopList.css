@@ -56,30 +56,59 @@ body {
     padding: 0;
 }
 
-.sidebar {
-    width: 200px; /* 사이드바의 너비 */
-    background-color: #ffffff; /* 사이드바 배경색 */
-    padding: 20px; /* 패딩 추가 */
-    position: absolute; /* 절대 위치로 설정 */
-    top: 150px; /* 헤더 아래 위치 (헤더 높이에 따라 조정) */
-    bottom: 120px; /* 푸터 위 위치 (푸터 높이에 따라 조정) */
-    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 가능 */
+.selfil {
+	max-width: 1200px;
+    margin: 0 auto;
 }
 
+.select-body {
+  /* 전체적인 레이아웃 설정 */
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f5f5f5; /* Gemini 채팅 탭 배경색과 유사하게 설정 */
 
-.sidebar h3 {
-    margin-top: 0; /* 제목 상단 여백 제거 */
-}
+  /* 레이블 스타일 */
+  label {
+    margin-right: 10px;
+    font-weight: bold;
+  }
 
-.sidebar a {
-    display: block; /* 링크를 블록 요소로 설정하여 전체 너비를 차지하게 함 */
-    padding: 10px; /* 링크 패딩 */
-    color: #333; /* 링크 글자 색상 */
-    text-decoration: none; /* 밑줄 제거 */
-}
+  /* select 스타일 */
+  select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    /* 드롭다운 화살표 커스터마이징 (선택 사항) */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcMCIgeG1sbnM6eG1sbnM9Imh0dDovL3d3dy53My5vcmcvMjAwMC9zdmcvaGVscCwiIHZpZXcxPSIwIDAgMTAgMTAiPgogICAgPGBhdHkgZD0iTTUgNSAiaDEiIG0wLTUgdiIwb3YtNSBaIi8+CiAgIDxwYXRoIGQ9Ik01IDkgSDEwIi8+Cjwvc3ZnPg==); /* 드롭다운 화살표 아이콘 */
+    background-repeat: no-repeat;
+    background-position: right 5px center;
+  }
 
-.sidebar a:hover {
-    background-color: #ddd; /* 마우스 오버 시 배경색 변경 */
+  /* input 스타일 */
+  input[type="search"] {
+    flex-grow: 1; /* 다른 요소들이 차지하는 공간을 모두 채움 */
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    /* 고정된 너비 설정 (필요에 따라 수정) */
+    min-width: 200px;
+  }
+
+  /* 버튼 스타일 */
+  button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+  }
 }
 
 .panel-body {
@@ -192,4 +221,102 @@ body {
 .panel-body button:hover {
     background-color: #0056b3;
 }
+
+.filterType-body {
+    background-color: #f5f5f5; /* 배경 색상 */
+    padding: 10px;
+    border-radius: 5px; /* 모서리 둥글게 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+}
+
+.filterType-body ul {
+    list-style: none; /* 기본 리스트 스타일 제거 */
+    padding: 0;
+    display: flex; /* 버튼을 가로로 나열 */
+    justify-content: space-around; /* 버튼 사이의 간격 조정 */
+    margin: 0; /* 기본 마진 제거 */
+}
+
+.filterType-body li {
+    flex: 1; /* 각 버튼을 동일한 크기로 설정 */
+    text-align: center; /* 버튼 텍스트 가운데 정렬 */
+}
+
+.filterType-body button {
+    background-color: #ffffff; /* 버튼 배경 색상 */
+    border: 1px solid #ccc; /* 테두리 색상 */
+    border-radius: 5px; /* 버튼 모서리 둥글게 */
+    padding: 10px 15px; /* 버튼 패딩 */
+    font-size: 14px; /* 버튼 텍스트 크기 */
+    cursor: pointer; /* 커서 포인터 */
+    transition: background-color 0.3s, border-color 0.3s; /* 부드러운 전환 효과 */
+}
+
+.filterType-body button:hover {
+    background-color: #e2e2e2; /* 호버 시 배경 색상 변경 */
+    border-color: #888; /* 호버 시 테두리 색상 변경 */
+}
+
+.filterType-body button:focus {
+    outline: none; /* 포커스 시 기본 테두리 제거 */
+    border-color: #007bff; /* 포커스 시 테두리 색상 변경 */
+}
+
+.category-body {
+    background-color: #f5f5f5; /* 배경 색상 */
+    padding: 15px; /* 패딩 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    display: flex; /* 플렉스 박스를 사용하여 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    gap: 15px; /* 아이템 간격 */
+}
+
+.category-body label {
+    font-size: 16px; /* 레이블 텍스트 크기 */
+    font-weight: bold; /* 레이블 텍스트 두껍게 */
+    margin-right: 10px; /* 레이블 오른쪽 여백 */
+}
+
+#resetBtn {
+    background-color: #ffffff; /* 버튼 배경 색상 */
+    border: 1px solid #ccc; /* 테두리 색상 */
+    border-radius: 5px; /* 버튼 모서리 둥글게 */
+    padding: 10px 15px; /* 버튼 패딩 */
+    font-size: 14px; /* 버튼 텍스트 크기 */
+    cursor: pointer; /* 커서 포인터 */
+    transition: background-color 0.3s, border-color 0.3s; /* 부드러운 전환 효과 */
+    margin-right: 10px; /* 오른쪽 여백 추가 */
+}
+
+#resetBtn:hover {
+    background-color: #e2e2e2; /* 호버 시 배경 색상 변경 */
+    border-color: #888; /* 호버 시 테두리 색상 변경 */
+}
+
+#resetBtn:focus {
+    outline: none; /* 포커스 시 기본 테두리 제거 */
+    border-color: #007bff; /* 포커스 시 테두리 색상 변경 */
+}
+
+
+.category-body span {
+    display: flex; /* 체크박스와 텍스트를 수평으로 나열 */
+    align-items: center; /* 수직 중앙 정렬 */
+    cursor: pointer; /* 커서 포인터 */
+    margin-right: 10px; /* 체크박스 오른쪽 여백 */
+}
+
+.category-body input[type="checkbox"] {
+    margin-right: 5px; /* 체크박스와 텍스트 사이의 간격 */
+    transform: scale(1.2); /* 체크박스 크기 조정 */
+    cursor: pointer; /* 커서 포인터 */
+}
+
+/* 체크박스 선택 시 텍스트 색상 변경 */
+.category-body input[type="checkbox"]:checked + span {
+    font-weight: bold; /* 선택된 체크박스의 텍스트를 두껍게 */
+    color: #007bff; /* 선택된 체크박스의 텍스트 색상 변경 */
+}
+
 

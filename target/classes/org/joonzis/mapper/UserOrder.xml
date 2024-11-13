@@ -181,4 +181,5 @@
          AND o.odno = #{odno}
          order by o.orderdate desc
    </select>
+   
 </mapper>

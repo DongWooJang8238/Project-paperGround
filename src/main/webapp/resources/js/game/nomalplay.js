@@ -9,6 +9,7 @@ function showNextQuest() {
     if (currentIndex < questList.length) {
         questList[currentIndex].style.display = 'block';
     }
+    document.getElementById("currentIndexDisplay").textContent = questNo; // Add 1 to show as 1-based index
 }
 
 function checkAnswer() {
@@ -29,7 +30,7 @@ function checkAnswer() {
             showNextQuest(); 
         } else {
             alert("모든 퀘스트를 완료했습니다!");
-            location.href='/game/gameDone?mno='+1;
+            location.href='/game/gameDone?mno='+mno.value;
         }
     } else {
         alert("오답입니다. 정답은 "+correctAnswer + " 입니다");
@@ -43,14 +44,14 @@ function goBack() {
 	if(currentIndex == 0 ){
 		return;
 	}
-	
+
 	questList[currentIndex].style.display = 'none';
 	document.getElementById("answerInput").value = ''; // 입력창 비우기
 	currentIndex--;
 	questNo--;
+	document.getElementById("currentIndexDisplay").textContent = questNo; // Add 1 to show as 1-based index
 	questList[currentIndex].style.display = 'block';
 	
-	//location.href = '/game/entrance?mno='+1;
 }
 
 

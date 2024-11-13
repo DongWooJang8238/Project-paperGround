@@ -28,4 +28,8 @@ public interface BoardService {
 	// 좋아요 수 조회
 	public int getLikeCount(int boardno);
 	
+	// BoardService.java
+	public List<BoardVO> getListByCategory(Criteria cri, String category);
+	
+	public int getTotalByCategory(String category);
 }

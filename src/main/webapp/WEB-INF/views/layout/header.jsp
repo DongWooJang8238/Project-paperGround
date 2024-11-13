@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -17,14 +18,27 @@
 					</a>
 				</div>
 				<div class="user-options">
-					<button type="button" id="login">로그인</button>
-					<button type="button" id="logout">로그아웃</button>
-					<button type="button" id="signup">회원가입</button>
-					<button type="button" id="adminPage">관리자 페이지</button>
-					<button type="button" id="myPage">마이페이지</button>
+					<sec:authorize access="isAuthenticated()">
+					    <!-- 로그인된 사용자만 볼 수 있는 내용 -->
+						<button type="button" id="logout">로그아웃</button>
+						<button type="button" id="adminPage">관리자 페이지</button>
+						<button type="button" id="myPage">마이페이지</button>
+					</sec:authorize>
+					
+					<sec:authorize access="isAnonymous()">
+					    <!-- 로그인되지 않은 사용자에게만 보이는 내용 -->
+						<button type="button" id="login">로그인</button>
+						<button type="button" id="signup">회원가입</button>
+					</sec:authorize>
+					<button type="button" id="gogack">고객센터</button>
+					
+					<sec:authorize access="isAuthenticated()">
+					    <!-- 로그인된 사용자만 볼 수 있는 내용 -->
+						<button id="cart">🛒</button>
+						mno : <sec:authentication property="principal.user.mno"/>
+						<input type="hidden" id="mno" name="mno" value="<sec:authentication property="principal.user.mno"/>">
+					</sec:authorize>
 					<button id="search" onclick="toggleCart()">🔍</button>
-					<button id="cart">🛒</button>
-					<input type="hidden" id="mno" name="mno" value="${sessionScope.vo.mno}">
 				</div>
 			</div>
 		</header>
@@ -41,7 +55,7 @@
 					</div>
 					<div class="category" onclick="toggleSubcategories('points')">포인트상점</div>
 					<div class="category" onclick="goBoard()">커뮤니티게시판</div>
-					<div class="category" onclick="toggleSubcategories('writing')">집필게시판</div>
+					<div class="category" onclick="writeHomeGo()">집필게시판</div>
 					<div class="category" onclick="goGame()">게임</div>
 				</div>
 			</div>

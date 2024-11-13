@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.joonzis.mapper.WriteMapper">
+
+	<select id="selectWriteAll" resultType="org.joonzis.domain.WriteVO">
+		select * from tbl_writing order by views desc
+	</select>
+	
+	<select id="userNickName" parameterType="int" resultType="String">
+		select nickname from tbl_user where mno = #{mno}
+	</select>
+
+	<select id="selectCountWriting" parameterType="org.joonzis.domain.WriteVO" resultType="int">
+		select count(*) from tbl_writing where mno = #{mno} and title = #{title}
+	</select>
+	<insert id="writeInsert" parameterType="org.joonzis.domain.WriteVO">
+		insert into tbl_writing values 
+		(seq_writing_wno.nextval, #{mno}, #{writeType}, #{genre}, #{title}, #{description}, #{coverImage}, '연재중', sysdate, sysdate)
+	</insert>
+	
+	<select id="writeWnoSelect" parameterType="int" resultType="int">
+		select max(wno) from tbl_writing where mno = #{mno}
+	</select>
+	
+	<select id="episodeCount" parameterType="int" resultType="int">
+		select count(*) from tbl_writeepisode where wno = #{wno}
+	</select>
+	
+	<insert id="writeInsertEpisode" parameterType="org.joonzis.domain.WriteEpisodeVO">
+		insert into tbl_writeepisode values 
+		(seq_episode_epno.nextval, #{wno}, #{episodeCount}, #{episodeTitle}, #{content}, #{episodeComment}, sysdate)
+	</insert>
+</mapper>

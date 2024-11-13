@@ -20,15 +20,11 @@ document.querySelectorAll(".user-options button").forEach(a => {
 			location.href = '/User/login';
 		}else if(menu === "logout"){
 			// 추후 적용 예정 ( 시큐리티 )
+			location.href = '/customLogout';
 		}else if(menu === "signup"){
 			location.href = '/User/signup';
 		}else if(menu === "cart"){
-			if(mno.value === ""){
-				alert('로그인이 필요한 기능입니다.');
-				return;
-			}else {
-				goToCart();
-			}
+			goToCart();
 		}else if(menu === "myPage"){
 			if(mno.value === ""){
 				if(confirm('로그인이 필요한 서비스입니다. 로그인 하시겠습니까?')){
@@ -39,6 +35,8 @@ document.querySelectorAll(".user-options button").forEach(a => {
 			}else {
 				location.href = '/User/myPage?mno=' + mno.value;
 			}
+		}else if(menu === "gogack"){
+			location.href = '/report/entrance?mno=' + mno.value;
 		}
 		
 	});
@@ -58,10 +56,13 @@ function getStorageData() {
 function shopListGo() {
 //	console.log(123);
 	// 상단바에서 쇼핑리스트로 이동 시 gener = 0, pageNum = 1 으로 전송
-	location.href = '/shop/list?gener=0';
+	location.href = '/shop/list';
 }
 function shopUsedList() {
 	location.href = '/used/list';
+}
+function writeHomeGo() {
+	location.href = '/write/home';
 }
 function goToCart() {
 	location.href = '/shop/cartListBuy?mno=' + mno.value;

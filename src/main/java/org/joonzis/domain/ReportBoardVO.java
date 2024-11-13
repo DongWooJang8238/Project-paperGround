@@ -13,7 +13,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ReportBoardVO {
-	private int boardNO, mno, readCount, replyCount;
-	private String title, content, writer, attachFile;
-	private Date regdate, updatedate;
+	private int reportBoardno, mno, readCount, replyCount;
+	private String title, content, writer, attachFile, reportCategory;
+	private Date regDate, updatedate;
+	
 }

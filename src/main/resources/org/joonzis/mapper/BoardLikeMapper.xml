@@ -39,7 +39,7 @@
 		SELECT COUNT(*) FROM table_commentLikes WHERE replyno = #{replyno}
 	</select>
 	
-	<select id="comisLikedVO" resultType="int" parameterType="org.joonzis.domain.BoardCommentLikeVO">
+	<select id="comisLiked" resultType="int" parameterType="org.joonzis.domain.BoardCommentLikeVO">
 		SELECT COUNT(*) FROM table_commentLikes WHERE replyno = #{replyno} AND boardno = #{boardno} AND mno = #{mno}
 	</select>
 	

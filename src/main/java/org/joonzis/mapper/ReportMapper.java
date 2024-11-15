@@ -34,6 +34,8 @@ public interface ReportMapper {
 	public int getTotalByCategory(String category);
 	// ReportBoardService.java
 	public List<ReportBoardVO> getPostsByCategory(Map<String, Object> params);
+	public int getUserTotal(int mno);
+	public List<DrVO> getUserDrList(Criteria cri);
 
 
 

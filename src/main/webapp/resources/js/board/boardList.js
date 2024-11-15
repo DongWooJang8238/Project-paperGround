@@ -78,7 +78,7 @@ document.querySelectorAll(".page-nation li a").forEach(a => {
         e.preventDefault();
         
         const pageNum = a.getAttribute('href');
-        const category = new URLSearchParams(window.location.search).get("category") || "free"; // 기본값을 "free"로 설정
+        const category = new URLSearchParams(window.location.search).get("category") || 1; // 기본값을 "1(자유게시판)"로 설정
         
         setStorageData(pageNum, amount);
         

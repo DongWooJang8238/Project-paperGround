@@ -1,5 +1,6 @@
 package org.joonzis.mapper;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.joonzis.domain.WriteEpisodeVO;
@@ -32,4 +33,15 @@ public interface WriteMapper {
 	public int writeUpdateEpisode(WriteEpisodeVO vo);
 	// 에피소드 수정 및 연재 시 작품 업데이트 날짜 업데이트
 	public int updateWriteDate(int wno);
+	// 에피소드 마지막으로 본 회차 날짜 구하기
+	public Date getLastDateByEpnoMno(WriteEpisodeVO vo);
+	// 조회수 업데이트
+	public int updateWriteView(int wno);
+	// 좋아요 업데이트 위한것들
+	// 1. 좋아요 눌렀는지 체크
+	public int checkLike(WriteVO vo);
+	// 2. 안눌렀을 때 - 인서트
+	public int insertLike(WriteVO vo);
+	// 3. 이미 눌렀을 때 - 딜리트
+	public int deleteLike(WriteVO vo);
 }

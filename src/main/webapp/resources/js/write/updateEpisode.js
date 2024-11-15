@@ -54,7 +54,11 @@ function sendData() {
 			console.log(result);
 			if(result === 'success'){
 				alert('작품 등록이 완료되었습니다.');
-				location.href = '/write/home';
+				if(mno.value === ''){
+					location.href = '/write/home?mno=0';
+				}else {
+					location.href = '/write/home?mno=' + mno.value;
+				}
 			}else {
 				alert('문제가 발생하였습니다.');
 				return;

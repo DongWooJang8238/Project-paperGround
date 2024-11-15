@@ -42,7 +42,7 @@ th, td {
 				</c:if>
 
 				<c:if test="${not empty vo.userIcon}">
-					 <img src="${vo.userIcon}" id="userIcon" alt="userIcon" width="100" height="100">
+					 <img src="${sessionScopevo.userIcon}" id="userIcon" alt="userIcon" width="100" height="100">
 				</c:if>
 
 				<input type="hidden" name="userId" value="${vo.userId}">
@@ -94,12 +94,14 @@ th, td {
 								href="/User/OrderSelect?mno=${vo.mno }">주문목록/배송조회</a></li>
 							<li><a href="#">취소/반품/내역</a></li>
 							<li><a id="myOrder"
-								href="/User/myUsedProductsSelect?userMno=${vo.mno }">내 중고상품</a></li>
+								href="/User/saleEnd?userMno=${vo.mno }&filterType=1">내 중고상품</a></li>
 						</ul></li>
 					<li><a href="#" onclick="toggleSubMenu('benefit-management')">활동정보</a>
 						<ul id="benefit-management" class="sub-menu">
-							<li><a href="#">내 게시글/댓글</a></li>
-							<li><a href="#">집필 북마크</a></li>
+							<li><a id="myCP" 
+							href="/User/myCommenPost?userMno=${vo.mno }&filterType=posts">내 게시글/댓글</a></li>
+							<li><a id="myLB" 
+							href="/User/myLikedWriterBookList?userMno=${vo.mno}">집필 북마크</a></li>
 						</ul></li>
 					<li><a href="#">회원 탈퇴</a></li>
 				</ul>

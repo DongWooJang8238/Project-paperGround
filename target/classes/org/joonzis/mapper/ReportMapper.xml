@@ -35,7 +35,27 @@
 		tbl_directReport
 	</select>
 	
+	<select id="getUserTotal" parameterType="int"  resultType="int">
+		select count(*) from
+		tbl_directReport where mno =#{mno}
+	</select>
+	
+	
+	
 
+	<select id="getUserDrList" parameterType="org.joonzis.domain.Criteria" 
+		resultType="org.joonzis.domain.DrVO">
+		<![CDATA[
+			select reportBoardno, writer, title, regdate, replyCount, readCount ,reportCategory
+			from (select rownum rn, reportBoardno, writer, title, regdate, replyCount, readCount, reportCategory
+  			  from (select * from tbl_reportboard where mno = #{userMno} order by reportBoardno desc)
+     		   where rownum <= #{pageNum} * #{amount})
+			where rn > (#{pageNum} - 1) * #{amount}
+		]]>
+	</select>	
+	
+	
+	
 	<select id="getList" parameterType="org.joonzis.domain.Criteria"
 		resultType="org.joonzis.domain.ReportBoardVO">
 		<![CDATA[

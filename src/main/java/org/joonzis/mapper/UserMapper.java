@@ -3,10 +3,12 @@ package org.joonzis.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.joonzis.domain.BoardVO;
 import org.joonzis.domain.Criteria;
 import org.joonzis.domain.UsedBookVO;
 import org.joonzis.domain.UserVO;
 import org.joonzis.domain.UserpointVO;
+import org.joonzis.domain.WriteVO;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface UserMapper {
@@ -73,4 +75,24 @@ public interface UserMapper {
 	// 중고 판매완료 조회
 	public List<UsedBookVO> selectGetuBookEndSaleList(Criteria cri);
 	
+	// 해당 유저가 작성한 게시글 조회
+	public List<BoardVO> selectBoard(Criteria cri);
+	
+	// 게시글 조회 페이징 카운트
+	public int selectBoardCount(Criteria cri);
+	
+	// 해당 유저가 작성한 댓글 조회
+	public List<BoardVO> selectComments(Criteria cri);
+	
+	// 댓글 조회 페이징 카운트
+	public int selectCommentsCount(Criteria cri);
+	
+	// 게시글 좋아요 조회 페이징 
+	public List<BoardVO> selectLikesBoard(Criteria cri);
+	
+	// 게시글 좋아요 조회 카운트
+	public int selectLikesCount(Criteria cri);
+	
+	// 집필 좋아요 리스트
+	public List<WriteVO> selectMyLikedWritingList(Criteria cri);
 }

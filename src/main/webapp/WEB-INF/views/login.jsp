@@ -123,6 +123,7 @@ body {
 		<h2>로그인</h2>
 
 		<form action="/login" method="post">
+			<input id="urlPage" type="hidden" name="urlPage">
 			<div class="input-group">
 				<label for="username">아이디</label> <input type="text" id="userId"
 					name="username" placeholder="아이디 입력" required>

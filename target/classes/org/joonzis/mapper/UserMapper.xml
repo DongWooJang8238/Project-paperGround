@@ -87,9 +87,12 @@
 		parameterType="org.joonzis.domain.UserVO">
 		UPDATE tbl_user
 		SET
-		useremail = #{userEmail}, address = #{address}, streetAddress =
-		#{streetAddress} , detailAddress = #{detailAddress} , userphonenumber
-		= #{userPhonenumber}, userdate = #{userDate}
+		useremail = #{userEmail}, address =
+		#{address}, streetAddress =
+		#{streetAddress} , detailAddress =
+		#{detailAddress} , userphonenumber
+		= #{userPhonenumber}, userdate =
+		#{userDate}
 		WHERE userId = #{userId}
 	</update>
 
@@ -131,7 +134,8 @@
 		SUM(point)
 		FROM tbl_pointhistory
 		WHERE mno = #{mno }
-		AND status = '사용'
+		AND status =
+		'사용'
 		AND pointgetdate
 		BETWEEN
 		TRUNC (sysdate -32)
@@ -149,7 +153,9 @@
 	</select>
 
 	<!-- 전체 책 리스트 조회 -->
-	<select id="getuBookList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.UsedBookVO">
+	<select id="getuBookList"
+		parameterType="org.joonzis.domain.Criteria"
+		resultType="org.joonzis.domain.UsedBookVO">
 	<![CDATA[
 		SELECT ubno, mno, gno, ubookPrice, title, content, ubookImage, status, ubookDate
 		FROM (
@@ -165,24 +171,27 @@
 	]]>
 	</select>
 
-	<select id="countGetuBookList" parameterType="org.joonzis.domain.Criteria" resultType="int">
-		SELECT count(*) FROM tbl_ubook 
-				where mno = #{userMno}
-				<choose>
-					<when test="startDate != null and endDate != null">
-						AND ubookdate BETWEEN #{startDate} AND #{endDate}
-					</when>
-					<when test="filterType == 0">
-						AND status = 0
-					</when>
-					<when test="filterType == 1">
-						AND status >= 1
-					</when>
-				</choose>
-				ORDER BY ubno DESC
+	<select id="countGetuBookList"
+		parameterType="org.joonzis.domain.Criteria" resultType="int">
+		SELECT count(*) FROM tbl_ubook
+		where mno = #{userMno}
+		<choose>
+			<when test="startDate != null and endDate != null">
+				AND ubookdate BETWEEN #{startDate} AND #{endDate}
+			</when>
+			<when test="filterType == 0">
+				AND status = 0
+			</when>
+			<when test="filterType == 1">
+				AND status >= 1
+			</when>
+		</choose>
+		ORDER BY ubno DESC
 	</select>
-	
-	<select id="selectGetuBookList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.UsedBookVO">
+
+	<select id="selectGetuBookList"
+		parameterType="org.joonzis.domain.Criteria"
+		resultType="org.joonzis.domain.UsedBookVO">
 	<![CDATA[
 		SELECT ubno, mno, gno, ubookPrice, title, content, ubookImage, status, ubookDate
 		FROM (
@@ -197,8 +206,10 @@
 		WHERE rn > (#{pageNum} - 1) * #{amount}
 	]]>
 	</select>
-	
-	<select id="selectGetuBookEndSaleList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.UsedBookVO">
+
+	<select id="selectGetuBookEndSaleList"
+		parameterType="org.joonzis.domain.Criteria"
+		resultType="org.joonzis.domain.UsedBookVO">
 	<![CDATA[
 		SELECT ubno, mno, gno, ubookPrice, title, content, ubookImage, status, ubookDate
 		FROM (
@@ -207,23 +218,114 @@
 				SELECT * FROM tbl_ubook 
                 where status 
 				]]>
-				<choose>
-					<when test="filterType == 0">
-    	            	= #{filterType}
-					</when>
-					<otherwise>
-	                	>= #{filterType}
-					</otherwise>
-				</choose>
+		<choose>
+			<when test="filterType == 0">
+				= #{filterType}
+			</when>
+			<otherwise>
+				>= #{filterType}
+			</otherwise>
+		</choose>
 				<![CDATA[
                 AND mno = #{userMno}
 			)
 			WHERE ROWNUM <= #{pageNum} * #{amount}
 		)
 		WHERE rn > (#{pageNum} - 1) * #{amount}
-        
 	]]>
 	</select>
-	
 
+	<select id="selectBoard" resultType="org.joonzis.domain.BoardVO"
+		parameterType="org.joonzis.domain.Criteria">
+	<![CDATA[	
+		SELECT title,readcount,updatedate 
+		FROM (
+       	 	SELECT ROWNUM rn, title, readcount,updatedate 
+        FROM (
+            SELECT * FROM table_board
+            WHERE mno = #{userMno}
+        )
+		WHERE ROWNUM <= #{pageNum} * #{amount}
+  		)
+  		WHERE rn > (#{pageNum} - 1) * #{amount}
+  	]]>
+	</select>
+
+	<select id="selectBoardCount"
+		parameterType="org.joonzis.domain.Criteria" resultType="int">
+		SELECT
+		count(*)
+		FROM table_board
+		WHERE mno = #{userMno}
+	</select>
+
+	<select id="selectComments" resultType="org.joonzis.domain.BoardVO" parameterType="org.joonzis.domain.Criteria">
+	<![CDATA[
+		SELECT reply, updatedate, title, readcount
+			FROM (
+    	SELECT ROWNUM AS rn, reply, updatedate, title, readcount
+    		FROM (
+        SELECT c.reply, c.updatedate, b.title, b.readcount
+        	FROM table_comments c
+        INNER JOIN table_board b ON c.boardno = b.boardno
+        	WHERE b.mno = #{userMno}
+        	ORDER BY c.updatedate DESC
+    			 )
+    		WHERE ROWNUM <= #{pageNum} * #{amount}
+				 )
+			WHERE rn > (#{pageNum} - 1) * #{amount}
+	]]>
+	</select>
+
+	<select id="selectCommentsCount" parameterType="org.joonzis.domain.Criteria" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM table_comments c
+			INNER JOIN table_board b
+			ON c.boardno = b.boardno
+		WHERE b.mno = #{userMno}
+	</select>
+
+	<select id="selectLikesBoard" resultType="org.joonzis.domain.BoardVO" parameterType="org.joonzis.domain.Criteria" >
+		<![CDATA[
+		SELECT title,updatedate, readcount
+    		FROM (
+    	SELECT ROWNUM AS rn, title, updatedate, readcount
+        	FROM (
+        SELECT b.title, b.updatedate, b.readcount
+        	FROM table_board b
+        INNER JOIN table_likes l ON b.boardno = l.boardno 
+        	WHERE l.mno = #{userMno}
+        )
+        	WHERE ROWNUM <= #{pageNum} * #{amount}
+            )
+            WHERE rn > (#{pageNum} - 1) * #{amount}
+	]]>
+	</select>
+
+	<select id="selectLikesCount" parameterType="org.joonzis.domain.Criteria" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM table_board b
+			inner join table_likes l
+			ON b.BOARDNO = l.BOARDNO AND l.mno = #{userMno}
+	</select>
+	
+	
+	<select id="selectMyLikedWritingList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.WriteVO">
+		SELECT 
+    		w.title,
+   			w.likecount,
+    		w.coverimage,
+    		w.genre
+    	FROM TBL_WRITING w
+    	INNER JOIN TBL_WRITING_LIKE L
+   	 		ON w.mno = l.mno
+   		WHERE w.MNO = #{userMno}
+   		<choose>
+   			<when test="filterType != null">
+   				AND title LIKE '%${filterType}%'
+   			</when>
+   		</choose>
+	</select>
 </mapper>

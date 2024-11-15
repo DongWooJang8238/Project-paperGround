@@ -14,17 +14,16 @@
 	<div id="root">
 		<div class="wrap">
 			<div class="profile-writer-wrap">
-				<div class="literature-gnb">
-					<div class="logo">
-						<img src="/assets/img/toplogo_blue.png" alt=""> 작품관리 <img
-							class="beta-ic" src="/assets/ic/beta_icon.png" alt="">
-					</div>
-					<div class="link">
-						<a href="/bridge/request/novel">조아라 웹소설 바로가기<img
-							src="/assets/ic/list-item/subnav-list-ic.png" alt=""></a>
-					</div>
-				</div>
 				<div class="profile-content custom">
+					<div class="literature-gnb">
+						<div class="logo">
+							<img src="/assets/img/toplogo_blue.png" alt=""> 작품관리 <img
+								class="beta-ic" src="/assets/ic/beta_icon.png" alt="">
+						</div>
+						<div class="writeHome">
+							<a href="#">조아라 웹소설 바로가기<img src="https://writer.joara.com/assets/ic/list-item/subnav-list-ic.png" alt=""></a>
+						</div>
+					</div>
 					<div class="profile-ic">
 						<img class="img"
 							src="${wvo.coverImage}" alt="" onerror="this.onerror=null; this.src='/resources/images/notImg.webp';">

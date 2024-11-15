@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -19,8 +20,8 @@
 						<img src="/assets/img/toplogo_blue.png" alt=""> 작품관리 <img
 							class="beta-ic" src="/assets/ic/beta_icon.png" alt="">
 					</div>
-					<div class="link">
-						<a href="/bridge/request/novel">조아라 웹소설 바로가기<img
+					<div class="link writeHome">
+						<a href="#">조아라 웹소설 바로가기<img
 							src="/assets/ic/list-item/subnav-list-ic.png" alt=""></a>
 					</div>
 				</div>
@@ -32,29 +33,24 @@
 					</div>
 					<div class="profile-name">
 						<div class="pen-ic"></div>
-						<div class="name">으닁</div>
-					</div>
-					<div class="pen-info">
-						<button>
-							<img src="/assets/ic/hint_icon.png" alt="">작가펜 안내
-						</button>
+						<div class="name"><sec:authentication property="principal.user.nickName"/></div>
 					</div>
 					<div class="work-subnav-list">
 						<a class="list-item" href="#">
 							<div>
 								연재작품<img src="/assets/ic/list-item/subnav-list-ic.png" alt="">
 							</div>
-							<div class="number">2</div></a>
+							<div class="number">${series}</div></a>
 						<a class="list-item"
 							href="#"><div>
 								완결작품<img src="/assets/ic/list-item/subnav-list-ic.png" alt="">
 							</div>
-							<div class="number">0</div></a>
+							<div class="number">${complete}</div></a>
 						<a class="list-item"
 							href="#"><div>
 								습작작품<img src="/assets/ic/list-item/subnav-list-ic.png" alt="">
 							</div>
-							<div class="number">1</div></a>
+							<div class="number">${etude}</div></a>
 					</div>
 					<div class="banner-secondary moduled-bookWrite"
 						data-testid="joa-Mainpage-onClickNewBook">

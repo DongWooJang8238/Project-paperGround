@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.joonzis.mapper.AdminMapper">
+
+<select id="getUserTotal" resultType="int">
+	select count(*) from tbl_user
+</select>
+
+<select id="getUserList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.UserVO">
+	<![CDATA[
+			select mno, userPoint, userName, userId, userPw, userPhonenumber , userEmail, userGender,userRole, nickName, userIcon, userDate, registerDate, address, streetAddress, detailAddress 
+			from (select rownum rn, mno, userPoint, userName, userId, userPw, userPhonenumber , userEmail, userGender,userRole, nickName, userIcon, userDate, registerDate, address, streetAddress, detailAddress
+  			  from (select * from tbl_user order by registerDate desc)
+     		   where rownum <= #{pageNum} * #{amount})
+			where rn > (#{pageNum} - 1) * #{amount}
+		]]>
+</select>
+
+<update id="changeRole" parameterType="org.joonzis.domain.UserVO">
+	update tbl_user set userRole = #{userRole} where userId=#{userId}
+</update>
+
+
+
+
+
+	
+</mapper>

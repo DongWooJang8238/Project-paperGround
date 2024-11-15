@@ -115,7 +115,7 @@
 				 	<div class="reply-like-section">
 						<input type="hidden" name="mno" value="${bvo.mno}" readonly>
 						<div class="reply-like-count" id="reply-like-count-10">0</div>
-						<%-- <button type="button" class="reply-like-btn" id="replyLikeBtn" data-boardno="${bvo.boardno}">👍</button> --%>
+						 <button type="button" class="reply-like-btn" id="replyLikeBtn" data-boardno="${bvo.boardno}">👍</button>	
 						<button type="button" id="openModalBtn">수정</button>
 						<!-- 기본 값 0 -->
 					</div>
@@ -156,8 +156,8 @@
 					</ul>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-thi" id="modifyReplyBtn" data-replymno="${vo.mno}">수정</button>
-					<button type="button" class="btn btn-fou" id="removeReplyBtn" data-delreplymno="${vo.mno}">삭제</button>
+					<button type="button" class="btn btn-thi" id="modifyReplyBtn" data-replymno="${bvo.mno}">수정</button>
+					<button type="button" class="btn btn-fou" id="removeReplyBtn" data-delreplymno="${bvo.mno}">삭제</button>
 					<button type="button" class="btn btn-fir" id="closeModalBtn">취소</button>
 				</div>
 			</div>

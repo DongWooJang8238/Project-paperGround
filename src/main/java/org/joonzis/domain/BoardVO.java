@@ -19,4 +19,6 @@ public class BoardVO {
 	
 	private List<BoardAttachVO> attachList;
 	private int likecount;
+	
+	private String reply;
 }

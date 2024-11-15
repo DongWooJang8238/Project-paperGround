@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import javax.servlet.ServletContext;
 
+import org.joonzis.domain.BoardVO;
 import org.joonzis.domain.Criteria;
 import org.joonzis.domain.OrderDetailVO;
 import org.joonzis.domain.UsedBookVO;
@@ -44,13 +45,13 @@ public class UserAsycnController {
 
 	@Autowired
 	private JavaMailSenderImpl mailSender;
-	
+
 	@Autowired
 	private UserOrderService uoservice;
-	
+
 	@Autowired
-    private ServletContext servletContext;
-	
+	private ServletContext servletContext;
+
 	@GetMapping(value="/validateId/{userid}")
 	public ResponseEntity<String> selectUsername(@PathVariable("userid") String userid){
 		log.info("중복검색 : " + userid );
@@ -152,11 +153,11 @@ public class UserAsycnController {
 
 		log.warn("아이콘 업데이트 for userId: " + userId);
 		log.warn("아이콘 업데이트 for userIcon: " + userIcon);
-		
-//		String uploadFolder = "C:\\Users\\sdedu\\Desktop\\project_paperGround\\src\\main\\webapp\\resources\\images";
+
+		//		String uploadFolder = "C:\\Users\\sdedu\\Desktop\\project_paperGround\\src\\main\\webapp\\resources\\images";
 		String relativePath = "/resources/images";
-        String uploadFolder = servletContext.getRealPath(relativePath);
-		
+		String uploadFolder = servletContext.getRealPath(relativePath);
+
 		log.warn("-----------" + userIcon.getName());
 
 		// make folder ------------------
@@ -172,47 +173,47 @@ public class UserAsycnController {
 		String uploadFileName = userIcon.getOriginalFilename();
 		uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
 		log.info("변경 후 : " + uploadFileName);
-			
+
 		UUID uuid = UUID.randomUUID();
 		uploadFileName = uuid.toString() + "_" + uploadFileName;
-		
-			try {
-				File saveFile = new File(uploadPath, uploadFileName);
-				userIcon.transferTo(saveFile);
-				
-				
-				UserVO vo = new UserVO();
-				vo.setUserId(userId);
-//				vo.setUserIcon("../resources/images/" + userIcon.getOriginalFilename());
-//				vo.setUserIcon("../resources/images/" + uuid + "_" + userIcon.getOriginalFilename());
-				vo.setUserIcon("../resources/images/" + uploadFileName);
-				log.warn("업데이트 전" + vo.getUserIcon());
-				int cunt = service.updateIcon(vo);
-				log.info("업데이트 성공 : " + cunt);
-				
-			} catch (Exception e) {
-				log.error(e.getMessage());
-			}
-			return new ResponseEntity<String>("success", HttpStatus.OK);
+
+		try {
+			File saveFile = new File(uploadPath, uploadFileName);
+			userIcon.transferTo(saveFile);
+
+
+			UserVO vo = new UserVO();
+			vo.setUserId(userId);
+			//				vo.setUserIcon("../resources/images/" + userIcon.getOriginalFilename());
+			//				vo.setUserIcon("../resources/images/" + uuid + "_" + userIcon.getOriginalFilename());
+			vo.setUserIcon("../resources/images/" + uploadFileName);
+			log.warn("업데이트 전" + vo.getUserIcon());
+			int cunt = service.updateIcon(vo);
+			log.info("업데이트 성공 : " + cunt);
+
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+		return new ResponseEntity<String>("success", HttpStatus.OK);
 	}
-	
+
 	@ResponseBody
 	@PostMapping(value = "/resetIcon", produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> resetIcon(
 			@RequestParam("userId") String userId, 
 			@RequestParam("userIcon") String userIcon){
-		
+
 		UserVO vo = new UserVO();
 		vo.setUserId(userId);
 		vo.setUserIcon(userIcon);
-		
+
 		log.warn("--------------" + userIcon);
-//		vo.setUserIcon("../resources/images/" + vo.getUserIcon());
+		//		vo.setUserIcon("../resources/images/" + vo.getUserIcon());
 		int cunt = service.updateIcon(vo);
 		log.info("업데이트 성공 : " + cunt);
-		
-		
-		
+
+
+
 		return new ResponseEntity<String>("success", HttpStatus.OK);
 	}
 	@ResponseBody
@@ -226,83 +227,83 @@ public class UserAsycnController {
 		vo.setMno(mno);
 		vo.setSelectDay(selectDay);
 		List<UserOrderVO> list = uoservice.selectDays(vo);
-		
+
 		list.forEach(uvo -> {
 			log.warn("결과 : " + uvo.getBookCover());
 			log.warn("결과 : " + uvo.getOrderDate());
 		});
-		
+
 		return list != null ?
 				new ResponseEntity<List<UserOrderVO>>(list , HttpStatus.OK) :
 					new ResponseEntity<List<UserOrderVO>>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
 	@ResponseBody
 	@GetMapping(value="/selectCalendar/{mno}/{startDate}/{endDate}", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
 	public ResponseEntity<List<OrderDetailVO>> selectCalendar(
 			@PathVariable("mno") int mno,
 			@PathVariable("startDate") String startDate,
 			@PathVariable("endDate") String endDate){
-			log.warn("startDate : " + startDate );
-			log.warn("endDate : " + endDate );
-			
-			UserOrderVO vo = new UserOrderVO();
-			vo.setMno(mno);
-			vo.setStartDate(startDate);
-			vo.setEndDate(endDate);
-			List<OrderDetailVO> list = uoservice.NewuserOrderSelect(vo.getMno());
-			
-			
+		log.warn("startDate : " + startDate );
+		log.warn("endDate : " + endDate );
+
+		UserOrderVO vo = new UserOrderVO();
+		vo.setMno(mno);
+		vo.setStartDate(startDate);
+		vo.setEndDate(endDate);
+		List<OrderDetailVO> list = uoservice.NewuserOrderSelect(vo.getMno());
+
+
 		return list != null ?
 				new ResponseEntity<List<OrderDetailVO>>(list , HttpStatus.OK) :
 					new ResponseEntity<List<OrderDetailVO>>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
-	
+
+
 	@ResponseBody
 	@GetMapping(value = "selectOrderDetail", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<List<UserOrderVO>> selectList(@RequestParam("odno") int odno){
-		
+
 		List<UserOrderVO> list = uoservice.selectOrderByOdno(odno);
-		
+
 		return list != null ? new ResponseEntity<List<UserOrderVO>>(list, HttpStatus.OK) : new ResponseEntity<List<UserOrderVO>>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 
 
-	
-//	@ResponseBody
-//	@GetMapping(value = "selectPointList/{mno}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//	public ResponseEntity<List<UserpointVO>> selectPointList(@PathVariable("mno") int mno){
-//		
-//		log.warn("mno : " + mno);
-//		List<UserpointVO> allList = service.selectPoint(mno);
-//		
-//		log.warn(allList);
-//		
-//		allList.forEach(action -> {
-//			log.warn("전체 포인트 내역 MNO : " + action.getMno());
-//			log.warn("전체 포인트 내역 POINT : " + action.getPoint());
-//			log.warn("전체 포인트 내역 AREA : " + action.getPointArea());
-//			log.warn("전체 포인트 내역 STATUS : " + action.getStatus());
-//			log.warn("전체 포인트 내역 DATE : " + action.getPointGetDate());
-//		});
-//		
-//	
-//		
-//		return new ResponseEntity<List<UserpointVO>>(allList,HttpStatus.OK);
-//	}ㄴ
-//}
 
-@ResponseBody
-@GetMapping(value="/selectUsedCalendar/{mno}/{startDate}/{endDate}", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
-public ResponseEntity<List<UsedBookVO>> selectUsedCalendar(
-		@PathVariable("mno") int mno,
-		@PathVariable("startDate") String startDate,
-		@PathVariable("endDate") String endDate){
+	//	@ResponseBody
+	//	@GetMapping(value = "selectPointList/{mno}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	//	public ResponseEntity<List<UserpointVO>> selectPointList(@PathVariable("mno") int mno){
+	//		
+	//		log.warn("mno : " + mno);
+	//		List<UserpointVO> allList = service.selectPoint(mno);
+	//		
+	//		log.warn(allList);
+	//		
+	//		allList.forEach(action -> {
+	//			log.warn("전체 포인트 내역 MNO : " + action.getMno());
+	//			log.warn("전체 포인트 내역 POINT : " + action.getPoint());
+	//			log.warn("전체 포인트 내역 AREA : " + action.getPointArea());
+	//			log.warn("전체 포인트 내역 STATUS : " + action.getStatus());
+	//			log.warn("전체 포인트 내역 DATE : " + action.getPointGetDate());
+	//		});
+	//		
+	//	
+	//		
+	//		return new ResponseEntity<List<UserpointVO>>(allList,HttpStatus.OK);
+	//	}ㄴ
+	//}
+
+	@ResponseBody
+	@GetMapping(value="/selectUsedCalendar/{mno}/{startDate}/{endDate}", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
+	public ResponseEntity<List<UsedBookVO>> selectUsedCalendar(
+			@PathVariable("mno") int mno,
+			@PathVariable("startDate") String startDate,
+			@PathVariable("endDate") String endDate){
 		log.warn("startDate : " + startDate );
 		log.warn("endDate : " + endDate );
-		
+
 		Criteria cri = new Criteria();
 		cri.setStartDate(startDate);
 		cri.setEndDate(endDate);
@@ -316,7 +317,7 @@ public ResponseEntity<List<UsedBookVO>> selectUsedCalendar(
 		log.warn("기간별 검색 중고 : " + cri.getAmount());
 		log.warn("기간별 중고 날짜 : " + cri.getEndDate());
 		log.warn("기간별 중고 날짜 : " + cri.getStartDate());
-		
+
 		List<UsedBookVO> list = service.selectGetuBookList(cri);
 		log.warn(list.size());
 		if(list.size() > 0) {
@@ -328,12 +329,22 @@ public ResponseEntity<List<UsedBookVO>> selectUsedCalendar(
 				log.warn("list : " + action.getMno());
 			});
 		}
-		
-		
-	return list != null ?
-			new ResponseEntity<List<UsedBookVO>>(list, HttpStatus.OK) :
-				new ResponseEntity<List<UsedBookVO>>(HttpStatus.INTERNAL_SERVER_ERROR);
-}
+
+
+		return list != null ?
+				new ResponseEntity<List<UsedBookVO>>(list, HttpStatus.OK) :
+					new ResponseEntity<List<UsedBookVO>>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+//	@RequestBody
+//	@GetMapping("/selectCommenPostList")
+//	public ResponseEntity<List<BoardVO>> selectCommenPost(){
+//		
+//		
+//		
+//		
+//		return null;
+//	}
 }
 
 

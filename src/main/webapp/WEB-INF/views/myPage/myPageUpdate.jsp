@@ -299,7 +299,7 @@
 
 			<div class="sidebar">
 				<h3>마이페이지</h3>
-				<ul>
+							<ul>
 					<li><a href="userInfo" onclick="toggleSubMenu('member-info')">회원정보</a>
 						<ul id="member-info" class="sub-menu">
 							<li><a id="checkPage"

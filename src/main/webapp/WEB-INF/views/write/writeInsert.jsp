@@ -84,6 +84,7 @@
 									style="visibility: hidden; position: absolute; overflow: hidden; height: 0px; top: 0px; left: 0px; transform: translateZ(0px); width: 833px;"></textarea>
 							</div>
 						</div>
+						<input type="hidden" name="coverImage">
 					</form>
 					<div class="type-upload pc-type">
 						<div class="label">
@@ -105,9 +106,9 @@
 								<li class="action-col"><input type="file"
 									accept="image/gif,image/jpg,image/jpeg,image/png"
 									name="coverFile" style="display: none;">
-									<button class="upload" data-testid="joa-CoverImage-onClickFile">
+									<button id="upload" class="upload" data-testid="joa-CoverImage-onClickFile">
 										<img src="/assets/ic/pc-ui/ic_bt_img.png" alt="이미지를 등록해주세요">이미지
-										등록
+										선택
 									</button></li>
 							</ul>
 						</div>
@@ -118,13 +119,69 @@
 								data-testid="joa-BookWriteBottomLink-next"
 								style="cursor: pointer;">다음 &#10095;</button></a>
 					</div>
+					<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/bundle.min.css" />
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/bundle.min.css" />
+
+<!-- 모달 배경 -->
+<div class="modal-overlay">
+    <div class="writeEpisodeContentModal">
+        <div class="modal-header">
+            <h1>이미지 선택</h1>
+        </div>
+        <div class="modal-body">
+        	<div>
+        		<div>
+        			<!-- 선택된 이미지 보여주는 영역 -->
+        			<img id="checkImg" alt="이미지 선택" src="https://cf.joara.com/version_3_0/gnb_section_content/20241108_104851.png">
+        		</div>
+        	</div>
+            <!-- 하단 슬라이드 영역 -->
+            <div class="main-slider">
+                <div class="wrapper">
+                    <div class="slide" data-no="1">
+                        <img alt="이미지 선택" src="https://cf.joara.com/version_3_0/gnb_section_content/20241108_104851.png">
+                    </div>
+                    <div class="slide" data-no="2">
+                        <img alt="이미지 선택" src="https://cf.joara.com/banner_file/20241114_093035.jpg">
+                    </div>
+                    <div class="slide" data-no="3">
+                        <img alt="이미지 선택" src="https://cf.joara.com/version_3_0/gnb_section_content/20241108_104930.jpg">
+                    </div>
+                    <div class="slide" data-no="4">
+                        <img alt="이미지 선택" src="https://cf.joara.com/version_3_0/gnb_section_content/20241108_103126.jpg">
+                    </div>
+                    <div class="slide" data-no="5">
+                        <img alt="이미지 선택" src="https://cf.joara.com/literature_file/962670_1729775431_thumb.jpg">
+                    </div>
+                    <div class="slide" data-no="6">
+                        <img alt="이미지 선택" src="https://cf.joara.com/version_3_0/gnb_section_content/20241114_120843.jpg">
+                    </div>
+                    <div class="slide" data-no="7">
+                        <img alt="이미지 선택" src="https://cf.joara.com/version_3_0/gnb_section_content/20241029_144605.jpg">
+                    </div>
+                    <div class="slide" data-no="8">
+                        <img alt="이미지 선택" src="https://cf.joara.com/version_3_0/gnb_section_content/20241029_144535.jpg">
+                    </div>
+                    <div class="slide" data-no="9">
+                        <img alt="이미지 선택" src="https://cf.joara.com/version_3_0/gnb_section_content/20241101_161904.jpg">
+                    </div>
+                    <div class="slide" data-no="10">
+                        <img alt="이미지 선택" src="https://cf.joara.com/version_3_0/gnb_section_content/20240906_101310.jpg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 				</div>
 			</div>
 		</div>
 	</div>
 	<jsp:include page="../layout/footer.jsp"></jsp:include>
 </body>
-
 <script type="text/javascript" src="/resources/js/write/writeInsert.js"></script>
 <script type="text/javascript" src="/resources/js/write/writeSidebar.js"></script>
 </html>

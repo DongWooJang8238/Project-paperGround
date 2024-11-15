@@ -4,10 +4,12 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.joonzis.domain.BoardVO;
 import org.joonzis.domain.Criteria;
 import org.joonzis.domain.UsedBookVO;
 import org.joonzis.domain.UserVO;
 import org.joonzis.domain.UserpointVO;
+import org.joonzis.domain.WriteVO;
 import org.joonzis.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -187,4 +189,43 @@ public class UserServiceImpl implements UserService {
 		return userMapper.selectGetuBookEndSaleList(cri);
 	}
 	
+	@Override
+	public List<BoardVO> selectBoard(Criteria cri) {
+		log.warn("서비스 해당유저가 작성한 게시글 ");
+		log.warn("필터타입 : " + cri.getFilterType());
+		log.warn("mno : " + cri.getUserMno());
+		log.warn("page : " + cri.getPageNum());
+		log.warn("amount : " + cri.getAmount());
+		return userMapper.selectBoard(cri);
+	}
+	
+	@Override
+	public int selectBoardCount(Criteria cri) {
+		return userMapper.selectBoardCount(cri);
+	}
+	
+	@Override
+	public List<BoardVO> selectComments(Criteria cri) {
+		return userMapper.selectComments(cri);
+	}
+	@Override
+	public int selectCommentsCount(Criteria cri) {
+		return userMapper.selectCommentsCount(cri);
+	}
+	
+	@Override
+	public List<BoardVO> selectLikesBoard(Criteria cri) {
+		return userMapper.selectLikesBoard(cri);
+	}
+	
+	@Override
+	public int selectLikesCount(Criteria cri) {
+		return userMapper.selectLikesCount(cri);
+	}
+	
+	@Override
+	public List<WriteVO> selectMyLikedWritingList(Criteria cri) {
+		log.warn("서비스 엠엔오 집필 : " + cri.getUserMno());
+		return userMapper.selectMyLikedWritingList(cri);
+	}
 }

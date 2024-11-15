@@ -51,24 +51,24 @@ th, td {
 		<!-- Main content -->
 		<div class="main-content">
 			<div class="header">
-				<h1>${sessionScope.vo.userId}님은${sessionScope.vo.userRole}입니다.${sessionScope.vo.mno }</h1>
-				<h2>보유 포인트: ${sessionScope.vo.userPoint} P</h2>
+				<h1>${vo.userId}님은${vo.userRole}입니다.${vo.mno }</h1>
+				<h2>보유 포인트: ${vo.userPoint} P</h2>
 				<c:if test="${empty vo.userIcon}">
-					<a href="/User/changeIcon?userId=${sessionScope.vo.userId}"> <img
+					<a href="/User/changeIcon?userId=${vo.userId}"> <img
 						src="../resources/images/usericon.jpg" alt="User Icon" width="100"
 						height="100">
 					</a>
 				</c:if>
 
 				<c:if test="${not empty vo.userIcon}">
-					<a href="/User/changeIcon?userId=${sessionScope.vo.userId}"> <img
-						src="${sessionScope.vo.userIcon}" id="userIcon" alt="userIcon" width="100"
+					<a href="/User/changeIcon?userId=${vo.userId}"> <img
+						src="${vo.userIcon}" id="userIcon" alt="userIcon" width="100"
 						height="100">
 					</a>
 				</c:if>
 
-				<input type="hidden" name="userId" value="${sessionScope.vo.userId}"> <input
-					type="hidden" id="mno" value="${sessionScope.vo.mno}">
+				<input type="hidden" name="userId" value="${vo.userId}"> <input
+					type="hidden" id="mno" value="${vo.mno}">
 			</div>
 		</div>
 		<!-- 주문 내역 테이블 -->
@@ -144,22 +144,22 @@ th, td {
 
 		<div class="sidebar">
 				<h3>마이페이지</h3>
-				<ul>
+							<ul>
 					<li><a href="userInfo" onclick="toggleSubMenu('member-info')">회원정보</a>
 						<ul id="member-info" class="sub-menu">
 							<li><a id="checkPage"
-								href="/User/myPageUpdate?userId=${sessionScope.vo.userId }">회원정보 수정</a></li>
+								href="/User/myPageUpdate?userId=${vo.userId }">회원정보 수정</a></li>
 							<li><a href="#">내 찜리스트</a></li>
-							<li><a a id ="myPoint" href="/User/selectMyPoint?mno=${sessionScope.vo.mno }">내 포인트</a></li>
+							<li><a a id ="myPoint" href="/User/selectMyPoint?mno=${vo.mno }">내 포인트</a></li>
 						</ul></li>
 					<li><a href="userShoping"
 						onclick="toggleSubMenu('shopping-info')">쇼핑정보</a>
 						<ul id="shopping-info" class="sub-menu">
 							<li><a id="myOrder"
-								href="/User/OrderSelect?mno=${sessionScope.vo.mno }">주문목록/배송조회</a></li>
+								href="/User/OrderSelect?mno=${vo.mno }">주문목록/배송조회</a></li>
 							<li><a href="#">취소/반품/내역</a></li>
 							<li><a id="myOrder"
-								href="/User/myUsedProductsSelect?userMno=${sessionScope.vo.mno }">내 중고상품</a></li>
+								href="/User/myUsedProductsSelect?userMno=${vo.mno }">내 중고상품</a></li>
 						</ul></li>
 					<li><a href="#" onclick="toggleSubMenu('benefit-management')">활동정보</a>
 						<ul id="benefit-management" class="sub-menu">

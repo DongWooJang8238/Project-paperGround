@@ -63,8 +63,8 @@ tabButtons.forEach(button => {
 			sellBtn.classList.remove('active');
 			let filterType = '0';
 			console.log("saleEnd filterType : " + filterType);
-//			let sendData = `pageNum=${pageNum}&amount=${amount}&userMno=${mno.value}&filterType=0`
-//			location.href = `/User/saleEnd?${sendData}`;
+			let sendData = `pageNum=${pageNum}&amount=${amount}&userMno=${mno.value}&filterType=${filterType}`
+			location.href = `/User/saleEnd?${sendData}`;
 			
 			
 //			saleEndContents.classList.add('active');
@@ -113,30 +113,26 @@ document.querySelectorAll(".page-nation li a").forEach( a => {
 //				location.href = `/User/saleEnd?${sendData}`;
 //		}
 		
-		if(startDate == '' && endDate == '' && filterType != '1'){
-		let sendData = `pageNum=${pageNum}&amount=${amount}&userMno=${mno.value}`;
-		location.href = `/User/myUsedProductsSelect?${sendData}`;
-			
-		}else if(startDate != '' && endDate != ''&& filterType != '1'){
-		let sendData = `pageNum=${pageNum}&amount=${amount}&userMno=${mno.value}&startDate=${startDate}&endDate=${endDate}`;
-		location.href = `/User/selectUsedProductDate?${sendData}`;
-		}
-		else if(filterType === '1'){
-		console.log(1234);
-		let sendData = `pageNum=${pageNum}&amount=${amount}&userMno=${mno.value}&filterType=${filterType}`
-		location.href = `/User/saleEnd?${sendData}`;
+	
+		 if(filterType === '1'){
+			let sendData = `pageNum=${pageNum}&amount=${amount}&userMno=${mno.value}&filterType=${filterType}`
+			location.href = `/User/saleEnd?${sendData}`;
+		}else if(startDate == '' && endDate == '' && filterType != '0'){
+			let sendData = `pageNum=${pageNum}&amount=${amount}&userMno=${mno.value}`;
+			location.href = `/User/myUsedProductsSelect?${sendData}`;
+		}else if(startDate != '' && endDate != ''&& filterType != '0'){
+			let sendData = `pageNum=${pageNum}&amount=${amount}&userMno=${mno.value}&startDate=${startDate}&endDate=${endDate}`;
+			location.href = `/User/selectUsedProductDate?${sendData}`;
+		}else if(filterType === '0'){
+			let sendData = `pageNum=${pageNum}&amount=${amount}&userMno=${mno.value}&filterType=${filterType}`
+			location.href = `/User/saleEnd?${sendData}`;
 		}
 		
 			
 //		}else if(filterType == '1' && startDate != '' && endDate != ''){
 //			let sendData = `pageNum=${pageNum}&amount=${amount}&userMno=${mno.value}&filterType=1&startDate=${startDate}&endDate=${endDate}`
 //			location.href = `/User/saleEnd?${sendData}`;
-		
-		
-		
-		
-
-     
+		   
 	});
 });
 
@@ -165,18 +161,6 @@ function queryData() {
 	
 	
 	let sendDate = `startDate=${startDate}&endDate=${endDate}&userMno=${mno.value}`;
-//	console.log(obj);
 	location.href = "/User/selectUsedProductDate?" + sendDate;
-//	fetch(`/asycn/selectUsedCalendar/${mno}/${startDate}/${endDate}`)
-//	.then(response => response.json())
-//	.then(list => {
-////		console.log(list);
-//		list.forEach(date => {
-//			
-//			
-//		});
-//	
-//	})
-//	.catch(err => console.log(err))
-//	
+
 }

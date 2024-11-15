@@ -15,6 +15,9 @@ let pwReCk = false;
 let nameCk = false;
 let emailCk = false;
 let domainCk = false;
+let checkedBox1 = false;
+let checkedBox2 = false;
+let checkedBox3 = false;
 
 const mIdValidState = document.querySelector("#mIdValidState");
 const mPwValidState = document.querySelector("#mPwValidState");
@@ -223,28 +226,38 @@ f.emailDomain.addEventListener('keyup', e => {
 
 /*-----------------체크박스 체크-----------------*/
 let checkbox = document.querySelectorAll('input[type="checkbox"]');
-let checkbox1 = document.getElementById('termsCheckbox').checked;
+let checkbox1 = document.getElementById('termsCheckbox');
 //let checkbox1 = document.getElementById('termsCheckbox').
-let checkbox2 = document.getElementById('privacyCheckbox').checked;
-let checkbox3 = document.getElementById('marketingCheckbox').checked;
-function goToDetailPage(context) {
-	console.log(context);
+let checkbox2 = document.getElementById('privacyCheckbox');
+let checkbox3 = document.getElementById('marketingCheckbox');
+checkbox1.checked;
+checkbox2.checked;
+checkbox3.checked;
+
 //	console.log(checkbox);
-//	console.log(checkbox1);
-//	console.log(checkbox2);
-//	console.log(checkbox3);
+	console.log(checkbox1);
+	console.log(checkbox2);
+	console.log(checkbox3);
 	
-}
+	console.log(checkbox1.checked);
+	console.log(checkbox2.checked);
+	console.log(checkbox3.checked);
+	
+
 function toggleAll() {
-		checkbox.forEach(sibal => {
-			if(sibal.checked == true){
-				sibal.checked = false;
+		checkbox.forEach(box => {
+			if(box.checked === true){
+				box.checked = false;
 				document.querySelector('#selectAllCheckbox').checked = false;
 			}else{
-				sibal.checked = true;
+				box.checked = true;
 				document.querySelector('#selectAllCheckbox').checked = true;
 			}
 		});
+		
+		console.log(checkbox1.checked);
+		console.log(checkbox2.checked);
+		console.log(checkbox3.checked);
 }	
 	
 
@@ -268,14 +281,6 @@ function closeModal() {
     document.getElementById('modal').style.display = 'none';
 }
 
-
-
-
-
-
-
-
-	
 /*-----------------회원가입 함수-----------------*/
 function signup() {
 	console.log( idCk, pwCk, pwReCk, nameCk, emailCk, domainCk );
@@ -289,17 +294,25 @@ function signup() {
 			alert("비어있는 항목이 있습니다.");
 			return;					
 }
-	if(checkbox != true){
-		alert("체크박스를 선택해주세요.");
+	
+//	if(checkbox1 != true && checkbox2 != true && checkbox3 != true){
+//		alert("이용약관에 동의해주세요.");
+//		return;
+//	}
+	console.log(checkbox1.checked);
+	console.log(checkbox2.checked);
+	console.log(checkbox3.checked);
+	
+	if(checkbox1.checked != true || checkbox2.checked != true || checkbox3.checked != true){
+		alert("이용약관에 동의해주세요.");
 		return;
 	}
-			
 
 /*-----------------회원가입 성공-----------------*/
 	alert("회원가입을 성공하였습니다.");
 	f.action = "/User/signup" ;
 	f.userEmail.value = userEmail;
-// f.submit();
+	f.submit();
 	
 }
 

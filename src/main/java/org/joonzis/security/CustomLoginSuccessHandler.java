@@ -21,6 +21,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
                                         Authentication authentication) throws IOException, ServletException {
 
         log.warn("Login Success");
+        String redirectUrl = request.getParameter("urlPage");
 
         List<String> roleNames = new ArrayList<>();
 
@@ -31,10 +32,10 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
         log.warn("ROLE NAMES : " + roleNames);
         
         if (roleNames.contains("ADMIN_ROLE")) {
-            response.sendRedirect("/");
+            response.sendRedirect(redirectUrl);
             return;
         }
         
-        response.sendRedirect("/");
+        response.sendRedirect(redirectUrl);
     }
 }

@@ -15,3 +15,14 @@ document.querySelectorAll('.link').forEach(link => {
 	});
 });
 
+document.querySelectorAll('.writeHome').forEach(link => {
+	link.addEventListener('click', e => {
+		console.log(444);
+		if(mno.value === ''){
+			location.href = '/write/home?mno=0';
+		}else {
+			location.href = '/write/home?mno=' + mno.value;
+		}
+	});
+});
+

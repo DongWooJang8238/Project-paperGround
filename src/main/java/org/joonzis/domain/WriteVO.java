@@ -15,4 +15,6 @@ public class WriteVO {
 	private int wno, mno, views, reply, likeCount, epCount;
 	private String writeType, genre, title, description, coverImage, status, writer;
 	private Date startDate, updateDate;
+	
+	private String writeBookMark;
 }

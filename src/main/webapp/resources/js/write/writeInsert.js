@@ -5,6 +5,37 @@ document.querySelector('.pc-page-link a').addEventListener('click', e => {
 	sendData();
 })
 
+// 업로드 버튼 클릭 시 모달 열기
+document.querySelector('#upload').addEventListener('click', e => {
+    document.querySelector('.modal-overlay').style.display = 'flex';
+});
+
+// 슬라이드 이미지 클릭 시 해당 이미지를 모달 내 이미지 표시 영역에 나타내기
+const slides = document.querySelectorAll('.slide');
+const modalImage = document.querySelector('.modal-body > div > div > img');
+
+slides.forEach(slide => {
+    slide.addEventListener('click', e => {
+        const selectedImage = e.target.src; // 클릭한 이미지의 src 가져오기
+        modalImage.src = selectedImage; // 모달 이미지에 설정
+    });
+});
+
+// 모달 배경을 클릭하면 모달 닫기
+document.querySelector('.modal-overlay').addEventListener('click', e => {
+    if (e.target === document.querySelector('.modal-overlay')) {
+        document.querySelector('.modal-overlay').style.display = 'none';
+    }
+});
+
+// 모달 이미지를 선택하면 이미지 저장하기
+document.querySelector('#checkImg').addEventListener('click', e=>{
+	console.log(e.target.src);
+	f.coverImage.value = e.target.src;
+	document.querySelector('.modal-overlay').style.display = 'none';
+});
+
+
 function sendData() {
 	const writeType = document.querySelector('select[name="writeType"]');
 	const genre = document.querySelector('select[name="genre"]');
@@ -47,6 +78,7 @@ function sendData() {
 	console.log(f.title.value);
 	console.log(f.description.value);
 	console.log(f.mno.value);
+	console.log(f.coverImage.value);
 	
 	f.action = "/write/writeInsert";
 	f.submit();

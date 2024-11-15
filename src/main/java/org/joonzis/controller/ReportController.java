@@ -44,13 +44,7 @@ public class ReportController {
 	private ReportService reportservice;
 	
 	
-	//game entrance page open.
-	@GetMapping("/selectReport")
-	public String Category(int mno, Model model) {
-		log.info("Category..................................");
-		model.addAttribute("mno", mno);
-		return "/report/selectReport";
-	}
+	
 	
 	//qnapage 이동
 	@GetMapping("/qna")
@@ -165,14 +159,33 @@ public class ReportController {
 			cri.setPageNum(1);
 			cri.setAmount(10);
 		}
-		int total = reportservice.getDrTotal();
-		
+		cri.setUserMno(mno);
+		if(mno  == 1) {		
+			
+		int total = reportservice.getDrTotal();		
 		log.info("total...." + total);
+		
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
 		model.addAttribute("list", reportservice.getDrList(cri));
-
 		model.addAttribute("mno", mno);
+		
 		return "/report/directReportList";
+		
+		}else {
+			int total = reportservice.getUserTotal(mno);
+			model.addAttribute("pageMaker", new PageDTO(cri, total));
+			List<DrVO> temp = reportservice.getUserDrList(cri);
+			
+			if(temp == null) {				
+				model.addAttribute("list", 0);
+				model.addAttribute("mno", mno);				
+				return "/report/directReportList";
+			}
+			model.addAttribute("list", reportservice.getUserDrList(cri));
+			model.addAttribute("mno", mno);
+			
+			return "/report/directReportList";
+		}
 	}
 	
 	@ResponseBody

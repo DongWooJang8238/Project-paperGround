@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.joonzis.mapper.RefundMapper">
+
+
+<select id="totalSpendMoney" parameterType="int" resultType="int">
+	select sum(totalprice) from tbl_order_detail where mno = #{mno}
+</select>
+
+<delete id="deleteOrder" parameterType="org.joonzis.domain.RefundVO">
+	delete from tbl_order_detail where odno = #{odno}
+</delete>
+<delete id="deleteOrderChild" parameterType="org.joonzis.domain.RefundVO">
+	delete from tbl_odno_bno where odno = #{odno}
+</delete>
+
+<insert id="refundOrder" parameterType="org.joonzis.domain.RefundVO">
+	insert into tbl_refund values (#{mno}, #{odno}, #{refundOrCancel}, #{reason}, #{detail}, #{bankName}, #{accountNumber})
+</insert>
+<update id="updateStatus" parameterType="org.joonzis.domain.RefundVO">
+ update tbl_order_detail set orderStatus ='환불중' where odno = #{odno}
+</update>
+
+	
+</mapper>

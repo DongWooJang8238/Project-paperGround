@@ -15,8 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 location.href = `/report/directReport?mno=${mno.value}`;
             } else if (type === 'godirectReportCheck') {
                 location.href = `/report/directReportList?mno=${mno.value}`;
-            }else if( type === 'goqna'){
-            	location.href = `/report/qna`;
             }
             
         });

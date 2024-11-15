@@ -37,6 +37,8 @@ document.querySelectorAll(".user-options button").forEach(a => {
 			}
 		}else if(menu === "gogack"){
 			location.href = '/report/entrance?mno=' + mno.value;
+		}else if(menu === "adminPage"){
+			location.href = '/admin/adminEntrance?mno=' + mno.value;
 		}
 		
 	});
@@ -62,7 +64,11 @@ function shopUsedList() {
 	location.href = '/used/list';
 }
 function writeHomeGo() {
-	location.href = '/write/home';
+	if(mno.value === ''){
+		location.href = '/write/home?mno=0';
+	}else {
+		location.href = '/write/home?mno=' + mno.value;
+	}
 }
 function goToCart() {
 	location.href = '/shop/cartListBuy?mno=' + mno.value;

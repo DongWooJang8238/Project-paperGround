@@ -1,5 +1,6 @@
 package org.joonzis.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.joonzis.domain.WriteEpisodeVO;
@@ -104,5 +105,37 @@ public class WriteServiceImpl implements WriteService {
 	public int updateWriteDate(int wno) {
 		log.warn("에피소드 수정 완료 혹은 연재 시 업데이트 날짜 업데이트");
 		return mapper.updateWriteDate(wno);
+	}
+	
+	@Override
+	public Date getLastDateByEpnoMno(WriteEpisodeVO vo) {
+		log.warn("에피소드 마지막 날짜 구하기 : " + vo);
+		log.warn("에피소드 마지막 날짜 구하기 : " + vo.getEpisodeno());
+		log.warn("에피소드 마지막 날짜 구하기 : " + vo.getMno());
+		return mapper.getLastDateByEpnoMno(vo);
+	}
+	
+	@Override
+	public int updateWriteView(int wno) {
+		log.warn("조회수 업데이트 : " + wno);
+		return mapper.updateWriteView(wno);
+	}
+	
+	@Override
+	public int checkLike(WriteVO vo) {
+		log.warn("좋아요 췌크췌크 서비스 췌크 : " + vo);
+		return mapper.checkLike(vo);
+	}
+	
+	@Override
+	public int insertLike(WriteVO vo) {
+		log.warn("좋아요 인서트 서비스: " + vo);
+		return mapper.insertLike(vo);
+	}
+	
+	@Override
+	public int deleteLike(WriteVO vo) {
+		log.warn("좋아요 딜리트 서비스 : " + vo);
+		return mapper.deleteLike(vo);
 	}
 }

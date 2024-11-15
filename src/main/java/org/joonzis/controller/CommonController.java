@@ -1,8 +1,5 @@
 package org.joonzis.controller;
 
-import java.util.List;
-
-import org.joonzis.domain.UserVO;
 import org.joonzis.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

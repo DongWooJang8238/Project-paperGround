@@ -63,4 +63,26 @@
 			updateDate = sysdate
 			where wno = #{wno}
 	</update>
+	
+	<select id="getLastDateByEpnoMno" parameterType="org.joonzis.domain.WriteEpisodeVO" resultType="java.sql.Date">
+		select lastdate from tbl_writing_view where episodeno = #{episodeno} and mno = #{mno}
+	</select>
+	
+	<update id="updateWriteView" parameterType="int">
+		update tbl_writing set
+			views = (views + 1)
+			where wno = #{wno}
+	</update>
+	
+	<select id="checkLike" parameterType="org.joonzis.domain.WriteVO" resultType="int">
+		select count(*) from tbl_writing_like where wno = #{wno} and mno = #{mno}
+	</select>
+	
+	<insert id="insertLike" parameterType="org.joonzis.domain.WriteVO">
+		insert into tbl_writing_like values (#{wno}, #{mno})
+	</insert>
+	
+	<delete id="deleteLike" parameterType="org.joonzis.domain.WriteVO">
+		delete from tbl_writing_like where wno = #{wno} and mno = #{mno}
+	</delete>
 </mapper>

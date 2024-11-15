@@ -51,6 +51,19 @@ public class ReportServiceImpl implements ReportService{
 		return reportmapper.getDrTotal();
 	}
 	@Override
+	public int getUserTotal(int mno) {
+		log.warn("getDrTotal one loading...");
+		return reportmapper.getUserTotal(mno);
+	}
+	
+	@Override
+	public List<DrVO> getUserDrList(Criteria cri ) {
+		log.warn("getUserDrList one loading...");
+		// TODO Auto-generated method stub
+		return reportmapper.getUserDrList(cri);
+	}
+	
+	@Override
 	public List<DrVO> getDrList(Criteria cri) {
 		log.warn("getDrList one loading...");
 		return reportmapper.getDrList(cri);

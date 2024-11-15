@@ -25,6 +25,12 @@ public interface ReportService {
 
 	public int updateStatus(DrVO drVO);
 
+	public int getUserTotal(int mno);
+	
+	public List<DrVO> getUserDrList(Criteria cri );
+	
+	
+
 
 
 

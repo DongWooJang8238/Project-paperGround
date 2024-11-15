@@ -3,6 +3,9 @@ const f = document.forms[0];
 
 const mIdValidState = document.querySelector("#mIdValidState");
 const mPwValidState = document.querySelector("#mPwValidState");
+const urlPage = document.querySelector('#urlPage');
+urlPage.value = document.referrer;
+console.log(urlPage);
 
 /*-------------- 함수 이벤트 핸들러 (로그인, 회원가입) ------*/
 document.querySelectorAll("button").forEach(a => {
@@ -19,7 +22,13 @@ document.querySelectorAll("button").forEach(a => {
 	});
 });
 
-
+f.username.addEventListener('keyup', e => {
+	if(e.target.value === 'deletedUser'){
+		alert('입력 할 수 없는 아이디 입니다.');
+		e.target.value = '';
+		return;
+	}
+});
 //데이터 검증 완료 함수
 function validated(inputTarget, resultState, comment) {
 	inputTarget.classList.add('is-valid');

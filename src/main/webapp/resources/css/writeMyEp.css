@@ -10396,7 +10396,6 @@ table.left-th th,table .total td,table .total th {
 
 @media (min-width: 999px) {
     .literature-gnb {
-        display:none
     }
 }
 
@@ -10806,3 +10805,123 @@ table.left-th th,table .total td,table .total th {
     background-position: 98% 12px;
     color: #b6b6b6
 }
+
+:root {
+    --modal-bg: #f9f9f9;
+    --modal-header-bg: #2b2d42;
+    --modal-header-color: #ffffff;
+    --content-color: #333;
+    --comment-bg: #edf2f4;
+    --button-bg: #8d99ae;
+    --button-hover-bg: #2b2d42;
+    --button-color: #ffffff;
+    --modal-radius: 12px;
+    --padding: 20px;
+}
+
+/* 모달 컨테이너 스타일 */
+.writeEpisodeContentModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60vw;
+    height: 60vh;
+    background-color: var(--modal-bg);
+    border-radius: var(--modal-radius);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+/* 모달 헤더 */
+.writeEpisodeContentModal .modal-header {
+    background-color: var(--modal-header-bg);
+    color: var(--modal-header-color);
+    padding: var(--padding);
+    text-align: center;
+}
+
+.writeEpisodeContentModal .modal-header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+/* 모달 바디 */
+.writeEpisodeContentModal .modal-body {
+    flex-grow: 1;
+    padding: var(--padding);
+    overflow-y: auto;
+}
+
+/* 내용 스타일 */
+.writeEpisodeContentModal .content {
+    color: var(--content-color);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.writeEpisodeContentModal .content ol {
+    list-style: decimal inside;
+    padding-left: 1rem;
+    margin-bottom: 20px;
+}
+
+/* 코멘트 및 댓글 스타일 */
+.writeEpisodeContentModal .comment,
+.writeEpisodeContentModal .reply {
+    background-color: var(--comment-bg);
+    padding: 15px;
+    border-radius: var(--modal-radius);
+    margin-bottom: 20px;
+}
+
+.writeEpisodeContentModal .comment h2,
+.writeEpisodeContentModal .reply h2 {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* 버튼 스타일 */
+.writeEpisodeContentModal .modal-footer {
+    display: flex;
+    justify-content: space-around;
+    background-color: #f1f3f5;
+    padding: var(--padding);
+    border-top: 1px solid #ddd;
+}
+
+.writeEpisodeContentModal .modal-footer button {
+    background-color: var(--button-bg);
+    color: var(--button-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.writeEpisodeContentModal .modal-footer button:hover {
+    background-color: var(--button-hover-bg);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .writeEpisodeContentModal {
+        width: 90vw;
+        height: 70vh;
+    }
+}
+
+button:disabled {
+    background-color: #ccc;    /* 배경색 흐리게 */
+    color: #999;               /* 텍스트 색상 흐리게 */
+    cursor: not-allowed;       /* 마우스 커서 변경 */
+    opacity: 0.5;              /* 투명도 줄여서 비활성화 느낌 */
+    pointer-events: none; 
+}
+

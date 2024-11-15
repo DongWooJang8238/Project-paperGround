@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WriteEpisodeVO {
-	private int episodeno, wno, episodeCount;
+	private int episodeno, wno, episodeCount, mno;
 	private String episodeTitle, content, episodeComment;
-	private Date epdate;
+	private Date epdate, lastDate;
 }

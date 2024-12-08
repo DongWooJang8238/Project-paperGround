@@ -20,8 +20,16 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 
-        log.warn("Login Success");
         String redirectUrl = request.getParameter("urlPage");
+        log.warn("Login Success" + redirectUrl);
+        
+        if(redirectUrl.equals("http://localhost:9090/User/login") || 
+        		redirectUrl.equals("http://localhost:9090/User/signup") || 
+        		redirectUrl.equals("http://localhost:9090/User/findId") || 
+        		redirectUrl.equals("http://localhost:9090/User/findPw")) {
+        	redirectUrl = "http://localhost:9090/";
+        }
+        
 
         List<String> roleNames = new ArrayList<>();
 

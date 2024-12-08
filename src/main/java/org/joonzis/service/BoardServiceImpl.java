@@ -79,6 +79,7 @@ public class BoardServiceImpl implements BoardService {
 	public int remove(int boardno) {
 		log.info("remove..." + boardno);
 		
+		likeMapper.deleteBoardComlikes(boardno);
 		replymapper.boardDelete(boardno);
 		attachMapper.deleteBoard(boardno);
 		likeMapper.deleteBoard(boardno);
@@ -129,5 +130,9 @@ public class BoardServiceImpl implements BoardService {
 	    return mapper.getTotalByCategory(category);
 	}
 
-	
+	@Override
+	public List<BoardVO> bestList1(Criteria cri) {
+		log.warn("bestList... " + cri );
+		return mapper.bestList1(cri);
+	}
 }

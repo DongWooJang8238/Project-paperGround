@@ -2,6 +2,7 @@ package org.joonzis.service;
 
 import java.util.List;
 
+import org.joonzis.domain.BoardVO;
 import org.joonzis.domain.Criteria;
 import org.joonzis.domain.UserVO;
 import org.joonzis.mapper.AdminMapper;
@@ -31,6 +32,36 @@ public class AdminServiceImpl implements AdminService{
 	public int changeRole(UserVO uservo) {
 		log.info("changeRole...");
 		return adminmapper.changeRole(uservo);
+	}
+	@Override
+	public int userCut(String userId) {
+		log.info("userCut...");
+		return adminmapper.userCut(userId);
+	}
+	@Override
+	public int getAllListTotal() {
+		log.info("getAllListTotal...");
+		return adminmapper.getAllListTotal();
+	}
+	@Override
+	public List<BoardVO> getAllList(Criteria cri) {
+		log.info("getAllList...");
+		return adminmapper.getAllList(cri);
+	}
+	@Override
+	public int scriptCut(int boardno) {
+		log.info("scriptCut...");
+		return adminmapper.scriptCut(boardno);
+	}
+	@Override
+	public int getCategoryListTotal(String category) {
+		log.info("getCategoryListTotal...");
+		return adminmapper.getCategoryListTotal(category);
+	}
+	@Override
+	public List<BoardVO> getCategoryList(Criteria cri) {
+		log.info("getCategoryList...");
+		return adminmapper.getCategoryList(cri);
 	}
 	
 

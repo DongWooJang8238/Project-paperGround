@@ -17,7 +17,6 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
-</head>
 <body>
     <jsp:include page="../layout/header.jsp"></jsp:include>
      <div class="container">
@@ -47,9 +46,9 @@
                             <button class="btn btn-primary" data-toggle="modal" data-target="#roleModal" data-id="${user.userId}" data-username="${user.userName}" data-role="${user.userRole}"> 권한 변경</button>
                             
                             <!-- 유저 삭제 버튼 -->
-                            <form action="/admin/deleteUser" method="post" style="display:inline;">
+                            <form action="/admin/userCut" method="post" style="display:inline;">
                                 <input type="hidden" name="userId" value="${user.userId}">
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('정말로 이 회원을 삭제하시겠습니까?')">회원 삭제 </button>
+                                <button type="submit" class="btn btn-danger">회원 삭제 </button>
                             </form>
                         </td>
                     </tr>

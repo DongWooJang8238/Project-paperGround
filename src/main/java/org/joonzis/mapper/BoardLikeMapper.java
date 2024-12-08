@@ -26,4 +26,7 @@ public interface BoardLikeMapper {
     
     // 보드 삭제시 삭제
     public int deleteBoard(int replyno);
+
+    public int deleteBoardComlikes(int boardno);
+    public int deleteReplyComlikes(int replyno);
 }

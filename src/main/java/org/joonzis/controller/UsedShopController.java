@@ -40,6 +40,8 @@ public class UsedShopController {
 	public String goList(Criteria cri, Model model) {
 		
 		log.warn("list 컨트롤러 : " + cri);
+		log.warn("list 컨트롤러 : " + cri.getSelectOption());
+		log.warn("list 컨트롤러 : " + cri.getSelectValue());
 		String checkGener = null;
 		// gener이 null이 아닌 경우
 		if(cri.getGener() != null) {
@@ -56,13 +58,10 @@ public class UsedShopController {
 		log.warn("generCheckFinal : " + checkGener);
 		
 		if(cri.getSelectValue() != null) {
-			log.warn("검색 옵션 : " + cri.getSelectOption());
 			log.warn("검색 내용 : " + cri.getSelectValue());
-				
 			String returnValue = cri.getSelectValue();
 			String selectValue = "%" + cri.getSelectValue() + "%";
 			cri.setSelectValue(selectValue);
-			log.warn("검색 옵션 : " + cri.getSelectOption());
 			log.warn("검색 내용 : " + cri.getSelectValue());
 	
 			model.addAttribute("selectValue", returnValue);

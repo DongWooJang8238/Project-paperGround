@@ -16,20 +16,14 @@ function setPeriod(day) {
 					const sqlDate = date.toLocaleDateString('en-CA');	
 					
 					str += `<tr class="order-row visible" data-odno="${order.odno}" data-title="${order.title}">`;	
-					str += `<td>${sqlDate} <button type="button" id="odno" onclick="orderDetail('${order.odno }')">상세 주문내역</button></td>`;	
-					str += `<td>${order.odno}</td>`;	
 					str += `<td>
-								<a href="/shop/get?bno=${order.bno }" >
-								<img src="${order.bookCover}" alt="책 이미지" width="150" height="150">
-								</a> 
-							</td>`;	
+						<a href="/shop/get?bno=${order.bno }" >
+						<img style="margin: 0px 0;" class="card-image" src="${order.bookCover}" alt="책 이미지" width="150" height="150">
+						</a> 
+						</td>`;	
 					str += `<td>${order.title}</td>`;	
-					str += `<td>${order.orderStatus}</td>`;	
-					if(order.totalPrice > 20000){
-						str += `<td>총 ${order.totalPrice} 원 <button type="button" onclick="showOrder(${order.odno})">더보기</button></td>`;	
-					}else{
-						str += `<td>총 ${order.totalPrice} 원 </td>`;
-					}	
+					str += `<td>총 ${order.totalPrice.toLocaleString()} 원 (${order.orderStatus}) </td>`;
+					str += `<td>${sqlDate} <button type="button" id="odno" onclick="orderDetail('${order.odno }')">상세 주문내역</button></td>`;	
 					str += `</tr>`;	
 				});
 				document.querySelector('#tbody').innerHTML = str;
@@ -62,12 +56,10 @@ function showOrder(odno) {
 				const date = new Date(list.orderDate);
 				const sqlDate = date.toLocaleDateString('en-CA');
 				str += `<tr class="orderNewDetail">`;
-				str += `<td>${sqlDate}</td>`;
-				str += `<td>${list.odno}</td>`;
-				str += `<td><a><img src="${list.bookCover}" alt="책 이미지" width="100" height="150"></a></td>`;
+				str += `<td><a><img style="margin: 0px 0;" class="card-image" src="${list.bookCover}" alt="책 이미지" width="100" height="150"></a></td>`;
 				str += `<td><a>${list.title}</a></td>`;
-				str += `<td>${list.orderStatus}</td>`;
-				str += `<td>총 ${list.bookPrice} 원( ${list.count} )</td>`;
+				str += `<td>총 ${list.bookPrice.toLocaleString()} 원 ( ${list.count} )</td>`;
+				str += `<td>${sqlDate}(${list.orderStatus})</td>`;
 				str += `</tr>`;
 			}
 		});

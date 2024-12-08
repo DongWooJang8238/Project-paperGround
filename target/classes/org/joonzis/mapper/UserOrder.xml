@@ -44,6 +44,21 @@
          AND u.mno = #{mno}
    </select>
    
+   <select id="orderCountWe" parameterType="int" resultType="int">
+      SELECT
+             count(*)
+      FROM
+         tbl_user u,
+         tbl_order_detail o,
+         tbl_odno_bno b,
+           tbl_book tb
+      WHERE u.mno = o.mno
+         AND o.odno = b.odno
+            AND b.bno = tb.bno
+         AND u.mno = #{mno} 
+         AND TRUNC(o.orderdate) BETWEEN TRUNC(SYSDATE) - 6 AND TRUNC(SYSDATE)
+   </select>
+   
    <!-- 오늘/어제/3달 주문내역 조회  -->
    <select id="selectDays"  parameterType="org.joonzis.domain.UserOrderVO" resultType="org.joonzis.domain.UserOrderVO">
       SELECT
@@ -153,6 +168,15 @@
       FROM
          tbl_order_detail 
       WHERE mno = #{mno}
+      ORDER BY orderDate DESC
+   </select>
+   
+   <select id="NewuserOrderSelectWe" parameterType="int" resultType="org.joonzis.domain.OrderDetailVO">
+      SELECT * 
+      FROM
+         tbl_order_detail 
+      WHERE mno = #{mno} 
+      AND TRUNC(orderdate) BETWEEN TRUNC(SYSDATE) - 6 AND TRUNC(SYSDATE)
       ORDER BY orderDate DESC
    </select>
    

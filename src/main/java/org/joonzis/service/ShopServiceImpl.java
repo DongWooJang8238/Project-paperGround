@@ -33,8 +33,12 @@ public class ShopServiceImpl implements ShopService {
 	    	log.warn("서비스 책 평점 조회 결과.." + vo.getTitle());
 	    	log.warn("서비스 책 평점 조회 결과.." + vo.getAvgRating());
 	    	log.warn("서비스 책 평점 조회 결과.." + vo.getLikeCount());
-//	    	vo.setLikeCount(mapper.getTotalLikeByBno(vo.getBno()));
-//	    	vo.setAvgRating(mapper.selectAvgRating(vo.getBno()));
+	    	double updateRating = mapper.selectAvgRating(vo.getBno());
+			int updateLikeCount = mapper.getTotalLikeByBno(vo.getBno());
+			vo.setAvgRating(updateRating);
+			vo.setLikeCount(updateLikeCount);
+			int ratingUpdate = mapper.updateAvgRating(vo);
+			log.warn("업데이트 결과 : " + ratingUpdate);
 	    });
 	    return list;
 	}
@@ -67,7 +71,17 @@ public class ShopServiceImpl implements ShopService {
 	@Override
 	public BookVO getBookOne(int bno) {
 		log.info("서비스 책 단일 데이터 조회.." + bno);
-		return mapper.getBookOne(bno);
+		BookVO vo = mapper.getBookOne(bno);
+		double updateRating = mapper.selectAvgRating(bno);
+		int updateLikeCount = mapper.getTotalLikeByBno(vo.getBno());
+		vo.setAvgRating(updateRating);
+		vo.setLikeCount(updateLikeCount);
+		int ratingUpdate = mapper.updateAvgRating(vo);
+		log.warn("업데이트 결과 : " + ratingUpdate);
+		
+		log.warn("서비스 책 평점 : " + vo.getAvgRating());
+		log.warn("서비스 좋아요 수 : " + vo.getLikeCount());
+		return vo;
 	}
 	
 	@Override

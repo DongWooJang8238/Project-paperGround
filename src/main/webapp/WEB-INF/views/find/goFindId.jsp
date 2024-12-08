@@ -6,10 +6,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>아이디 페이지</title>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 <style>
 body {
 	font-family: Arial, sans-serif;
-	background-color: #f2f2f2;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -18,16 +21,18 @@ body {
 }
 
 .signup-container {
-	background-color: #fff;
-	padding: 40px;
-	border-radius: 8px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	width: 400px;
+	width: 300px;
+	text-align: center;
 }
 
 .logo {
 	text-align: center;
 	margin-bottom: 20px;
+}
+
+.logo img {
+	width: 230px; /* 로고 크기 조정 */
+	height: auto;
 }
 
 .logo a {
@@ -38,64 +43,13 @@ body {
 
 .signup-container h2 {
 	text-align: center;
-	margin-bottom: 20px;
+	margin-bottom: 45px;
 	color: #333;
+	font-weight: bold; /* 글꼴 두껍게 */
 }
 
 .input-group {
 	margin-bottom: 15px;
-}
-
-.input-group label {
-	display: block;
-	margin-bottom: 5px;
-	color: #666;
-}
-
-.input-group input[type="text"], .input-group input[type="password"],
-	.input-group input[type="email"], .input-group input[type="date"],
-	.input-group input[type="tel"] {
-	width: 100%;
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	box-sizing: border-box;
-}
-
-/* 이메일 입력란 스타일 */
-.email-group {
-	margin-bottom: 15px; /* 아래쪽 여백 */
-}
-
-.email-input {
-	width: calc(100% - 110px); /* 전체 폭에서 셀렉트 박스 너비만큼 뺌 */
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	box-sizing: border-box;
-	margin-right: 10px; /* 셀렉트와의 간격 조정 */
-	display: inline-block; /* 인라인 블록으로 표시 */
-}
-
-.email-select {
-	width: 100px; /* 고정 폭 */
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	box-sizing: border-box;
-	height: 40px; /* 높이 일치 */
-	display: inline-block; /* 인라인 블록으로 표시 */
-}
-
-.gender-group {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	margin-bottom: 15px;
-}
-
-.gender-group input[type="radio"] {
-	margin-right: 5px;
 }
 
 .signup-btn {
@@ -103,29 +57,88 @@ body {
 	padding: 10px;
 	border: none;
 	border-radius: 4px;
-	background-color: #4CAF50;
+	background-color: #7fb5ff88;
 	color: white;
 	font-size: 16px;
 	cursor: pointer;
+	margin-bottom: 13px;
 }
 
 .signup-btn:hover {
-	background-color: #45a049;
+	background-color: #0669ef88;
+}
+
+.info-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 20px 0;
+	font-size: 16px;
+	color: #333;
+}
+
+.info-container .label {
+	font-weight: bold;
+	text-align: left;
+}
+
+.info-container .value {
+	text-align: right;
+	color: #555;
+}
+
+.value-id {
+	color: #007bff; /* 아이디 색상 */
+}
+
+.checkbox-container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 1px;
+	font-size: 14px;
+	color: #666;
+	margin-bottom: 35px;
+	flex-direction: row-reverse;
+}
+
+.checkbox-container a {
+	color: #999;
+	text-decoration: none;
+	font-size: 12px;
+}
+
+.highlight {
+	font-weight: bold; /* 글꼴 강조 */
+	color: #0669ef; /* 파란색으로 설정 */
 }
 </style>
 </head>
 <body>
 	<div class="signup-container">
 		<div class="logo">
-			<a href="/">로고</a>
+			<a href="/"><img src="../resources/images/logoHead.png" ></a>
 		</div>
-		<h2>아이디 찾기</h2>
+		<h2>
+			<i class="bi bi-check-circle" style="color: #0669ef;"></i> 아이디 찾기 완료
+		</h2>
+		<div class="info-container">
+			<span class="label">가입일</span> <span class="value">${vo.registerDate}</span>
+		</div>
+		<div class="info-container">
+			<span class="label highlight">아이디</span> <span class="value value-id"><span
+				class="highlight">${vo.userId}</span></span>
+		</div>
 		<form action="#" method="post">
-				<h2>회원님의 아이디는 :  ${userId }</h2>
-			<button type="button" class="signup-btn" onclick="login()">로그인</button>
-			<button type="button" class="signup-btn" onclick="findPw()">비밀번호 찾기</button>
+			<button type="button" class="signup-btn" onclick="findPw()">비밀번호
+				찾기</button>
+			<div class="checkbox-container">
+				<div>
+					<a href="/User/login">로그인</a> | <a href="/User/signup">회원가입</a>
+				</div>
+			</div>
 		</form>
 	</div>
-<script type="text/javascript" src="/resources/js/find/goFindId.js"></script>
+	<script type="text/javascript" src="/resources/js/find/goFindId.js"></script>
 </body>
 </html>

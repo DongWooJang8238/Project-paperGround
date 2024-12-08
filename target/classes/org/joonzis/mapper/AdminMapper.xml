@@ -22,7 +22,38 @@
 	update tbl_user set userRole = #{userRole} where userId=#{userId}
 </update>
 
+<update id="userCut" parameterType="String">
+	update tbl_user set userName = '알수없음' , userId = 'deletedUser' || deleted_user_seq.nextval where userId= #{userId}
+</update>
 
+<select id="getAllListTotal" resultType="int">
+	select count(*) from tbl_board
+</select>
+
+<select id="getAllList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.BoardVO">
+	<![CDATA[
+			select boardno, title, writer, regDate
+			from (select rownum rn, boardno,title, writer, regDate
+  			  from (select * from tbl_board order by regDate asc)
+     		   where rownum <= #{pageNum} * #{amount})
+			where rn > (#{pageNum} - 1) * #{amount}
+		]]>
+</select>
+<update id="scriptCut" parameterType="int">
+	update tbl_board set title = '관리자에 의해 가려진 게시글입니다.', content ='민감한 내용' where boardno=#{boardno}
+</update>
+<select id="getCategoryListTotal"  parameterType="String" resultType="int">
+	select count(*) from tbl_board where category = #{category}
+</select>
+<select id="getCategoryList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.BoardVO">
+	<![CDATA[
+			select boardno, title, writer, regDate
+			from (select rownum rn, boardno,title, writer, regDate
+  			  from (select * from tbl_board where category = #{category} order by regDate asc)
+     		   where rownum <= #{pageNum} * #{amount})
+			where rn > (#{pageNum} - 1) * #{amount}
+		]]>
+</select>
 
 
 

@@ -251,8 +251,20 @@ public class WriteController {
 	}
 	
 	@GetMapping("/AllList")
-	public String writeAllList(Model model) {
-		model.addAttribute("list", service.selectWriteAll());
+	public String writeAllList(int mno, Model model) {
+		List<WriteVO> list = service.selectWriteAll();
+		list.forEach(li -> {
+			WriteVO vo = new WriteVO();
+			vo.setMno(mno);
+			vo.setWno(li.getWno());
+			int check = service.checkLike(vo);
+			if(check > 0) {
+				li.setWriteBookMark("yes");
+			}else {
+				li.setWriteBookMark("no");
+			}
+		});
+		model.addAttribute("list", list);
 		return "/write/writeAllSelectList";
 	}
 //	@GetMapping("/list")

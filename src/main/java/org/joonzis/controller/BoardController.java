@@ -70,6 +70,7 @@ public class BoardController {
 			model.addAttribute("attachList", service.getAttachList(boardno));
 			return "/board/get";
 		}
+		
 		// 게시글 수정, 수정이 완료되면 board/list로 이동
 		@PostMapping("/modify")
 		public String modify(BoardVO boardno) {
@@ -130,5 +131,48 @@ public class BoardController {
 			return new ResponseEntity<List<BoardAttachVO>>(service.getAttachList(boardno), HttpStatus.OK);
 		}
 	    
+		// 인기글 bestList
+		@GetMapping("/bestList")
+		public String bestList(Model model, Criteria cri
+//				,@RequestParam(value = "category", defaultValue = "1") String category
+				) {
+//		    log.info("게시판 카테고리: " + category);
+			if (cri.getCategory() == null || cri.getCategory().isEmpty()) {
+		        cri.setCategory("1"); // 기본값 설정
+		    }
+			
+		    if (cri.getPageNum() == 0 || cri.getAmount() == 0) {
+		        cri.setPageNum(1);
+		        cri.setAmount(20);
+		    }
+
+		    int total = 18;
+		    log.warn("보드서비스 리스트 토탈... " + total);
+		    
+
+			 // 여러 번 호출해서 반환된 리스트들을 합침
+		    	cri.setCategory("1");
+//			 filteredList.addAll(service.bestList1(cri));  // 첫 번째 추가
+		    	List<BoardVO> filteredList = service.bestList1(cri);
+			 cri.setCategory("2");
+			 filteredList.addAll(service.bestList1(cri));  // 두 번째 추가
+			 cri.setCategory("3");
+			 filteredList.addAll(service.bestList1(cri));  // 세 번째 추가
+			 cri.setCategory("4");
+			 filteredList.addAll(service.bestList1(cri));  // 네 번째 추가
+			 cri.setCategory("5");
+			 filteredList.addAll(service.bestList1(cri));  // 다섯 번째 추가
+			 cri.setCategory("6");
+			 filteredList.addAll(service.bestList1(cri));  // 여섯 번째 추가
+			 
+		    log.warn("filteredList... " + filteredList);
+
+		    model.addAttribute("pageMaker", new PageDTO(cri, total));
+		    model.addAttribute("list", filteredList);
+//		    model.addAttribute("selectedCategory", category);
+		    model.addAttribute("isBestList", true);
+		    
+		    return "/board/list";
+		}
 		
 }

@@ -132,14 +132,17 @@ function validateId() {
 /*-----------------비밀번호 검증-----------------*/
 f.userPw.addEventListener('keyup', e => {
 	let target = e.currentTarget;
-// console.log(target.value);
 	if (target.value === '') {
 		initialization(target, mPwValidState);
 		pwCk = false;
+	} else if(target.value.length > 16){
+		invalidated(target, mPwValidState, '비밀번호는 최대 16글자 입니다.');
+		target.value = target.value.substring(0, 15);
+		return;
 	} else if (regExpPw.exec(target.value)) {
 		validated(target, mPwValidState);
 		pwCk = true;
-	} else { 
+	}else { 
 		invalidated(target, mPwValidState, '비밀번호는 8 ~ 16자 영문, 숫자 조합하세요.');
 		pwCk = false;
 	}
@@ -154,6 +157,10 @@ f.confirm_password.addEventListener('keyup', e => {
 	if (target.value === '') {
 		initialization(target, mPwValidState);
 		pwReCk = false;
+	} else if(target.value.length > 16){
+		invalidated(target, mPwReValidState, '비밀번호는 최대 16글자 입니다.');
+		target.value = target.value.substring(0, 15);
+		return;
 	} else if (target.value === f.userPw.value) {
 		validated(target, mPwReValidState);
 		pwReCk = true;

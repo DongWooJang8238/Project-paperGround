@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/security/tags"
+   prefix="sec"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -64,7 +66,7 @@
             </tbody>
          </table>
          <input type="hidden" name="ubookImage">
-         <input type="hidden" name="mno" value="${sessionScope.vo.mno}">
+         <input type="hidden" name="mno" value="<sec:authentication property='principal.user.mno'/>">
 		</form>
 	</div>
 	<div class="footer">

@@ -7,15 +7,15 @@
 
 
 <select id="easyCheck" parameterType="int" resultType="String">
-	select gameAnswer from gameTable where gameNo = #{gameNo}
+	select gameAnswer from tbl_gameTable where gameNo = #{gameNo}
 </select>
 
 <select id="nomalQuest" parameterType="int" resultType="org.joonzis.domain.GameVO">
-	select * from gameTable where gameNo = #{gameNo}
+	select * from tbl_gameTable where gameNo = #{gameNo}
 </select>
 
 <select id="easyQuest" parameterType="int" resultType="org.joonzis.domain.GameVO">
-	select * from gameTable where gameNo = #{gameNo}
+	select * from tbl_gameTable where gameNo = #{gameNo}
 </select>
 
 <update id="gameDone" parameterType="int" >
@@ -23,19 +23,19 @@
 </update>
 
 <update id="updatePGdate" parameterType="int">
-	update gameuser set pgdate = sysdate where mno = #{mno}
+	update tbl_gameuser set pgdate = sysdate where mno = #{mno}
 </update>
 
 <select id = "userCheck" parameterType="int" resultType="int">
-	SELECT NVL(COUNT(*), 0) FROM gameuser WHERE mno = #{mno}
+	SELECT NVL(COUNT(*), 0) FROM tbl_gameuser WHERE mno = #{mno}
 </select>
 
 <insert id="insertUser" parameterType="int">
-	insert into gameuser ( mno, pgdate) values (#{mno}, sysdate)
+	insert into tbl_gameuser ( mno, pgdate) values (#{mno}, sysdate)
 </insert>
 
 <select id="pointGetCheck" parameterType="int" resultType="String">
-	select pgdate from gameuser where mno = #{mno}
+	select pgdate from tbl_gameuser where mno = #{mno}
 </select>
 <insert id="pointHistory" parameterType="int">
 	insert into tbl_pointHistory (mno, point, pointarea, pointgetDate, status) values( #{mno}, 150, '게임', sysdate, '적립')

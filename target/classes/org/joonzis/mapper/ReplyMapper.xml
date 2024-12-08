@@ -4,25 +4,27 @@
 
 <mapper namespace="org.joonzis.mapper.ReplyMapper">
 	<insert id="insert" parameterType="org.joonzis.domain.ReplyVO">
-		 insert into table_comments VALUES(table_comments_seq.nextval, #{boardno}, #{mno}, #{reply}, #{replyer}, sysdate, sysdate)
+		 insert into tbl_comments VALUES(tbl_comments_seq.nextval, #{boardno}, #{mno}, #{reply}, #{replyer}, sysdate, sysdate)
 	</insert>
 	
-		<select id="getList" parameterType="int" resultType="org.joonzis.domain.ReplyVO">
-		SELECT * FROM table_comments WHERE boardno = #{boardno} ORDER BY replyno
+	<select id="getList" parameterType="int" resultType="org.joonzis.domain.ReplyVO">
+	    SELECT * FROM tbl_comments 
+	    WHERE boardno = #{boardno} 
+	    ORDER BY replydate ASC
 	</select>
 	
 	<select id="read" parameterType="int" resultType="org.joonzis.domain.ReplyVO">
-		SELECT * FROM table_comments WHERE replyno = #{replyno}
+		SELECT * FROM tbl_comments WHERE replyno = #{replyno}
 	</select>
 	<delete id="delete" parameterType="int">
-		DELETE FROM table_comments where replyno = #{replyno}
+		DELETE FROM tbl_comments where replyno = #{replyno}
 	</delete>
 	<delete id="boardDelete" parameterType="int">
-		DELETE FROM table_comments where boardno = #{boardno}
+		DELETE FROM tbl_comments where boardno = #{boardno}
 	</delete>
 	
 	<update id="update" parameterType="org.joonzis.domain.ReplyVO">
-		UPDATE table_comments set reply = #{reply}, updatedate = sysdate where replyno = #{replyno}
+		UPDATE tbl_comments set reply = #{reply}, updatedate = sysdate where replyno = #{replyno}
 	</update>
 	
 </mapper>

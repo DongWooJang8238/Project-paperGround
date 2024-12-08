@@ -85,14 +85,14 @@
 	<!--유저 정보 업데이트 -->
 	<update id="updateUserInfo"
 		parameterType="org.joonzis.domain.UserVO">
-		UPDATE tbl_user
-		SET
-		useremail = #{userEmail}, address =
-		#{address}, streetAddress =
-		#{streetAddress} , detailAddress =
-		#{detailAddress} , userphonenumber
-		= #{userPhonenumber}, userdate =
-		#{userDate}
+		UPDATE tbl_user 
+		SET 
+		useremail = #{userEmail}, 
+		address = #{address}, 
+		streetAddress = #{streetAddress}, 
+		detailAddress = #{detailAddress}, 
+		userphonenumber = #{userPhonenumber}, 
+		userdate = #{userDate} 
 		WHERE userId = #{userId}
 	</update>
 
@@ -238,11 +238,11 @@
 	<select id="selectBoard" resultType="org.joonzis.domain.BoardVO"
 		parameterType="org.joonzis.domain.Criteria">
 	<![CDATA[	
-		SELECT title,readcount,updatedate 
+		SELECT title,readcount,updatedate , boardno 
 		FROM (
-       	 	SELECT ROWNUM rn, title, readcount,updatedate 
+       	 	SELECT ROWNUM rn, title, readcount,updatedate, boardno  
         FROM (
-            SELECT * FROM table_board
+            SELECT * FROM tbl_board
             WHERE mno = #{userMno}
         )
 		WHERE ROWNUM <= #{pageNum} * #{amount}
@@ -255,19 +255,21 @@
 		parameterType="org.joonzis.domain.Criteria" resultType="int">
 		SELECT
 		count(*)
-		FROM table_board
+		FROM tbl_board
 		WHERE mno = #{userMno}
 	</select>
 
-	<select id="selectComments" resultType="org.joonzis.domain.BoardVO" parameterType="org.joonzis.domain.Criteria">
+	<select id="selectComments"
+		resultType="org.joonzis.domain.BoardVO"
+		parameterType="org.joonzis.domain.Criteria">
 	<![CDATA[
-		SELECT reply, updatedate, title, readcount
+		SELECT reply, updatedate, title, readcount, boardno
 			FROM (
-    	SELECT ROWNUM AS rn, reply, updatedate, title, readcount
+    	SELECT ROWNUM AS rn, reply, updatedate, title, readcount, boardno
     		FROM (
-        SELECT c.reply, c.updatedate, b.title, b.readcount
-        	FROM table_comments c
-        INNER JOIN table_board b ON c.boardno = b.boardno
+        SELECT c.reply, c.updatedate, b.title, b.readcount, c.boardno
+        	FROM tbl_comments c
+        INNER JOIN tbl_board b ON c.boardno = b.boardno
         	WHERE b.mno = #{userMno}
         	ORDER BY c.updatedate DESC
     			 )
@@ -277,24 +279,27 @@
 	]]>
 	</select>
 
-	<select id="selectCommentsCount" parameterType="org.joonzis.domain.Criteria" resultType="int">
+	<select id="selectCommentsCount"
+		parameterType="org.joonzis.domain.Criteria" resultType="int">
 		SELECT
-			COUNT(*)
-		FROM table_comments c
-			INNER JOIN table_board b
-			ON c.boardno = b.boardno
+		COUNT(*)
+		FROM tbl_comments c
+		INNER JOIN tbl_board b
+		ON c.boardno = b.boardno
 		WHERE b.mno = #{userMno}
 	</select>
 
-	<select id="selectLikesBoard" resultType="org.joonzis.domain.BoardVO" parameterType="org.joonzis.domain.Criteria" >
+	<select id="selectLikesBoard"
+		resultType="org.joonzis.domain.BoardVO"
+		parameterType="org.joonzis.domain.Criteria">
 		<![CDATA[
-		SELECT title,updatedate, readcount
+		SELECT title,updatedate, readcount, boardno
     		FROM (
-    	SELECT ROWNUM AS rn, title, updatedate, readcount
+    	SELECT ROWNUM AS rn, title, updatedate, readcount, boardno
         	FROM (
-        SELECT b.title, b.updatedate, b.readcount
-        	FROM table_board b
-        INNER JOIN table_likes l ON b.boardno = l.boardno 
+        SELECT b.title, b.updatedate, b.readcount, b.boardno
+        	FROM tbl_board b
+        INNER JOIN tbl_likes l ON b.boardno = l.boardno 
         	WHERE l.mno = #{userMno}
         )
         	WHERE ROWNUM <= #{pageNum} * #{amount}
@@ -303,29 +308,78 @@
 	]]>
 	</select>
 
-	<select id="selectLikesCount" parameterType="org.joonzis.domain.Criteria" resultType="int">
+	<select id="selectLikesCount"
+		parameterType="org.joonzis.domain.Criteria" resultType="int">
 		SELECT
-			COUNT(*)
-		FROM table_board b
-			inner join table_likes l
-			ON b.BOARDNO = l.BOARDNO AND l.mno = #{userMno}
+		COUNT(*)
+		FROM tbl_board b
+		inner join tbl_likes l
+		ON b.BOARDNO = l.BOARDNO AND
+		l.mno = #{userMno}
+	</select>
+
+
+	<select id="selectMyLikedWritingList"
+		parameterType="org.joonzis.domain.Criteria"
+		resultType="org.joonzis.domain.WriteVO">
+		<choose>
+			<when test="filterType == null">
+				SELECT *
+				FROM tbl_writing
+				WHERE wno in (
+				SELECT wno
+				FROM tbl_writing_like
+				WHERE mno = ${userMno}
+				)
+			</when>
+			<when test="filterType != null">
+				SELECT *
+				FROM tbl_writing
+				WHERE wno in (
+				SELECT wno
+				FROM tbl_writing_like
+				WHERE mno = ${userMno}
+
+				AND title LIKE
+				'%${filterType}%'
+				)
+			</when>
+		</choose>
 	</select>
 	
-	
-	<select id="selectMyLikedWritingList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.WriteVO">
-		SELECT 
-    		w.title,
-   			w.likecount,
-    		w.coverimage,
-    		w.genre
-    	FROM TBL_WRITING w
-    	INNER JOIN TBL_WRITING_LIKE L
-   	 		ON w.mno = l.mno
-   		WHERE w.MNO = #{userMno}
-   		<choose>
-   			<when test="filterType != null">
-   				AND title LIKE '%${filterType}%'
-   			</when>
-   		</choose>
+	<update id="deleteUser" parameterType="int">
+		UPDATE tbl_user 
+		SET 
+		    username =  '알수없음',
+		    userid = '알수없음',
+		    userphonenumber = '(null)',
+		    useremail = '알수없음',
+		    usericon = null,
+		    userrole = 'USER_DELETE',
+		    nickname = '알수없음'
+		WHERE mno = #{mno}
+	</update>
+
+	<!-- 문의 내역 처리중 총 개수 쿼리 -->
+	<select id="directReportCountByMno" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		    FROM tbl_directreport 
+		WHERE mno = #{mno} 
+		    AND STATUS IS NULL
 	</select>
+	
+	<!-- 내가 작성한 게시글 개수 쿼리 -->
+	<select id="myBoardCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		    FROM tbl_board 
+		WHERE mno = #{mno}
+	</select>
+	<!-- 내 최근 일주일 주문내역 -->
+	<select id="myShoppingCount" parameterType="int" resultType="int">
+		SELECT COUNT(*) 
+			FROM tbl_order_detail 
+		WHERE mno = #{mno}
+			AND TRUNC(orderdate) BETWEEN TRUNC(SYSDATE) - 6 AND TRUNC(SYSDATE)
+	</select>
+	
 </mapper>

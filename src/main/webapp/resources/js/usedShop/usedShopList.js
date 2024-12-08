@@ -96,14 +96,16 @@ document.querySelectorAll('input[name="gno"]').forEach(checkbox => {
         }
 
         console.log(checkCategorys);
-        if(checkCategorys.length > 0 && selectVl.value != null){
+        if(checkCategorys.length > 0 && selectVl.value != null && selectVl.value != ''){
         	location.href = `/used/list?gener=${checkCategorys}&filterType=${filterType}&selectValue=${selectVl.value}`;
         }else if(checkCategorys.length > 0 && selectVl.value == null){
         	location.href = `/used/list?gener=${checkCategorys}&filterType=${filterType}`;
-        }else if(selectVl.value != null){
+        }else if(selectVl.value != null && selectVl.value != ''){
         	location.href = `/used/list?selectValue=${selectVl.value}`
+        }else if(checkCategorys.length === 0){
+        	location.href = `/used/list`;
         }else {
-        	location.href = `/used/list?filterType=${filterType}`;
+        	location.href = `/used/list?gener=${checkCategorys}`;
         }
     });
 });

@@ -60,6 +60,16 @@ const replyService = (function() {
 		
 	}
 	
+	// 댓글 좋아요 개수 조회 함수
+	function updateReplyLikeCount(replyno) {
+	    fetch('/reply/likeCount/' + replyno) // 댓글 번호를 포함한 API 요청
+	        .then(response => response.text())
+	        .then(count => {
+	            document.getElementById('reply-like-count-' + replyno).innerHTML = count; // 좋아요 수 업데이트
+	        })
+	        .catch(error => console.error('Error fetching reply like count:', error));
+	}
+	
 	return {
 		add : add,
 		getList : getList,

@@ -1,5 +1,4 @@
 
-console.log(1);
 /*-------------- 사이드바  이벤트 핸들러------*/
 document.querySelectorAll(".sidebar a").forEach(a => {
 	a.addEventListener('click', e=>{
@@ -17,23 +16,15 @@ document.querySelectorAll(".sidebar a").forEach(a => {
 			location.href = menu;
 		}else if(a.id === "myLB"){
 			location.href = menu;
-		}else if(a.id === "directReport"){
-			console.log('미구현');
-//			location.href = menu;
+		}else if(a.id === "UD"){
+			location.href = menu;
 		}
 		
 	});
 });
 
-/*-------------- 사이드바 ------*/
-function toggleSubMenu(id) {
-	var subMenu = document.getElementById(id);
-	if (subMenu.style.display === "block") {
-		subMenu.style.display = "none";
-	} else {
-		subMenu.style.display = "block";
-	}
-}
+
+
 
 
 

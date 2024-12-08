@@ -88,7 +88,7 @@
 												alt="전체작품">
 										</div>
 										<p>전체작품</p></a></li>
-								<li><a data-testid="joa-mainShort-3" href="#"><div	class="icon">
+								<li><a data-testid="joa-mainShort-3" href="/board/list?pageNum=1&amount=10&category=1"><div	class="icon">
 											<img
 												src="https://cf.joara.com/version_3_0/shortcut/20240619_120531.jpg"
 												alt="자유게시판">

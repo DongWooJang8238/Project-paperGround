@@ -15,15 +15,15 @@
  <input type="hidden" class="alertMessage" value="${alertMessage}" />
  <!-- 씨큐리티 적용시 받아오기. -->
  
-<div class="button-container">
+<!-- <div class="button-container">
 <form action="JenreCheck" method="get">
 	<div class="panel-body-btns">
 		<button type="button" class="btns" id="godirectReport">1 대 1 문의 하기</button>
 		<button type="button" class="btns" id="godirectReportCheck">1대 1 문의 확인하기</button>
-		<button type="button" class="btns" id="goqna">QNA 보기</button>
+		<button type="button" class="btns" id="qna">Q&A</button>
 	</div>
 </form>
-</div>    
+</div>     -->
 
    <jsp:include page="../layout/footer.jsp"></jsp:include>
 	<script type="text/javascript" src="../resources/js/report/directReportEntracne.js"></script>

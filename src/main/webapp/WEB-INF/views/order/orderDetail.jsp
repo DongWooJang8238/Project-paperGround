@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -170,7 +172,7 @@ li span.value {
 					<h3><a href="/shop/get?bno=${order.bno}">${order.title}</a></h3>
 					<p>수량 : ${order.count}개</p>
 				</div>
-				<div class="price">${order.bookPrice * order.count}원</div>
+				<div class="price"><fmt:formatNumber value="${order.bookPrice * order.count}" type="number" pattern="#,###" />원</div>
 				<div class="status">${order.orderStatus}</div>
 				
 				<!-- 취소 버튼 -->
@@ -182,7 +184,7 @@ li span.value {
 		<div class="payment-info">
 			<ul>
 				<li><span class="label">포인트 사용:</span><span class="value">-${list[0].usePoint }P</span></li>
-				<li><span class="label total">총 결제 금액:</span><span class="value total-price">${list[0].totalPrice }원</span></li>
+				<li><span class="label total">총 결제 금액:</span><span class="value total-price"><fmt:formatNumber value="${list[0].totalPrice }" type="number" pattern="#,###" />원</span></li>
 			</ul>
 		</div>
 

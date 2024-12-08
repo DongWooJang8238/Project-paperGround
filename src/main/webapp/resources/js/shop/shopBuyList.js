@@ -153,7 +153,7 @@ function cardPay() {
 //	alert('mno = ' + mno);
 	const img = document.querySelectorAll('img');
 	console.log(img[0].src);
-	const orderMainBookName = document.querySelectorAll('span');
+	const orderMainBookName = document.querySelectorAll('.product-description span');
 	const products = document.querySelectorAll('.product-description');
 	const bnoOne = document.querySelectorAll('input[name="bno"]');
 	console.log(bnoOne[0].value);
@@ -172,7 +172,7 @@ function cardPay() {
 			    bookTypeCount : products.length,
 			    orderMainBookName : orderMainBookName[0].getAttribute('data-title'),
 			    orderMainImage : img[0].src,
-			    totalPrice: document.querySelector('#totalPrice').innerHTML,
+			    totalPrice: document.querySelector('#totalPrice').innerHTML.replace(/,/g, ''),
 			    orderName: document.getElementById('orderName').value,
 			    orderPhone: document.getElementById('orderPhone').value,
 			    orderAddress: document.getElementById('address').value,

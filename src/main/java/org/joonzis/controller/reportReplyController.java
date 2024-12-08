@@ -25,7 +25,7 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @Controller
 @RequestMapping("/reportreply")
-public class ReportReplyController {
+public class reportReplyController {
 	@Autowired
 	public ReportReplyService service;
 	

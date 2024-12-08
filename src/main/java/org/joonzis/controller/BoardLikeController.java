@@ -20,10 +20,9 @@ public class BoardLikeController {
     // 좋아요만
     @PostMapping("/get")
     public ResponseEntity<String> addLike(@RequestBody BoardLikeVO vo) {
-        log.info("addLike... " + vo);
-        log.info("getLike... " + vo);
-      log.info("getLike... " + vo.getBoardno());
-      log.info("getLike... " + vo.getMno());
+      log.warn("getLike... " + vo);
+      log.warn("getLike... " + vo.getBoardno());
+      log.warn("getLike... " + vo.getMno());
 
         // 사용자가 이미 좋아요를 눌렀는지 확인
         int isLiked = service.isLiked(vo);
@@ -34,7 +33,8 @@ public class BoardLikeController {
             return new ResponseEntity<String>("Already liked", HttpStatus.OK); // 이미 좋아요를 누른 상태
         } else {
             // 좋아요 추가
-            service.insertLike(vo);
+            int result = service.insertLike(vo);
+            log.warn("좋아요 추가 결과 : " + result);
             return new ResponseEntity<String>("Like added", HttpStatus.OK); 
         }
     }
@@ -46,6 +46,7 @@ public class BoardLikeController {
         int count = service.countLikes(boardno);
         return new ResponseEntity<>(count, HttpStatus.OK);
     }
+    
     
     
 }

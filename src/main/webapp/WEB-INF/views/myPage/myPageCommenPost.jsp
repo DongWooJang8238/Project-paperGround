@@ -5,12 +5,18 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="/resources/css/myPage.css">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+	rel="stylesheet" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>게시글 관리</title>
 <style>
 /* 기본 스타일 */
 .container {
-	width: 90%;
+	width: 100%;
 	background-color: #fff;
 	border: 1px solid #ddd;
 	border-radius: 8px;
@@ -97,15 +103,61 @@
 	background-color: #e0e0e0;
 }
 
-.page-nation li a:hover, .page-nation li a.active {
-	background-color: #6d4c41; /* 선택된 페이지, 호버 효과 */
-	color: #fff;
-}
+ .page-nation li a:hover, .page-nation li a.active {
+   background-color: #7fb5ff88; /* 선택된 페이지, 호버 효과 */
+   color: #fff;
+} 
+
 </style>
 </head>
 <body>
 	<jsp:include page="../layout/header.jsp"></jsp:include>
-	<div class="container">
+	<div class="mypage-container">
+      <div class="sidebar">
+			<ul>
+				<li><a href="#"> <i class="bx bx-user"></i> 회원정보
+				</a>
+					<ul class="sub-menu">
+						<li><a href="/User/myPageUpdate?userId=${vo.userId}">회원정보
+								수정</a></li>
+						<!-- <li><a href="#">내 찜리스트</a></li> -->
+						<li><a href="/User/selectMyPoint?mno=${vo.mno}">내 포인트</a></li>
+					</ul></li>
+				<li><a href="#"> <i class="bx bx-cart"></i> 쇼핑정보
+				</a>
+					<ul class="sub-menu">
+						<li><a href="/User/OrderSelect?mno=${vo.mno}">주문목록/배송조회</a></li>
+						<!-- <li><a href="#">취소/반품 내역</a></li> -->
+					</ul></li>
+				<li><a href="#"> <i class="bx bx-bar-chart"></i> 활동정보
+				</a>
+					<ul class="sub-menu">
+						<li><a
+							href="/User/myCommenPost?userMno=${vo.mno}&filterType=posts">내
+								게시글/댓글</a></li>
+						<li><a href="/User/myLikedWriterBookList?userMno=${vo.mno}">집필
+								북마크</a></li>
+					</ul></li>
+				<li><a href="/User/deleteAccount"> <i class="bx bx-log-out"></i>
+						회원 탈퇴
+				</a></li>
+			</ul>
+		</div>
+		<div class="main-content" style="padding: 5px 0 0; background-color: white; color: black;">
+			<div class="header" style="display: block;">
+				<h1>${vo.userId}님의 활동 내역</h1>
+				<c:if test="${empty vo.userIcon}">
+					<img src="../resources/images/usericon.jpg" alt="User Icon"
+						width="100" height="100">
+				</c:if>
+				<c:if test="${not empty vo.userIcon}">
+					<img src="${vo.userIcon}" id="userIcon" alt="userIcon"
+						width="100" height="100" onerror="this.onerror=null; this.src='../resources/images/usericon.jpg';">
+				</c:if>
+
+				<input type="hidden" name="userId" value="${vo.userId}"> 
+			</div>
+	<div class="container" style="padding-left: 0px; padding-right: 0px; padding-bottom: 0px;">
 		<!-- 탭 -->
 		<div class="tabs">
 			<c:choose>
@@ -134,7 +186,7 @@
 				<!-- 작성글 콘텐츠 -->
 				<div id="posts" class="content active">
 					<div class="table-container">
-						<table class="table">
+						<table class="table" style="margin-bottom: 0px;">
 							<thead>
 								<tr>
 									<th>제목</th>
@@ -146,7 +198,7 @@
 								<c:choose>
 									<c:when test="${not empty list}">
 										<c:forEach var="list" items="${list }">
-											<tr>
+											<tr data-bno="${list.boardno}">
 												<td>${list.title }</td>
 												<td>${list.updateDate }</td>
 												<td>${list.readCount }</td>
@@ -180,7 +232,7 @@
 								<c:choose>
 									<c:when test="${not empty commentsList}">
 										<c:forEach var="list" items="${commentsList}">
-											<tr>
+											<tr data-bno="${list.boardno}">
 												<td>${list.reply}</td>
 												<td>${list.updateDate}</td>
 												<td>${list.title}</td>
@@ -190,7 +242,7 @@
 									</c:when>
 									<c:otherwise>
 										<tr>
-											<td colspan="3" class="no-data">작성하신 댓글이 없습니다.</td>
+											<td colspan="4" class="no-data">작성하신 댓글이 없습니다.</td>
 										</tr>
 									</c:otherwise>
 								</c:choose>
@@ -215,7 +267,7 @@
 									<c:choose>
 									<c:when test="${not empty likesList}">
 										<c:forEach var="list" items="${likesList}">
-											<tr>
+											<tr data-bno="${list.boardno}">
 												<td>${list.title}</td>
 												<td>${list.updateDate}</td>
 												<td>${list.readCount}</td>
@@ -234,7 +286,9 @@
 				</div>
 			</c:when>
 		</c:choose>
-</div>
+			</div>
+			</div>
+			</div>
 		<!-- 작성댓글 콘텐츠 -->
 		<input type="hidden" id="filterType"
 			value="${pageMaker.cri.filterType }">
@@ -256,7 +310,6 @@
 				</c:if>
 			</ul>
 		</div>
-
 		<jsp:include page="../layout/footer.jsp"></jsp:include>
 </body>
 <script type="text/javascript"

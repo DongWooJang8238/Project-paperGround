@@ -21,14 +21,14 @@
 							class="beta-ic" src="/assets/ic/beta_icon.png" alt="">
 					</div>
 					<div class="link writeHome">
-						<a href="#">조아라 웹소설 바로가기<img
+						<a href="#">창작 홈 바로가기<img
 							src="/assets/ic/list-item/subnav-list-ic.png" alt=""></a>
 					</div>
 				</div>
 				<div class="profile-content custom">
 					<div class="profile-ic">
 						<img class="img"
-							src="https://cf.joara.com/user_file/default_01.png" alt="">
+							src="<sec:authentication property='principal.user.userIcon'/>" alt="" onerror="this.onerror=null; this.src='/resources/images/usericon.jpg';">
 						<div class="inner-border"></div>
 					</div>
 					<div class="profile-name">
@@ -69,7 +69,6 @@
 								<p data-testid="joa-Mainpage-onClickNewBook">${write.genre}</p>
 							</div>
 							<div class="link" data-wno="${write.wno}" data-testid="joa-Mainpage-onClickNewBook">
-								<p>마지막 수정일 : ${write.updateDate}</p>
 								연재하기<img src="/assets/ic/list-item/subnav-list-ic.png" alt="">
 							</div>
 					</div>

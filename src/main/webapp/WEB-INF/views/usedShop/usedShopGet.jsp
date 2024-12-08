@@ -100,7 +100,7 @@
 				<c:when test="${sellUser.mno == uservo.mno}">
 					<button onclick="myChattingList(${ubvo.ubno}, ${uservo.mno})">내 채팅 방 보기</button>
 					<button onclick="sellSuccess(${ubvo.ubno});">판매완료</button>
-					<button onclick="deleteUsed(${ubvo.ubno});">삭제</button>
+					<%-- <button onclick="deleteUsed(${ubvo.ubno});">삭제</button> --%>
 				</c:when>
 				<c:otherwise>
 					<c:if test="${wish > 0 }">

@@ -1,6 +1,11 @@
 document.querySelector('#myEp').addEventListener('click', e => {
 	e.preventDefault();
-	location.href = '/write/goMyEpiosde?mno=' + mno.value;
+	if(mno.value === ''){
+		alert('로그인이 필요한 기능입니다.');
+		return;
+	}else {
+		location.href = '/write/goMyEpiosde?mno=' + mno.value;
+	}
 });
 
 //Swiper 초기화
@@ -124,16 +129,12 @@ document.addEventListener('DOMContentLoaded', function () {
     		if(bookPre === 'book-preview'){
     			e.preventDefault();
     			const wno = a.getAttribute('data-wno');
-    			console.log(e.target.src);
-    			if(mno.value === ''){
-    				alert('로그인이 필요한 기능입니다.');
-    				return;
-    			}else if(e.target.src === 'https://cf.joara.com/joara30FE/assets/icon/ico_star.png'){
-    				console.log('즐겨찾기 클릭!');
-    			}else if(e.target.src === 'https://cf.joara.com/joara30FE/assets/icon/ico_star_toggle.png'){
-    				console.log('즐겨찾기 클릭!');
-    			}else if(e.target.src === 'https://cf.joara.com/joara30FE/assets/icon/ico_star_shadow.png'){
-    				console.log('즐겨찾기 클릭!');
+    			console.log(e.target.tagName);
+    			console.log(e.target.getAttribute('alt'));
+    			if(e.target.getAttribute('alt') === '선호작 등록'){
+    				console.log('여긴이미지');
+    			}else if(mno.value === ''){
+    				location.href = '/write/goEpisodeList?wno=' + wno + "&mno=0";
     			}else {
     				location.href = '/write/goEpisodeList?wno=' + wno + "&mno=" + mno.value;
     			}
@@ -146,7 +147,11 @@ document.addEventListener('DOMContentLoaded', function () {
     	a.addEventListener('click', e => {
     		console.log(e.target.alt);
     		if(e.target.alt === '전체작품'){
-    			location.href = '/write/AllList';
+    			if(mno.value === ''){
+    				location.href = '/write/AllList?mno=0';
+    			}else {
+    				location.href = '/write/AllList?mno=' + mno.value;
+    			}
     		}
     	});
     });

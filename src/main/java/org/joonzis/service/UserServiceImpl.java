@@ -99,6 +99,12 @@ public class UserServiceImpl implements UserService {
 	public int updateUserInfo(UserVO vo) {
 		log.warn("유저정보 업데이트 서비스 @@@@@@@@@@@@@@@@" + vo);
 		log.warn("유저정보 업데이트 서비스 @@@@@@@@@@@@@@@@" + vo.getUserDate());
+		log.warn("유저정보 업데이트 서비스 @@@@@@@@@@@@@@@@" + vo.getUserEmail());
+		log.warn("유저정보 업데이트 서비스 @@@@@@@@@@@@@@@@" + vo.getAddress());
+		log.warn("유저정보 업데이트 서비스 @@@@@@@@@@@@@@@@" + vo.getStreetAddress());
+		log.warn("유저정보 업데이트 서비스 @@@@@@@@@@@@@@@@" + vo.getDetailAddress());
+		log.warn("유저정보 업데이트 서비스 @@@@@@@@@@@@@@@@" + vo.getUserPhonenumber());
+		log.warn("유저정보 업데이트 서비스 @@@@@@@@@@@@@@@@" + vo.getUserId());
 		
 //		LocalDate localDate = LocalDate.of(1900,01,01);
 //		Date dt = Date.valueOf(localDate);
@@ -227,5 +233,32 @@ public class UserServiceImpl implements UserService {
 	public List<WriteVO> selectMyLikedWritingList(Criteria cri) {
 		log.warn("서비스 엠엔오 집필 : " + cri.getUserMno());
 		return userMapper.selectMyLikedWritingList(cri);
+	}
+	
+	@Override
+	public int deleteUser(int mno) {
+		log.warn("유저 삭제 서비스 : " + mno);
+		return userMapper.deleteUser(mno);
+	}
+	
+	@Override
+	public int directReportCountByMno(int mno) {
+		int result = userMapper.directReportCountByMno(mno);
+		log.warn("내 미완료 1:1 문의 수 : " + result);
+		return result;
+	}
+	
+	@Override
+	public int myBoardCount(int mno) {
+		int result = userMapper.myBoardCount(mno);
+		log.warn("내 게시글 수 : " + result);
+		return result;
+	}
+	
+	@Override
+	public int myShoppingCount(int mno) {
+		int result = userMapper.myShoppingCount(mno);
+		log.warn("내 최근 일주일 주문 갯수 : " + result);
+		return result;
 	}
 }

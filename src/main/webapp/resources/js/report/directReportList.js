@@ -1,4 +1,5 @@
 console.log("kaakdirectReportList");
+console.log(mno.value);
 
 
 //------CSS 파일 추가
@@ -51,7 +52,6 @@ if(!pageNum || !amount){
 	pageNum = 1;
 	amount = 10;
 }
-setStorageData(pageNum, amount);
 //페이지 버튼 클릭 이벤트
 document.querySelectorAll(".page-nation li a").forEach( a => {
 	a.addEventListener('click', e=>{
@@ -59,7 +59,7 @@ document.querySelectorAll(".page-nation li a").forEach( a => {
 		pageNum = a.getAttribute('href');
 		setStorageData(pageNum, amount);
 		let sendData = `pageNum=${pageNum}&amount=${amount}`;
-		location.href = `/report/directReport?${sendData}&mno=${mno.value}`;
+		location.href = `/report/directReportList?${sendData}&mno=${mno.value}`;
 	});
 });
 

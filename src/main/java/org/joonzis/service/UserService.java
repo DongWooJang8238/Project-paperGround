@@ -94,4 +94,16 @@ public interface UserService {
 	
 	// 집필 좋아요 리스트
 	public List<WriteVO> selectMyLikedWritingList(Criteria cri);
+	
+	// 회원 탈퇴
+	public int deleteUser(int mno);
+	
+	// 내 1:1 문의
+	public int directReportCountByMno(int mno);
+	
+	// 내 게시글 수
+	public int myBoardCount(int mno);
+	
+	// 내 최근 일주일 주문 수
+	public int myShoppingCount(int mno);
 }

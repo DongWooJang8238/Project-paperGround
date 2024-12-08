@@ -80,7 +80,7 @@
     
 	<div>	
    		<button id="backButton" class="backButton"  onclick="goBack()">이전문제 보기</button>
-   		<button type="button" onclick="location.href='/game/JenreCheck?gameMode=1&mno=${sessionScope.vo.mno}'">장르 선택으로 가기</button>
+   		<button type="button" onclick="location.href='/game/JenreCheck?gameMode=1&mno=${mno}'">장르 선택으로 가기</button>
 	 </div>
 	 
 <jsp:include page="../layout/footer.jsp"></jsp:include>

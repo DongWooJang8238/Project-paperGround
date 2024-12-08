@@ -10,10 +10,11 @@ document.head.appendChild(linkEle);
 
 const f = document.forms[0];
 
-function setStorageData(pageNum, amount){
+function setStorageData(pageNum, amount, category){
 	let pageData = {
 		pageNum : pageNum,
-		amount : amount
+		amount : amount,
+		category : f.category.value
 	};
 	localStorage.setItem('page_data', JSON.stringify(pageData));
 }
@@ -22,18 +23,18 @@ function getStorageData(){
 	
 }
 
-// 버튼 이벤트
+//버튼 이벤트
 document.querySelectorAll("button").forEach(btn => {
     btn.addEventListener('click', (e) => {
         let type = btn.getAttribute('id');
         let replyMno = btn.getAttribute('data-replymno');
         let boardMno = btn.getAttribute('data-boardmno');
-        let delreplyMno = btn.getAttribute('data-delreplymno');
+        let delreplyMno = document.querySelector('input[name="data_replyno"]');
         
         if (type === 'indexBtn') {
             // 목록으로 이동
             let pageData = getStorageData();
-            let sendData = `pageNum=${pageData.pageNum}&amount=${pageData.amount}`;
+            let sendData = `pageNum=${pageData.pageNum}&amount=${pageData.amount}&category=${pageData.category}`;
             location.href = '/board/list?' + sendData;
         } else if (type === 'modifyBtn') {
             if (boardMno !== mno.value) {
@@ -49,25 +50,27 @@ document.querySelectorAll("button").forEach(btn => {
             // 댓글 등록창 닫기
             closeModal();
         } else if (type === 'modifyReplyBtn') {
-        	if(mno.value == ''){
-        		alert("로그인시 댓글 수정 가능합니다.");
-        		return;
-        	}
-        	if (replyMno !== mno.value) {
-        		console.log("modifyReplyBtn" + replyMno);
-        		console.log("modifyReplyBtn" + mno.value);
+           if(mno.value == ''){
+              alert("로그인시 댓글 수정 가능합니다.");
+              return;
+           }
+           if (replyMno !== mno.value) {
+              console.log("modifyReplyBtn" + replyMno);
+              console.log("modifyReplyBtn" + mno.value);
                 alert('작성자만 수정 가능합니다');
                 return;
             }
             // 댓글 수정 실행 버튼
             modifyReply();
         } else if (type === 'removeReplyBtn') {
-        	if(mno.value == ''){
-        		alert("로그인시 댓글 삭제 가능합니다.");
-        		return;
-        	}
-        	if (delreplyMno !== mno.value) {
-                alert('작성자만 삭제 가능합니다');
+           if(mno.value == ''){
+              alert("로그인시 댓글 삭제 가능합니다.");
+              return;
+           }
+           if (delreplyMno.value !== mno.value) {
+                console.log("댓글 작성자 : " + delreplyMno.value);
+                console.log("로그인 유저 : " + mno.value);
+              alert('작성자만 삭제 가능합니다');
                 return;
             }
             // 댓글 삭제 실행 버튼
@@ -81,35 +84,56 @@ const rs = replyService;	// reply.js에서 CRUD를 담당하는 객체
 
 showList();
 // 댓글 목록 가져오는 함수
-function showList(){
-	let boardno = f.boardno.value;
-	let replyUL = document.querySelector('.chat');
-	
-	 rs.getList(boardno, function(data){
-		 
-		 let msg = '';
-		 
-		 data.forEach(bvo => {
-				msg += '<li data-replyno="' + bvo.replyno + '">';
-				msg +=  '<div>';
-				msg += 	'<div class="chat-header">';
-				msg += 		 '<strong class="primary-font">' + bvo.replyer + '</strong>';
-				msg += 		 '<small class="pull-right">' + displayTime(bvo.replyDate) + '</small>';
-				msg += 	'</div>';
-				msg += 	'<p>' + bvo.reply + '</p>';
-		        msg += 	'<div class="reply-like-section">';
-		        msg += 	'<div class="reply-like-count" id="reply-like-count-' + bvo.replyno + '">' + bvo.comLikeCount + '</div>';
-		        msg += 	'<button type="button" class="reply-like-btn" data-replyno="' + bvo.replyno + '">👍</button>';
-		        msg += 	'<button type="button" class="openModalBtn" onclick="modifyModalPage(this.closest(\'li\'))">수정</button>';
-		        msg += 	'</div>';
-		        msg += '</div>';
-		        msg += '</li>';
-		    });
-		 
-		 
-		 replyUL.innerHTML = msg;
-	 });
+function showList() {
+    let boardno = f.boardno.value;
+    let replyUL = document.querySelector('.chat');
+
+    // 댓글 목록 가져오기
+    rs.getList(boardno, function(data) {
+        // 모든 좋아요 수 fetch 작업을 배열로 저장
+        let fetchLikePromises = data.map(bvo =>
+            fetch('/reply/commentlike/count/' + bvo.replyno)
+                .then(response => response.text())
+                .then(likeCount => {
+                    bvo.likeCount = likeCount; // 좋아요 수를 bvo에 추가
+                })
+        );
+
+        // 모든 fetch가 완료된 후 실행
+        Promise.all(fetchLikePromises)
+            .then(() => {
+                // 댓글 데이터를 정렬
+                data.sort((a, b) => new Date(a.replyDate) - new Date(b.replyDate));
+
+                // 정렬된 데이터를 기반으로 UI 업데이트
+                let msg = '';
+                data.forEach(bvo => {
+                    msg += '<li data-replyno="' + bvo.replyno + '">';
+                    msg +=  '<div>';
+                    msg +=    `<div class="chat-header" data-mno=${bvo.mno}>`;
+                    msg +=         '<strong class="primary-font">' + bvo.replyer + '</strong>';
+                    msg +=         '<small class="pull-right">' + displayTime(bvo.replyDate) + '</small>';
+                    msg +=    '</div>';
+                    msg +=    '<p>' + bvo.reply + '</p>';
+                    msg +=    '<div class="reply-like-section">';
+                    msg +=    '<div class="reply-like-count" id="reply-like-count-' + bvo.replyno + '">' + bvo.likeCount + '</div>';
+                    msg +=    '<button type="button" class="reply-like-btn" data-replyno="' + bvo.replyno + '">👍</button>';
+                    msg +=    '<button type="button" class="openModalBtn" onclick="modifyModalPage(this.closest(\'li\'))">수정</button>';
+                    msg +=    '</div>';
+                    msg +=  '</div>';
+                    msg += '</li>';
+                });
+
+                replyUL.innerHTML = msg; // 최종적으로 한 번만 업데이트
+            })
+            .catch(error => console.error('Error in fetching like counts:', error));
+    });
 }
+
+
+
+
+
 
 // 날짜 변환 함수
 function displayTime(unixTimeStamp){
@@ -212,13 +236,17 @@ function modifyModalPage(li) {
     const data_reply = parent.querySelector('p').innerText;
     const data_replyer = parent.firstChild.firstChild.innerText;
     const data_replydate = parent.firstChild.lastChild.innerText;
-
+    const data_mno = parent.querySelector('.chat-header').getAttribute('data-mno');
+    const replyMnoOne = document.querySelector('input[name="data_replyno"]');
     console.log("댓글 번호 : " + replyno);
     console.log("댓글 내용 : " + data_reply);
+    console.log("댓글 mno : " + data_mno);
 
     modalinputReply.value = data_reply;
     modalinputReplyer.value = data_replyer;
     modalinputReplydate.value = data_replydate;
+    replyMnoOne.value = data_mno;
+    
 
     openModal();
 }

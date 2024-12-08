@@ -34,9 +34,10 @@ public interface BoardMapper {
 	
 	// 좋아요 수 조회
 	public int getLikeCount(int boardno);
-	
 	public List<BoardVO> getListByCategory(Criteria cri);
 	
 	public int getTotalByCategory(String category);
+	
+	public List<BoardVO> bestList1(Criteria cri);
 	
 }

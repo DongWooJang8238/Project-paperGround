@@ -61,28 +61,30 @@
 				<h2>구매자 정보</h2>
 				<div class="form-group">
 					<label for="orderName">이름 (필수)</label> <input type="text" id="orderName"
-						name="orderName" value="<sec:authentication property="principal.user.userName"/>" required>
+						name="orderName" value="${uvo.userName}" required>
 				</div>
 				<div class="form-group">
 					<label for="orderPhone">전화번호 (필수)</label> <input type="tel"
-						id="orderPhone" name="orderPhone" value="<sec:authentication property="principal.user.userPhonenumber"/>" required>
+						id="orderPhone" name="orderPhone" value="${uvo.userPhonenumber}" required>
 				</div>
 				<div class="form-group">
-					<label for="jangsick">기본 배송지 (필수)</label><input type="text" id="ShowAddress" value="<sec:authentication property="principal.user.address"/>" placeholder="우편번호" disabled="disabled">
-   					<input type="text" id="ShowStreetAddress" value="<sec:authentication property="principal.user.streetAddress"/>"  placeholder="주소" disabled="disabled"><br>
-   					<input type="text" id="ShowDetailAddress" value="<sec:authentication property="principal.user.detailAddress"/>" placeholder="상세주소" disabled="disabled">
+					<label for="jangsick">기본 배송지 (필수)</label>
+					<input type="text" id="ShowAddress" value="${uvo.address}" placeholder="우편번호" disabled="disabled">
+   					<input type="text" id="ShowStreetAddress" value="${uvo.streetAddress}"  placeholder="주소" disabled="disabled"><br>
+   					<input type="text" id="ShowDetailAddress" value="${uvo.detailAddress}" placeholder="상세주소" disabled="disabled">
             		<button type="button" onclick="addrChange();">배송지 입력(변경)</button>
 				</div>
 				<div class="form-group" id="newAddr">
 					<div class="input-group">
-						<label for="userAddress">신규 배송지</label> <input type="text"
-							id="address" name="address" value="<sec:authentication property="principal.user.address"/>"
+						<label for="userAddress">신규 배송지</label> 
+						<input type="text"
+							id="address" name="address" value="${uvo.address}"
 							placeholder="우편번호"> <input type="button"
 							onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
 						<input type="text" id="streetAddress" name="streetAddress"
-							value="<sec:authentication property="principal.user.streetAddress"/>" placeholder="주소"><br>
+							value="${uvo.streetAddress}" placeholder="주소"><br>
 						<input type="text" id="detailAddress" name="detailAddress"
-							value="<sec:authentication property="principal.user.detailAddress"/>" placeholder="상세주소">
+							value="${uvo.detailAddress}" placeholder="상세주소">
 						<input type="hidden" id="sample6_extraAddress" placeholder="참고항목">
 					</div>
 				</div>
@@ -100,7 +102,7 @@
 			<section class="payment-info-section">
 				<h2>포인트 할인</h2>
 				<div class="form-group">
-					<p>사용 가능 포인트 : <sec:authentication property="principal.user.userPoint"/></p>
+					<p>사용 가능 포인트 : ${uvo.userPoint}</p>
 					<select name="point">
 						<option value="0">0</option>
 						<option value="100">100</option>

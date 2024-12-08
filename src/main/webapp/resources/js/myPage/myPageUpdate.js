@@ -2,12 +2,28 @@
 let userEmailvalue = document.getElementById('userEmail').value;
 let userEmail = document.getElementById('userEmail');
 let userPhonenumber = document.getElementById('userPhonenumber');
+let labelUserPw = document.querySelector('.userPw');
+const userPw = document.querySelector('input[name="userPw"]');
 //let userId = document.getElementById('userId').value;
 //let userIcon = document.getElementById('userIcon').value;
 
-
-console.log(userPhonenumber);
-console.log(userEmail);
+labelUserPw.addEventListener('click', e => {
+	if(userPw.value === '123456789123456789'){
+		console.log(444);
+		userPw.style.border = '';
+		userPw.value = '';
+		userPw.removeAttribute('readonly');
+		userPw.removeAttribute('disabled');
+	}else {
+		console.log(777);
+		userPw.style.border = 'none';
+		userPw.value = '123456789123456789';
+		userPw.setAttribute('readonly', 'readonly');
+		userPw.setAttribute('disabled', 'disabled');
+	}
+});
+//console.log(userPhonenumber);
+//console.log(userEmail);
 //// 만약 유저 VO에 저장된 값이 woman이라면 checked 코드
 //if(gender === "woman"){
 //	document.querySelector('.gender-group input[value="woman"]').checked = true;
@@ -131,9 +147,43 @@ function updateUserInfo(form) {
 	console.log(form.userDate.value);
 	console.log(form.userPhonenumber.value);
 	console.log(form.userEmail.value);
-	alert("변경을 완료했습니다.");
-	form.action = "/User/updateUserInfo";
-	form.submit();
+	form.userId.removeAttribute('disabled');
+	if(form.userPw.getAttribute('readonly') === 'readonly'){
+		form.action = "/User/updateUserInfo";
+		form.submit();
+		return;
+	}else {
+		
+		if(form.userPw.value.length < 8){
+			alert('변경하려는 비밀번호가 너무 짧습니다.');
+			return;
+		}
+		
+		const userPwupdate = {
+				userId : form.userId.value,
+				userPw : form.userPw.value
+		}
+		
+		fetch(`/User/pwChangeRest`,{
+			method: 'POST',
+		    headers: {
+		        'Content-Type': 'application/json',
+		    },
+		    body: JSON.stringify(userPwupdate)
+		})
+			.then(response => response.text())
+			.then(result => {
+				if(result === 'success'){
+					alert("변경을 완료했습니다.");
+					form.action = "/User/updateUserInfo";
+					form.submit();
+				}else {
+					alert('비밀번호 변경 에러');
+					return;
+				}
+			})
+			.catch(err => console.log(err));
+	}
 	
 //	console.log(userGender.value);
 //	console.log(userPhonenumber.value);
@@ -149,7 +199,7 @@ const profileImage = document.getElementById("userIcon");
 const regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
 const MAX_SIZE = 5242880; // 5MB
 
-console.log(profileImage);
+//console.log(profileImage);
 //console.log(deleteImage);
 //console.log(imageInput);
 
@@ -176,7 +226,9 @@ function closeModal() {
   document.getElementById('profileModal').style.display = 'none';
 }
 
-
+function changePw() {
+	location.href = '/User/pwNew';
+}
 
 
 

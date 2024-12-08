@@ -5,42 +5,50 @@
 <mapper namespace="org.joonzis.mapper.BoardLikeMapper">
 	<!-- 게시판 -->
 	<insert id="insertLike" parameterType="org.joonzis.domain.BoardLikeVO">
-		INSERT INTO table_likes (likeno, boardno, mno)
-		VALUES (table_likes_seq.NEXTVAL, #{boardno}, #{mno})
+		INSERT INTO tbl_likes (likeno, boardno, mno)
+		VALUES (tbl_likes_seq.NEXTVAL, #{boardno}, #{mno})
 	</insert>
 
 	<delete id="deleteLike" parameterType="org.joonzis.domain.BoardLikeVO">
-		DELETE FROM table_likes WHERE boardno = #{boardno} AND mno = #{mno}
+		DELETE FROM tbl_likes WHERE boardno = #{boardno} AND mno = #{mno}
 	</delete>
 
 	<select id="countLikes" parameterType="int" resultType="int">
-		SELECT COUNT(*) FROM table_likes WHERE boardno = #{boardno}
+		SELECT COUNT(*) FROM tbl_likes WHERE boardno = #{boardno}
 	</select>
 
 	<select id="isLiked" resultType="int" parameterType="org.joonzis.domain.BoardLikeVO">
-		SELECT COUNT(*) FROM table_likes WHERE boardno = #{boardno} AND mno = #{mno}
+		SELECT COUNT(*) FROM tbl_likes WHERE boardno = #{boardno} AND mno = #{mno}
 	</select>
 	
 	<delete id="deleteBoard" parameterType="int">
-		delete from table_likes where boardno = #{boardno}
+		delete from tbl_likes where boardno = #{boardno}
 	</delete>
 	
 	<!-- 댓글 -->
 	<insert id="cominsertLike" parameterType="org.joonzis.domain.BoardCommentLikeVO">
-		INSERT INTO table_commentLikes (comlikeno, replyno, boardno, mno)
-		VALUES (table_commentLikes_seq.NEXTVAL, #{replyno}, #{boardno}, #{mno})
+		INSERT INTO tbl_commentLikes (comlikeno, replyno, boardno, mno)
+		VALUES (tbl_commentLikes_seq.NEXTVAL, #{replyno}, #{boardno}, #{mno})
 	</insert>
 
 	<delete id="comdeleteLike" parameterType="org.joonzis.domain.BoardCommentLikeVO">
-		DELETE FROM table_commentLikes WHERE replyno = #{replyno} AND boardno = #{boardno} AND mno = #{mno}
+		DELETE FROM tbl_commentLikes WHERE replyno = #{replyno} AND boardno = #{boardno} AND mno = #{mno}
 	</delete>
 
 	<select id="comcountLikes" parameterType="int" resultType="int">
-		SELECT COUNT(*) FROM table_commentLikes WHERE replyno = #{replyno}
+		SELECT COUNT(*) FROM tbl_commentLikes WHERE replyno = #{replyno}
 	</select>
 	
 	<select id="comisLiked" resultType="int" parameterType="org.joonzis.domain.BoardCommentLikeVO">
-		SELECT COUNT(*) FROM table_commentLikes WHERE replyno = #{replyno} AND boardno = #{boardno} AND mno = #{mno}
+		SELECT COUNT(*) FROM tbl_commentLikes WHERE replyno = #{replyno} AND mno = #{mno}
 	</select>
+	
+	<delete id="deleteBoardComlikes" parameterType="int">
+		delete from tbl_commentLikes where boardno = #{boardno}
+	</delete>
+	
+	<delete id="deleteReplyComlikes" parameterType="int">
+		delete from tbl_commentLikes where replyno = #{replyno}
+	</delete>
 	
 </mapper>

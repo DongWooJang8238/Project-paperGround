@@ -4,6 +4,7 @@ console.log("kaakDRreportEntrance");
 document.addEventListener('DOMContentLoaded', function() {
     let gameMode;
     const form = document.forms[0];  // 'f' 대신 'form'으로 변수 이름 변경
+    console.log(mno.value);
 
     // 모든 버튼에 이벤트 핸들러 연결
     document.querySelectorAll(".btns").forEach(btn => {
@@ -14,7 +15,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (type === 'godirectReport') {
                 location.href = `/report/directReport?mno=${mno.value}`;
             } else if (type === 'godirectReportCheck') {
+            	console.log(mno);
                 location.href = `/report/directReportList?mno=${mno.value}`;
+            } else if(type === 'qna'){
+            	location.href = `/report/qna`;
             }
             
         });

@@ -1,4 +1,13 @@
 let filterType = null;
+
+const myBoard = document.querySelectorAll('tbody tr');
+
+myBoard.forEach(mb => {
+	mb.addEventListener('click', e => {
+		const boardno = mb.getAttribute('data-bno');
+		location.href = `/board/get?boardno=${boardno}`;
+	});
+});
 function showContent(tis, tabId) {
 	const tabs = document.querySelectorAll('.tab');
 	const contents = document.querySelectorAll('.content');
@@ -62,7 +71,7 @@ if(!pageNum || !amount ){
 }
 
 setStorageData(pageNum, amount);
-console.log(filterType);
+//console.log(filterType);
 document.querySelectorAll(".page-nation li a").forEach( a => {
 	a.addEventListener('click', e => {
 		e.preventDefault();

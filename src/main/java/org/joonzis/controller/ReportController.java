@@ -37,14 +37,10 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @Controller
 @RequestMapping("/report/*")
-public class ReportController {
-	
+public class ReportController {	
 	
 	@Autowired
 	private ReportService reportservice;
-	
-	
-	
 	
 	//qnapage 이동
 	@GetMapping("/qna")
@@ -115,6 +111,7 @@ public class ReportController {
 			log.info("total...." + total);
 			model.addAttribute("pageMaker", new PageDTO(cri, total));
 			model.addAttribute("list", reportservice.getDrList(cri));
+			model.addAttribute("mno", mno);
 			return "/report/directReportList";}
 		
 		model.addAttribute("mno", mno);
@@ -151,8 +148,8 @@ public class ReportController {
 	}
 	
 	@GetMapping("/directReportList")
-	public String directReportList(int mno, Model model, Criteria cri) {
-		log.warn("directReport...............................");
+	public String directReportList(@RequestParam int mno, Model model, Criteria cri) {
+		log.warn("directReportList...............................");
 		log.warn("mno..............................." + mno);
 
 		if (cri.getPageNum() == 0 || cri.getAmount() == 0) {
@@ -163,11 +160,12 @@ public class ReportController {
 		if(mno  == 1) {		
 			
 		int total = reportservice.getDrTotal();		
-		log.info("total...." + total);
+		log.warn("total...." + total);
 		
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
 		model.addAttribute("list", reportservice.getDrList(cri));
 		model.addAttribute("mno", mno);
+		log.warn("total...." + mno);
 		
 		return "/report/directReportList";
 		
@@ -175,14 +173,16 @@ public class ReportController {
 			int total = reportservice.getUserTotal(mno);
 			model.addAttribute("pageMaker", new PageDTO(cri, total));
 			List<DrVO> temp = reportservice.getUserDrList(cri);
+			log.warn("total...." + temp);
 			
 			if(temp == null) {				
-				model.addAttribute("list", 0);
+				model.addAttribute("list", temp);
 				model.addAttribute("mno", mno);				
 				return "/report/directReportList";
 			}
 			model.addAttribute("list", reportservice.getUserDrList(cri));
 			model.addAttribute("mno", mno);
+			log.warn("mno...." + mno);
 			
 			return "/report/directReportList";
 		}

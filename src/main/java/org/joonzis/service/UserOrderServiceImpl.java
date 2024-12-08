@@ -31,6 +31,11 @@ public class UserOrderServiceImpl implements UserOrderService {
 		return mapper.orderCount(mno);
 	}
 	
+	@Override
+	public int orderCountWe(int mno) {
+		return mapper.orderCountWe(mno);
+	}
+	
 	// 오늘/어제/3달전 조회
 	@Override
 	public List<UserOrderVO> selectDays(UserOrderVO vo) {
@@ -52,6 +57,11 @@ public class UserOrderServiceImpl implements UserOrderService {
 	@Override
 	public List<OrderDetailVO> NewuserOrderSelect(int mno) {
 		return mapper.NewuserOrderSelect(mno);
+	}
+	
+	@Override
+	public List<OrderDetailVO> NewuserOrderSelectWe(int mno) {
+		return mapper.NewuserOrderSelectWe(mno);
 	}
 	
 	@Override

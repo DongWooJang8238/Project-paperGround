@@ -17,7 +17,7 @@ import lombok.extern.log4j.Log4j;
 
 @Log4j
 @RestController
-@RequestMapping("/commentlike")
+@RequestMapping("/commentLike")
 public class BoardReplyLikeController {
 		@Autowired
 	    private BoardLikeService service;
@@ -32,23 +32,26 @@ public class BoardReplyLikeController {
 	        // 사용자가 이미 좋아요를 눌렀는지 확인
 	        int comisLiked = service.comisLiked(vo);
 	        log.warn("isLike : " + comisLiked);
-
+	        
 	        // 이미 좋아요를 누른 경우 처리
 	        if (comisLiked > 0) {
 	            return new ResponseEntity<String>("Already liked", HttpStatus.OK); // 이미 좋아요를 누른 상태
 	        } else {
 	            // 좋아요 추가
-	            service.comisLiked(vo);
-	            return new ResponseEntity<String>("Like added", HttpStatus.OK); 
+	            service.cominsertLike(vo);
+	            return new ResponseEntity<String>("comLike added", HttpStatus.OK); 
 	        }
 	    }
 
 	    // 좋아요 개수 가져오기
 	    @GetMapping("/count/{replyno}")
-	    public ResponseEntity<Integer> commentcountLikes(@PathVariable int replyno) {
-	        log.info("좋아요 개수 가져오기... " + replyno);
-	        int count = service.countLikes(replyno);
-	        return new ResponseEntity<>(count, HttpStatus.OK);
+	    public ResponseEntity<String> commentcountLikes(@PathVariable int replyno) {
+	        log.warn("댓글 좋아요 개수 가져오기... " + replyno);
+	        int count = service.comcountLikes(replyno);
+	        log.warn("댓글 좋아요 카운트 " + count);
+	        return new ResponseEntity<>("" + count, HttpStatus.OK);
 	    }
+	    
+	    
 		
 }

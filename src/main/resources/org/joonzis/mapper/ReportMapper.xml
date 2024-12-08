@@ -5,15 +5,15 @@
 <mapper namespace="org.joonzis.mapper.ReportMapper">
 
 	<select id="getCategoryData" parameterType="int"		resultType="org.joonzis.domain.QnaVO">
-		SELECT * FROM reportQNA WHERE qnaCategory = #{qnaCategory}
+		SELECT * FROM tbl_reportQNA WHERE qnaCategory = #{qnaCategory}
 	</select>
 
 	<select id="getAllQnaData" resultType="org.joonzis.domain.QnaVO">
-		SELECT * FROM reportQNA
+		SELECT * FROM tbl_reportQNA
 	</select>
 	
 	<select id="selectQnaByCategory" parameterType="int"		resultType="org.joonzis.domain.QnaVO">
-		SELECT * FROM reportQNA WHERE qnaCategory = #{qnaCategory}
+		SELECT * FROM tbl_reportQNA WHERE qnaCategory = #{qnaCategory}
 	</select>
 
 	<insert id="DRsubmit" parameterType="org.joonzis.domain.DrVO">
@@ -46,11 +46,7 @@
 	<select id="getUserDrList" parameterType="org.joonzis.domain.Criteria" 
 		resultType="org.joonzis.domain.DrVO">
 		<![CDATA[
-			select reportBoardno, writer, title, regdate, replyCount, readCount ,reportCategory
-			from (select rownum rn, reportBoardno, writer, title, regdate, replyCount, readCount, reportCategory
-  			  from (select * from tbl_reportboard where mno = #{userMno} order by reportBoardno desc)
-     		   where rownum <= #{pageNum} * #{amount})
-			where rn > (#{pageNum} - 1) * #{amount}
+  			  select * from tbl_directReport where mno = #{userMno} order by DRNo desc
 		]]>
 	</select>	
 	
@@ -87,13 +83,7 @@
 	
 	<select id="getDrList" parameterType="org.joonzis.domain.Criteria"
 		resultType="org.joonzis.domain.DrVO">
-		<![CDATA[
-			select DRNo, DRtitle, DRcategory, DRcontent ,mno,status
-			from (select rownum rn, DRNo, DRtitle, DRcategory, DRcontent,mno,status
-  			  from (select * from tbl_directReport order by DRNo desc)
-     		   where rownum <= #{pageNum} * #{amount})
-			where rn > (#{pageNum} - 1) * #{amount}
-		]]>
+  			  select * from tbl_directReport order by DRNo desc
 	</select>
 	
 	

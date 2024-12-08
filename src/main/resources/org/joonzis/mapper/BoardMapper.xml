@@ -10,7 +10,7 @@
 		<![CDATA[
 			select boardno, writer, title, regdate, replyCount, readCount, category 
 			from (select rownum rn, boardno, writer, title, regdate, replyCount, readCount, category
-  			  from (select * from table_board order by boardno desc)
+  			  from (select * from tbl_board order by boardno desc)
      		   where rownum <= #{pageNum} * #{amount})
 			where rn > (#{pageNum} - 1) * #{amount}
 		]]>
@@ -29,43 +29,43 @@
 
 	<select id="get" parameterType="int"
 		resultType="org.joonzis.domain.BoardVO">
-		select * from table_board WHERE boardno = #{boardno}
+		select * from tbl_board WHERE boardno = #{boardno}
 	</select>
 
 	<insert id="register" parameterType="org.joonzis.domain.BoardVO">
 		<selectKey keyProperty="boardno" resultType="int"
 			order="BEFORE">
-			SELECT table_board_seq.nextval FROM dual
+			SELECT tbl_board_seq.nextval FROM dual
 		</selectKey>
-		insert into table_board(boardno, mno, title, content, writer,
+		insert into tbl_board(boardno, mno, title, content, writer,
 		category, REGDATE, UPDATEDATE) values(
 		#{boardno}, #{mno}, #{title},
 		#{content}, #{writer}, #{category}, sysdate, sysdate)
 	</insert>
 
 	<update id="modify" parameterType="org.joonzis.domain.BoardVO">
-		update table_board set title =
+		update tbl_board set title =
 		#{title}, content=#{content}, writer=#{writer}, UPDATEDATE = sysdate
 		where boardno = #{boardno}
 	</update>
 
 	<delete id="remove" parameterType="int">
-		delete from table_board where
+		delete from tbl_board where
 		boardno = #{boardno}
 	</delete>
 
 	<!-- 조회수 -->
 	<update id="boardReadCount" parameterType="int">
-		UPDATE table_board SET
+		UPDATE tbl_board SET
 		readCount = readCount + 1 WHERE boardno = #{boardno}
 	</update>
 
 	<select id="getTotal" resultType="int">
 		select count(*) from
-		table_board
+		tbl_board
 	</select>
 	<update id="updateReplyCnt">
-		UPDATE table_board SET
+		UPDATE tbl_board SET
 		replycount = replycount +
 		#{amount}
 		WHERE
@@ -75,21 +75,36 @@
 	<!-- 좋아요 수 조회 -->
 	<select id="getLikeCount" parameterType="int" resultType="int">
 		select
-		count(*) from table_likes where boardno = #{boardno}
+		count(*) from tbl_likes where boardno = #{boardno}
 	</select>
 	
 	<select id="getListByCategory" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.BoardVO">
     <![CDATA[
         SELECT boardno, writer, title, regdate, replyCount, readCount, category 
         FROM (SELECT rownum rn, boardno, writer, title, regdate, replyCount, readCount, category
-              FROM (SELECT * FROM table_board WHERE category = #{category} ORDER BY boardno DESC)
+              FROM (SELECT * FROM tbl_board WHERE category = #{category} ORDER BY boardno DESC)
               WHERE rownum <= #{pageNum} * #{amount})
         WHERE rn > (#{pageNum} - 1) * #{amount}
     ]]>
 	</select>
 	
 	<select id="getTotalByCategory" parameterType="String" resultType="int">
-	    SELECT COUNT(*) FROM table_board WHERE category = #{category}
+	    SELECT COUNT(*) FROM tbl_board WHERE category = #{category}
 	</select>
-
+	
+	<select id="bestList1" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.BoardVO">
+	<![CDATA[
+		SELECT boardno, writer, title, regdate, replyCount, readCount 
+		FROM (
+			SELECT 
+				boardno, writer, title, regdate, replyCount, readCount,
+				ROW_NUMBER() OVER (PARTITION BY category ORDER BY readCount DESC) AS rn
+			FROM tbl_board
+			WHERE category = #{category}
+		)
+		WHERE rn <= 3
+	]]>
+	</select>
+	
+	
 </mapper>

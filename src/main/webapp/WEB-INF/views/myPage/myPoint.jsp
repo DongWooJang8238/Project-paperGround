@@ -9,6 +9,11 @@
    <link rel="stylesheet" href="/resources/css/myPage.css">
     <title>포인트 현황</title>
     <link rel="stylesheet" href="styles.css">
+    <link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+	rel="stylesheet" />
 </head>
 <style>
 body {
@@ -178,8 +183,39 @@ body {
 </style>
 <body>
 <jsp:include page="../layout/header.jsp"></jsp:include>
+        <div class="mypage-container">
+      <div class="sidebar">
+			<ul>
+				<li><a href="#"> <i class="bx bx-user"></i> 회원정보
+				</a>
+					<ul class="sub-menu">
+						<li><a href="/User/myPageUpdate?userId=${vo.userId}">회원정보
+								수정</a></li>
+						<!-- <li><a href="#">내 찜리스트</a></li> -->
+						<li><a href="/User/selectMyPoint?mno=${vo.mno}">내 포인트</a></li>
+					</ul></li>
+				<li><a href="#"> <i class="bx bx-cart"></i> 쇼핑정보
+				</a>
+					<ul class="sub-menu">
+						<li><a href="/User/OrderSelect?mno=${vo.mno}">주문목록/배송조회</a></li>
+						<!-- <li><a href="#">취소/반품 내역</a></li> -->
+					</ul></li>
+				<li><a href="#"> <i class="bx bx-bar-chart"></i> 활동정보
+				</a>
+					<ul class="sub-menu">
+						<li><a
+							href="/User/myCommenPost?userMno=${vo.mno}&filterType=posts">내
+								게시글/댓글</a></li>
+						<li><a href="/User/myLikedWriterBookList?userMno=${vo.mno}">집필
+								북마크</a></li>
+					</ul></li>
+				<li><a href="/User/deleteAccount"> <i class="bx bx-log-out"></i>
+						회원 탈퇴
+				</a></li>
+			</ul>
+		</div>
         <div class="container">
-        <div class="point-status">
+        <div class="point-status" style="min-width: 800px;">
             <div class="point-box">
                 <h2>${vo.userName }님의 사용 가능 포인트  </h2>
                 <div class="points">${vo.userPoint }P</div>
@@ -267,48 +303,19 @@ body {
             </div>
         </div>
         </div>
+    </div>
 
         <!-- 포인트 안내사항 섹션 -->
-        <div class="point-info">
+        <div class="point-info" style="width: 70%; margin-left: 15%;">
             <h3>포인트 안내사항</h3>
             <div class="info-box">
                 <div class="info-icon">📄</div>
                 <a href="/report/qna" class="external-link"><span class="info-text">포인트 정책</span></a>
             </div>
         </div>
-    </div>
-    
-    	<div class="sidebar">
-				<h3>마이페이지</h3>
-							<ul>
-					<li><a href="userInfo" onclick="toggleSubMenu('member-info')">회원정보</a>
-						<ul id="member-info" class="sub-menu">
-							<li><a id="checkPage"
-								href="/User/myPageUpdate?userId=${vo.userId }">회원정보 수정</a></li>
-							<li><a href="#">내 찜리스트</a></li>
-							<li><a a id ="myPoint" href="/User/selectMyPoint?mno=${vo.mno }">내 포인트</a></li>
-						</ul></li>
-					<li><a href="userShoping"
-						onclick="toggleSubMenu('shopping-info')">쇼핑정보</a>
-						<ul id="shopping-info" class="sub-menu">
-							<li><a id="myOrder"
-								href="/User/OrderSelect?mno=${vo.mno }">주문목록/배송조회</a></li>
-							<li><a href="#">취소/반품/내역</a></li>
-							<li><a id="myOrder"
-								href="/User/myUsedProductsSelect?userMno=${vo.mno }">내 중고상품</a></li>
-						</ul></li>
-					<li><a href="#" onclick="toggleSubMenu('benefit-management')">활동정보</a>
-						<ul id="benefit-management" class="sub-menu">
-							<li><a href="#">내 게시글/댓글</a></li>
-							<li><a href="#">집필 북마크</a></li>
-						</ul></li>
-					<li><a href="#">회원 탈퇴</a></li>
-				</ul>
-			</div>
 
     <jsp:include page="../layout/footer.jsp"></jsp:include>
     <script type="text/javascript" src="/resources/js/myPage/myPoint.js"></script>
-    <script type="text/javascript" src="/resources/js/myPage/sidebar.js"></script>
 </body>
 </html>
     

@@ -153,7 +153,7 @@ function cardPay() {
 //	alert('mno = ' + mno);
 	const img = document.querySelectorAll('img');
 	console.log(img[0].src);
-	const orderMainBookName = document.querySelectorAll('span');
+	const orderMainBookName = document.querySelectorAll('.product-description span');
 	const products = document.querySelectorAll('.product-description');
 	const bnoOne = document.querySelectorAll('input[name="bno"]');
 	console.log(bnoOne[0].value);
@@ -172,7 +172,7 @@ function cardPay() {
 			    bookTypeCount : products.length,
 			    orderMainBookName : orderMainBookName[0].getAttribute('data-title'),
 			    orderMainImage : img[0].src,
-			    totalPrice: document.querySelector('#totalPrice').innerHTML,
+			    totalPrice: document.querySelector('#totalPrice').innerHTML.replace(/,/g, ''),
 			    orderName: document.getElementById('orderName').value,
 			    orderPhone: document.getElementById('orderPhone').value,
 			    orderAddress: document.getElementById('address').value,
@@ -220,27 +220,3 @@ function cardPay() {
 function addrChange() {
 	document.querySelector('#newAddr').style.display = 'block';
 }
-// 카카오페이 결제 api 관련
-//document.querySelector(".btn-pay-ready").addEventListener('click', a => {
-//  	console.log("결제test");
-//    // 필요한 데이터를 객체에 담기
-//    let data = {
-//    	title: '상품명',    // 카카오페이에 보낼 대표 상품명
-//        bookPrice: 1000    // 총 결제금액
-//    };
-//      
-//    // Fetch API 사용
-//    fetch('/order/pay/ready', {
-//        method: 'POST',
-//        headers: {
-//            'Content-Type': 'application/json', // 요청을 JSON으로 보내기 위한 헤더 설정
-//            'Authorization': 'DEV_SECRET_KEY {DEVC61F3A34BC5C630FDC1EC579B491CCAB3EABA}' // 카카오페이 인증 헤더 (Admin Key 입력 필요)
-//        },
-//        body: JSON.stringify(data) // 데이터를 JSON 문자열로 변환하여 전송
-//    })
-//    .then(response => response.json()) // 응답을 JSON 형식으로 파싱
-//    .then(data => {
-//        location.href = data.next_redirect_pc_url; // 카카오페이로 리다이렉트
-//    })
-//    .catch(error => console.error('Error:', error)); // 오류 처리
-//});

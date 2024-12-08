@@ -17,7 +17,7 @@
 		<div class="select-body">
 			<label>검색</label>
 			<input type="search" name="selectBook" placeholder="제목으로 검색" value="${selectValue}">
-			<button onclick="selectBookShoping()">🔍</button>
+			<button onclick="selectBookShoping()"><img src="https://cf.joara.com/joara30FE/assets/icon/ico_top_search.png" alt="검색" class="search-icon"></button>
 		</div>
 		
 		<div class="filterType-body">

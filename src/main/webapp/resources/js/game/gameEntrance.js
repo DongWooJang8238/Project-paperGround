@@ -17,8 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // gameMode와 mno 값을 URL로 전달하여 이동
             if (gameMode !== undefined) {
-                let mno = document.querySelector('.userMno').value;  // mno 값 가져오기
-                location.href = `/game/JenreCheck?gameMode=${gameMode}&mno=${mno}`;
+                location.href = `/game/JenreCheck?gameMode=${gameMode}&mno=${mno.value}`;
             }
         });
     });

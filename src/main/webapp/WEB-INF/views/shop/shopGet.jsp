@@ -13,28 +13,28 @@
 <body>
 
 	<jsp:include page="../layout/header.jsp" />
-
+	<div class="containerBody" style="width: 70%; margin-left: 15%; border-top: 1px solid black; margin-top: 4%;">
 	<div class="get-container">
-		<h1 class="product-name">${bvo.title}</h1>
 		<div class="product-info">
 			<div class="product-image">
 				<img src="${bvo.bookcover}" alt="책 표지">
 			</div>
 			<div class="product-details">
-				<p>작가: ${bvo.writer}</p>
-				<p>출판사: ${bvo.publisher}</p>
-				<p>ISBN: ${bvo.isbn}</p>
-				<p>출판일: ${bvo.ordDate}</p>
+				<h1 class="price" style="font-size: 40px;">${bvo.title}</h1>
+				<h3 class="price"><fmt:formatNumber value="${bvo.bookPrice}" type="number" pattern="#,###" />원</h3>
+				<p>작가 : <span class="details">${bvo.writer}</span></p>
+				<p>출판사 : <span class="details">${bvo.publisher}</span></p>
+				<p>ISBN : <span class="details">${bvo.isbn}</span></p>
+				<p>출판일 : <span class="details">${bvo.ordDate}</span></p>
+				<div class="avg-rating"><p>평균 평점:
+					<span class="details">${bvo.avgRating}(${bvo.likeCount})</span></p></div>
 				<div class="stars" data-rating="${bvo.avgRating}">
 					<span class="star">&#9733;</span> <span class="star">&#9733;</span>
 					<span class="star">&#9733;</span> <span class="star">&#9733;</span>
 					<span class="star">&#9733;</span>
 				</div>
-				<div class="avg-rating">평균 평점:
-					${bvo.avgRating}(${bvo.likeCount})</div>
-				<h3 class="price">₩<fmt:formatNumber value="${bvo.bookPrice}" type="number" pattern="#,###" /></h3>
 				<div class="total-price">
-					총 가격: ₩<span bp="${bvo.bookPrice}"><fmt:formatNumber value="${bvo.bookPrice}" type="number" pattern="#,###" /></span>
+					총 가격: <span bp="${bvo.bookPrice}"><fmt:formatNumber value="${bvo.bookPrice}" type="number" pattern="#,###" /></span>원
 				</div>
 				<div class="quantity-control">
 					<button id="minus">-</button>
@@ -42,7 +42,7 @@
 					<button id="plus">+</button>
 				</div>
 				<div class="action-buttons">
-					<button id="shopingList">장바구니 담기</button>
+					<button id="shopingList">장바구니</button>
 					<button id="buy">구매</button>
 					<button id="cu">찜하기</button>
 				</div>
@@ -53,7 +53,7 @@
 	<!-- 본문 영역 -->
 
 	<div style="text-align: center;">
-		<h2>[상세보기]</h2>
+		<div style="border-bottom: 1px solid #777; width: 100%; margin-bottom: 40px; margin-top: 20px;"></div>
 		<div class="product-image">
 			<img src="${bvo.bookcover}" alt="책 표지">
 		</div>
@@ -124,7 +124,7 @@
 			<button class="submit-review">리뷰 달기</button>
 		</div>
 	</div>
-
+</div>
 
 
 	<div class="move-bar">
@@ -139,7 +139,7 @@
 
 	<div class="fixed-bar">
 		<div class="total-price">
-			총 가격: ₩<span bp="${bvo.bookPrice}"><fmt:formatNumber value="${bvo.bookPrice}" type="number" pattern="#,###" /></span>
+			총 가격: <span bp="${bvo.bookPrice}"><fmt:formatNumber value="${bvo.bookPrice}" type="number" pattern="#,###" /></span>원
 		</div>
 		<div class="quantity-control">
 			<button id="minus">-</button>

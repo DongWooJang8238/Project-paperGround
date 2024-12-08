@@ -11,16 +11,25 @@
 		(select * from tbl_book 
 		]]> 
 		<choose>
-			<when test="gener != null and gener.length > 0">where gno in 
+			<when test="gener != null and gener.length > 0">
+				where gno in 
 				<foreach collection="gener" item="gno" separator="," open="(" close=")">
 					#{gno}
 				</foreach> 
-					<if test="selectOption != null and selectValue != null">
+					<if test="selectOption == 'all'">
+						and (UPPER(title) LIKE '%' || UPPER('${selectValue}') || '%' 
+	       		OR UPPER(shortText) LIKE '%' || UPPER('${selectValue}') || '%') 
+					</if>
+					<if test="selectOption != 'all' and selectOption != null and selectValue != null">
 						and ${selectOption} like '${selectValue}'
 					</if>
 			</when>
 			<otherwise>
-		        <if test="selectOption != null and selectValue != null">
+		        <if test="selectOption == 'all'">
+					where (UPPER(title) LIKE '%' || UPPER('${selectValue}') || '%' 
+	       		OR UPPER(shortText) LIKE '%' || UPPER('${selectValue}') || '%') 
+					</if>
+		        <if test="selectOption != 'all' and selectOption != null and selectValue != null">
 		            where ${selectOption} like '${selectValue}'
 		        </if>
 			</otherwise>
@@ -79,27 +88,36 @@
 	<select id="getBookListSelect" parameterType="org.joonzis.domain.SelectDTO" resultType="org.joonzis.domain.BookVO">
 		select * from tbl_book where 
 		<choose>
-			<when test="selectOption == 'title'">title</when>
-			<when test="selectOption == 'writer'">writer</when>
+			<when test="selectOption == 'title'">title like #{selectValue}</when>
+			<when test="selectOption == 'writer'">writer like #{selectValue}</when>
+			<otherwise>(UPPER(title) LIKE '%' || UPPER('${selectValue}') || '%' 
+	       		OR UPPER(shortText) LIKE '%' || UPPER('${selectValue}') || '%') </otherwise>
 		</choose>
-		like #{selectValue}
 	</select>
 	<!-- 전체 책 개수 조회 -->
 	<select id="getTotal" resultType="int" parameterType="org.joonzis.domain.Criteria">
 		 select count(*) from tbl_book
 		 <choose>
 			<when test="gener != null and gener.length > 0">
-				where gno in
+				where gno in 
 				<foreach collection="gener" item="gno" separator="," open="("
 					close=")">
-					#{gno}
+					#{gno} 
 				</foreach>
-				<if test="selectOption != null and selectValue != null">
+				<if test="selectOption == 'all'">
+					and (UPPER(title) LIKE '%' || UPPER('${selectValue}') || '%' 
+	       		OR UPPER(shortText) LIKE '%' || UPPER('${selectValue}') || '%') 
+					</if>
+				<if test="selectOption != 'all' and selectOption != null and selectValue != null">
 					and ${selectOption} like '${selectValue}'
 				</if>
 			</when>
 			<otherwise>
-				<if test="selectOption != null and selectValue != null">
+				<if test="selectOption == 'all'">
+					where (UPPER(title) LIKE '%' || UPPER('${selectValue}') || '%' 
+	       		OR UPPER(shortText) LIKE '%' || UPPER('${selectValue}') || '%') 
+					</if>
+				<if test="selectOption != 'all' and selectOption != null and selectValue != null">
 					where ${selectOption} like '${selectValue}'
 				</if>
 			</otherwise>

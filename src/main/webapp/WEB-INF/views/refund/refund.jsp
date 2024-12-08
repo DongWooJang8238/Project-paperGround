@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-	<%@ page import="java.text.DecimalFormat" %>
+   pageEncoding="UTF-8"%>
+   <%@ page import="java.text.DecimalFormat" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -29,31 +30,32 @@
     </style>
 </head>
 <body>
-	<jsp:include page="../layout/header.jsp"></jsp:include>
+   <jsp:include page="../layout/header.jsp"></jsp:include>
 
 
 <div class="container my-4">
 
     <!-- Header Section -->
-   <input type="hidden" id="mno" name="mno" value="${sessionScope.vo.mno }" />
+   <input type="hidden" id="mno" name="mno" value="<sec:authentication property="principal.user.mno"/>">
+
    <input type="hidden" id="odno" name="odno" value="${uvo.odno }" />
     
     <div class="d-flex justify-content-between align-items-center">
        <div>
-  		  	<h5> ${vo.userName}  님 안녕하세요.</h5>
- 		  	 <% int totalSpendMoney = (int) request.getAttribute("totalSpendMoney"); %>
-		 	   <% DecimalFormat df = new DecimalFormat("#,###");
- 			   String formattedTotalSpendMoney = df.format(totalSpendMoney); %>
-			    <p>누적 구매금액: <%= formattedTotalSpendMoney %> 원</p>
-		</div>
+             <h5> <sec:authentication property="principal.user.userName"/>  님 안녕하세요.</h5>
+             <% int totalSpendMoney = (int) request.getAttribute("totalSpendMoney"); %>
+             <% DecimalFormat df = new DecimalFormat("#,###");
+             String formattedTotalSpendMoney = df.format(totalSpendMoney); %>
+             <p>누적 구매금액: <%= formattedTotalSpendMoney %> 원</p>
+      </div>
         <div>
-            <p><strong> 보유 포인트</strong><br>${vo.userPoint} P </p>
+            <p><strong> 보유 포인트</strong> <sec:authentication property="principal.user.userPoint"/> P </p>
         </div>
     </div>
 
     <!-- Order ID Section -->
     <div class="mt-3">
-        <h6>${vo.userName }</h6>
+        <h6><sec:authentication property="principal.user.userName"/></h6>
     </div>
 
     <!-- Information Section -->
@@ -71,12 +73,28 @@
                 <h6>반품 상품 선택</h6>
                 <form>
                     <div class="form-group">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="option" id="exchange" value="exchange">
+                        <div class="form-check form-check-inline" data-status="${status}">
+                        	<c:if test="${status == '배송전'}">
+	                            <input class="form-check-input" type="radio" name="option" id="exchange" value="exchange">
+                        	</c:if>
+                        	<c:if test="${status == '배송중'}">
+	                            <input class="form-check-input" type="radio" name="option" id="exchange" value="exchange" checked="checked">
+                        	</c:if>
+                        	<c:if test="${status == '배송완료'}">
+	                            <input class="form-check-input" type="radio" name="option" id="exchange" value="exchange" checked="checked">
+                        	</c:if>
                             <label class="form-check-label" for="return">환불</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="option" id="cancel" value="cancel">
+                        	<c:if test="${status == '배송전'}">
+	                            <input class="form-check-input" type="radio" name="option" id="cancel" value="cancel" checked="checked">
+                        	</c:if>
+                        	<c:if test="${status == '배송중'}">
+	                            <input class="form-check-input" type="radio" name="option" id="cancel" value="cancel">
+                        	</c:if>
+                        	<c:if test="${status == '배송완료'}">
+	                            <input class="form-check-input" type="radio" name="option" id="cancel" value="cancel">
+                        	</c:if>
                             <label class="form-check-label" for="exchange">취소</label>
                         </div>
                     </div>
@@ -110,7 +128,7 @@
             <!-- Selected Product Section -->
             <div class="product-section">
                 <h6>반품 상품 선택</h6>
-                	<c:forEach var="order" items="${list }">                
+                   <c:forEach var="order" items="${list }">                
                 <div class="d-flex align-items-center">
                     <img src="${order.bookCover}" alt="이미지 실종" width="60" height="60" class="mr-3">
                     <div>
@@ -126,7 +144,7 @@
                 </c:forEach>
             </div>
             <div>
-            	 <button type="button" class="refundBtn" id="goRefund">제출하기</button>
+                <button type="button" class="refundBtn" id="goRefund">제출하기</button>
             </div>
         </div>
     </div>
@@ -136,7 +154,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <jsp:include page="../layout/footer.jsp"></jsp:include>
-	<script type="text/javascript" src="/resources/js/refund/refund.js"></script>
+   <script type="text/javascript" src="/resources/js/refund/refund.js"></script>
 
 </body>
 </html>

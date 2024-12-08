@@ -32,7 +32,7 @@ function checkExtension(fileName, fileSize) {
 deleteImage.addEventListener("click", () =>{
 
 //	console.log(1234);
-    profileImage.setAttribute("src","../resources/images/usericon2.jfif");
+    profileImage.setAttribute("src","../resources/images/usericon.jpg");
 
     imageInput.value = ""; 
     document.querySelector('#goChange').setAttribute("onclick", "goResetIcon(this.form)");

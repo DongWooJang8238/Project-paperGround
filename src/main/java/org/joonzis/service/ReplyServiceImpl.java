@@ -21,7 +21,9 @@ public class ReplyServiceImpl implements ReplyService{
 	@Autowired
 	private BoardMapper boardMapper;
 	
-	
+	@Autowired
+	private BoardLikeMapper likeMapper;
+		
 	@Transactional
 	@Override
 	public int insert(ReplyVO rvo) {
@@ -50,6 +52,7 @@ public class ReplyServiceImpl implements ReplyService{
 	public int delete(int replyno) {
 		log.info("delete..." + replyno);
 				
+		likeMapper.deleteReplyComlikes(replyno);
 		//replycnt 값 증가 - 댓글 등록시 증가
 		ReplyVO rvo = mapper.read(replyno);
 		boardMapper.updateReplyCnt(rvo.getBoardno(), -1);

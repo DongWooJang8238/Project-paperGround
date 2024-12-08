@@ -110,7 +110,6 @@ public class ShopController {
 		if(cri.getSelectValue() != null) {
 			log.warn("검색 옵션 : " + cri.getSelectOption());
 			log.warn("검색 내용 : " + cri.getSelectValue());
-				
 			String returnValue = cri.getSelectValue();
 			String selectValue = "%" + cri.getSelectValue() + "%";
 			cri.setSelectValue(selectValue);
@@ -175,11 +174,12 @@ public class ShopController {
 		
 		// 모델에 담기
 		BookVO vo = service.getBookOne(bno);
+		log.warn("평점" + vo.getAvgRating());
+		log.warn("좋아요 수" + vo.getLikeCount());
 		// 모델 결과
 		model.addAttribute("bvo", vo);
 //		model.addAttribute("bc", bookContent);
 //		model.addAttribute("list", list);
-		log.info(vo.getBookcover());
 		
 		return "/shop/shopGet";
 	}

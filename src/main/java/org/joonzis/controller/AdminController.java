@@ -1,5 +1,10 @@
 package org.joonzis.controller;
 
+
+
+import java.util.Map;
+
+import org.joonzis.domain.BoardVO;
 import org.joonzis.domain.Criteria;
 import org.joonzis.domain.PageDTO;
 import org.joonzis.domain.UserVO;
@@ -31,12 +36,9 @@ public class AdminController {
 	
 	
 	@GetMapping("/adminEntrance")
-	public String entrance(@RequestParam("mno") int mno, Model model) {
+	public String entrance( Model model) {
 		log.info("adminEntrance.......");
-		if(mno != 1) {
-			return "/";
-		}
-		model.addAttribute("mno", mno);
+		
 		return "/admin/adminEntrance";
 	}
 	
@@ -57,11 +59,41 @@ public class AdminController {
 		return "/admin/userList";
 	}
 	
-	@GetMapping("/userCut")
-	public String userCut(@RequestParam("mno") int mno, Model model) {
+	@PostMapping("/userCut")
+	@ResponseBody
+	public ResponseEntity<String> userCut(@RequestBody String userId, Model model) {
 		log.warn("cutcutcut........................");
-		model.addAttribute("mno", mno);
-		return "/admin/userList";
+		int result = 0;
+		log.warn(userId);
+		if(userId.equals("admin")) {
+			log.warn(userId);
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}else {
+			result =adminservice.userCut(userId);
+			log.warn(userId);
+			log.warn(result);
+			return result > 0 ? new ResponseEntity<String>("success", HttpStatus.OK) : new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR); 
+		}
+
+	}
+	
+	@PostMapping("/scriptCut")
+	@ResponseBody
+	public ResponseEntity<String> scriptCut(@RequestBody String boardno, Model model) {
+		log.warn("scriptCut........................");
+		
+		int result = 0;
+		int bno=0;
+		
+        bno = Integer.parseInt(boardno);
+        log.warn(bno);
+    
+		result = adminservice.scriptCut(bno);
+		log.warn(result);
+		
+		return result > 0 ? new ResponseEntity<String>("success", HttpStatus.OK) : new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR); 
+
+		
 	}
 	
 	@PostMapping("/changeRole")
@@ -83,38 +115,38 @@ public class AdminController {
 	
 	
 	@GetMapping("/scriptList")
-	public String scriptList(   Model model) {
+	public String scriptList(Model model,Criteria cri) {
 		log.warn("scriptList........................");
-		return "/admin/scriptList";
-	}
-	@GetMapping("/scriptCut")
-	public String scriptCut(@RequestParam("mno") int mno, Model model) {
-		log.warn("scriptCutscriptCut........................");
-		model.addAttribute("mno", mno);
-		return "/admin/scriptList";
-	}
-	@GetMapping("/scriptRenew")
-	public String scriptRenew(@RequestParam("mno") int mno, Model model) {
-		log.warn("scriptRenewscriptRenew........................");
-		model.addAttribute("mno", mno);
+		if(cri.getPageNum() == 0 || cri.getAmount() == 0) {
+			cri.setPageNum(1);
+			cri.setAmount(20);
+		}
+		int total = adminservice.getAllListTotal();
+		log.warn("스크립트 리스트 : " +total);
+		model.addAttribute("pageMaker", new PageDTO(cri, total));
+		model.addAttribute("list", adminservice.getAllList(cri));
+		
 		return "/admin/scriptList";
 	}
 	
-	@GetMapping("/dataList")
-	public String dataList( Model model) {
-		log.warn("scriptList........................");
-		return "/admin/dataList";
-	}
-	
-	@GetMapping("/dataRenew")
-	public String dataRenew(@RequestParam("mno") int mno, Model model) {
-		log.warn("scriptRenewscriptRenew........................");
-		model.addAttribute("mno", mno);
-		return "/admin/dataList	";
-	}
-	
-	
-	
+	@GetMapping("/scriptCategoryList")
+	public String scriptCategoryList(@RequestParam String category,   Model model, Criteria cri) {
+		log.warn("scriptCategoryList........................");
+		if(cri.getPageNum() == 0 || cri.getAmount() == 0) {
+			cri.setPageNum(1);
+			cri.setAmount(20);
+		}
+		int total = adminservice.getCategoryListTotal(category);
+		
+		log.warn("카테고리 : " + total);
+		cri.setCategory(category);
+		model.addAttribute("pageMaker", new PageDTO(cri, total));
+		model.addAttribute("list", adminservice.getCategoryList(cri));
+		
+		return "/admin/scriptList";
+		
+		
+	}	
 	
 
 }

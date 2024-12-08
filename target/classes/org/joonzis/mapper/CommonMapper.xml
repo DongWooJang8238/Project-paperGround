@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.joonzis.mapper.CommonMapper">
+	<!-- 게시글 검색 -->
+	<select id="getBoardList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.BoardVO">
+		select * from tbl_board where 
+		<choose>
+			<when test="selectOption == 'title'">
+				UPPER(title) like UPPER('%${selectValue}%') 
+			</when>
+			<when test="selectOption == 'content'">
+				UPPER(content) like UPPER('%${selectValue}%') 
+			</when>
+			<otherwise>
+				(UPPER(title) LIKE '%' || UPPER('${selectValue}') || '%' 
+	       		OR UPPER(content) LIKE '%' || UPPER('${selectValue}') || '%') 
+			</otherwise>
+		</choose>
+		ORDER BY updatedate desc
+	</select>
+	
+	<!-- 상품 검색 -->
+	<select id="getBookList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.BookVO">
+		select * from tbl_book where 
+		<choose>
+			<when test="selectOption == 'title'"> 
+				UPPER(title) like UPPER('%${selectValue}%') 
+			</when>
+			<when test="selectOption == 'content'">
+				UPPER(shortText) like UPPER('%${selectValue}%') 
+			</when>
+			<otherwise>
+				(UPPER(title) LIKE '%' || UPPER('${selectValue}') || '%' 
+	       		OR UPPER(shortText) LIKE '%' || UPPER('${selectValue}') || '%') 
+			</otherwise>
+		</choose>
+		order by bno desc
+	</select>
+	
+	<!-- 중고 상품 검색 -->
+	<select id="getUsedBookList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.UsedBookVO">
+		select * from tbl_ubook where 
+		<choose>
+			<when test="selectOption == 'title'">
+				UPPER(title) like UPPER('%${selectValue}%') 
+			</when>
+			<when test="selectOption == 'content'">
+				UPPER(content) like UPPER('%${selectValue}%') 
+			</when>
+			<otherwise>
+				(UPPER(title) LIKE '%' || UPPER('${selectValue}') || '%' 
+	       		OR UPPER(content) LIKE '%' || UPPER('${selectValue}') || '%') 
+			</otherwise>
+		</choose>
+		order by ubookdate desc
+	</select>
+	<!-- 집필 검색 -->
+	<select id="getWriteList" parameterType="org.joonzis.domain.Criteria" resultType="org.joonzis.domain.WriteVO">
+		select * from tbl_writing where 
+		<choose>
+			<when test="selectOption == 'title'">
+				UPPER(title) like UPPER('%${selectValue}%') 
+			</when>
+			<when test="selectOption == 'content'">
+				UPPER(description) like UPPER('%${selectValue}%') 
+			</when>
+			<otherwise>
+				(UPPER(title) LIKE '%' || UPPER('${selectValue}') || '%' 
+	       		OR UPPER(description) LIKE '%' || UPPER('${selectValue}') || '%') 
+			</otherwise>
+		</choose>
+		order by updatedate desc
+	</select>
+	
+</mapper>

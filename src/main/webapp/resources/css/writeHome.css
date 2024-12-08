@@ -5143,14 +5143,13 @@ html[data-theme=darkMode] .caption .icon-event span.icon-sale {
     position: relative;
     max-width: 1280px;
     width: 100%;
-    margin: 0 auto;
+    margin: 0 auto
 }
 
 @media(min-width: 1279px) {
     .main-content-wrap {
         display:flex;
-        justify-content: space-between;
-        left: 7%;
+        justify-content: space-between
     }
 }
 
@@ -5174,14 +5173,14 @@ html[data-theme=darkMode] .caption .icon-event span.icon-sale {
 
 @media(min-width: 767px) {
     .main-content {
-        padding:136px 0 0
+        padding:136px 0 0;
     }
 }
 
 @media(min-width: 1279px) {
     .main-content {
         padding:136px 0 0;
-        width: 1024px
+        width: 100%;
     }
 }
 
@@ -8748,14 +8747,12 @@ html[data-theme=darkMode] .lnb-nav .nav-inner .my-info .profile-info .nav-displa
 @media(min-width: 767px) {
     .sub-container {
         padding-top:68px;
-        min-height: calc(100vh - 108px);
-        left: -6%;
+        min-height: calc(100vh - 108px)
     }
 }
 
 @media(min-width: 1279px) {
     .sub-container {
-        padding-left:256px;
         max-width: 1280px;
         margin: 0 auto
     }
@@ -9142,7 +9139,6 @@ html[data-theme=darkMode] .lnb-nav .nav-inner .my-info .profile-info .nav-displa
 }
 
 .sub-container .sub-filter-tab {
-    position: sticky;
     top: 56px;
     width: 100%;
     background-color: var(--color-grayscale-0);
@@ -9159,7 +9155,8 @@ html[data-theme=darkMode] .lnb-nav .nav-inner .my-info .profile-info .nav-displa
 .sub-container .sub-filter-tab .inner {
     display: flex;
     padding: 10px 15px;
-    min-width: 0
+    min-width: 0;
+    flex-direction: row-reverse;
 }
 
 .sub-container .sub-filter-tab .inner .icon-restart {
@@ -34176,7 +34173,7 @@ html[data-theme=darkMode] .book-intro-pop-wrap .book-intro-section.book-intro-ke
 
 .left-category-content {
     position: fixed;
-    top: 14%;
+    top: 0;
     left: 50%;
     margin-left: -640px;
     width: 236px;

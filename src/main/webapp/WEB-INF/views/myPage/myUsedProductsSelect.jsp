@@ -247,8 +247,8 @@ px
 			<button class="query-button" onclick="queryData()">조회하기</button>
 		</div>
 
-		<input type="hidden" id="filterType"
-			value="${pageMaker.cri.filterType }">
+	dsf;kjasdfxc<input type="hidden" id="filterType"
+			valude="${pageMaker.cri.filterType }">
 
 
 		<table class="order-table" id="onSale">

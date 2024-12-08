@@ -9,7 +9,6 @@
 <style>
 body {
 	font-family: Arial, sans-serif;
-	background-color: #f2f2f2;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -18,18 +17,18 @@ body {
 }
 
 .signup-container {
-	background-color: #fff;
-	padding: 40px;
-	border-radius: 8px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	width: 400px;
+	width: 300px; /* 가로폭 줄이기 */
+	text-align: center;
 }
 
 .logo {
 	text-align: center;
 	margin-bottom: 20px;
 }
-
+.logo img {
+	width: 230px; /* 로고 크기 조정 */
+	height: auto;
+}
 .logo a {
 	font-size: 24px;
 	color: #333;
@@ -52,91 +51,96 @@ body {
 	color: #666;
 }
 
-.input-group input[type="text"], .input-group input[type="password"],
-	.input-group input[type="email"], .input-group input[type="date"],
-	.input-group input[type="tel"] {
-	width: 100%;
+.input-group input[type="text"], .input-group input[type="email"] {
+	width: 100%; /* 전체 너비로 맞춤 */
 	padding: 10px;
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	box-sizing: border-box;
 }
 
-/* 이메일 입력란 스타일 */
-.email-group {
-	margin-bottom: 15px; /* 아래쪽 여백 */
-}
-
-.email-input {
-	width: calc(100% - 110px); /* 전체 폭에서 셀렉트 박스 너비만큼 뺌 */
+.input-group input[type="email"] {
+	width: 100%; /* 전체 너비로 맞춤 */
 	padding: 10px;
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	box-sizing: border-box;
-	margin-right: 10px; /* 셀렉트와의 간격 조정 */
-	display: inline-block; /* 인라인 블록으로 표시 */
-}
-
-.email-select {
-	width: 100px; /* 고정 폭 */
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	box-sizing: border-box;
-	height: 40px; /* 높이 일치 */
-	display: inline-block; /* 인라인 블록으로 표시 */
-}
-
-.gender-group {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	margin-bottom: 15px;
-}
-
-.gender-group input[type="radio"] {
-	margin-right: 5px;
 }
 
 .signup-btn {
 	width: 100%;
 	padding: 10px;
+	background-color: #7fb5ff88;
 	border: none;
 	border-radius: 4px;
-	background-color: #4CAF50;
-	color: white;
 	font-size: 16px;
+	font-weight: bold;
+	color: #fff;
 	cursor: pointer;
+	margin-bottom: 15px;
+	height: 50px
 }
 
 .signup-btn:hover {
-	background-color: #45a049;
+	background-color: #0669ef88;
+}
+
+.checkbox-container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 1px; /* 공백 추가 */
+	font-size: 14px;
+	color: #666;
+	margin-bottom: 35px;
+	flex-direction: row-reverse;
+}
+
+.checkbox-container a {
+	color: #999;
+	text-decoration: none;
+	font-size: 12px;
+}
+
+.notice {
+	font-size: 12px;
+	color: #888;
+	margin-bottom: 20px;
 }
 </style>
 </head>
 <body>
 	<div class="signup-container">
 		<div class="logo">
-			<a href="/">로고</a>
+			<a href="/"><img src="../resources/images/logoHead.png" ></a>
 		</div>
 		<h2>비밀번호 찾기</h2>
 		<form action="#" method="post">
 			<div class="input-group">
-				<label for="username">아이디</label> <input type="text" id="userId"
-					name="userId" placeholder="아이디 입력" required>
-					<div class="invalid-feedback" id="mIdValidState"></div>
+				<label for="username"></label> <input type="text" id="userId"
+					name="userId" placeholder="아이디 입력해 주세요." required>
+				<div class="invalid-feedback" id="mIdValidState"></div>
 			</div>
 
-			<div class="email-group">
-				<label for="userEmail">메일</label>
-				<div style="display: flex; align-items: center;">
-					<input type="Email" id="userEmail" name="userEmail" placeholder="이메일 주소" class="email-input" required> 
+			<div class="input-group">
+				<label for="userEmail"></label>
+				<div
+					style="display: flex; align-items: flex-start; flex-direction: column;">
+					<input type="Email" id="userEmail" name="userEmail"
+						placeholder="이메일 입력해 주세요." class="email-input" required>
 					<div class="invalid-feedback" id="mUserEmailValudState"></div>
 				</div>
 			</div>
 			<input type="hidden" name="num">
-			<button type="button" class="signup-btn" onclick="findPw()">비밀번호 찾기</button>
-			<button type="button" class="signup-btn" onclick="signup()">회원가입</button>
+			<button type="button" class="signup-btn" onclick="findPw()">비밀번호
+				찾기</button>
+			<div class="checkbox-container">
+				<div>
+					<a href="/User/login">로그인</a> | <a href="/User/signup">회원가입</a>
+				</div>
+			</div>
+			<div class="notice">비밀번호를 잊으셨나요? 등록하신 이메일과 아이디를 입력하시면 비밀번호를
+				재설정할 수 있습니다.</div>
 		</form>
 	</div>
 </body>

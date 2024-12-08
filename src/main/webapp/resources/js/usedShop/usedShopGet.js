@@ -1,6 +1,6 @@
 // 목록으로 가기
 function goList() {
-	shopUsedList();
+	shopUsedList('all');
 }
 // 찜 하기 기능
 function jjim(ubno, mno) {
@@ -139,7 +139,7 @@ function deleteUsed(ubno) {
 		alert('로그인이 필요한 기능입니다!');
 		return;
 	}else{
-		console.log(ubvo);
+		console.log(ubno);
 	}
 }
 

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.joonzis.mapper.MainMapper">
+	<select id="selectBestSellerList"  resultType="org.joonzis.domain.BookVO">
+	<![CDATA[
+		SELECT *
+			FROM (
+  	    SELECT *
+   			 FROM tbl_book
+    	ORDER BY SELLCOUNT DESC
+				 )
+		WHERE ROWNUM <= 4
+	]]>
+	</select>
+	
+	<select id="selectBestLikesBoardList" resultType="org.joonzis.domain.BoardVO">
+		select * from tbl_board order by readcount desc
+	</select>
+	
+	<select id="selectAnnouncementList" resultType="org.joonzis.domain.BoardVO">
+		SELECT * 
+			FROM 
+		tbl_board 
+		WHERE category = 0
+	</select>
+	
+	<select id="selectBestLikesWriteList" resultType="org.joonzis.domain.WriteVO">
+		SELECT * 
+			FROM tbl_writing 
+		ORDER BY likecount DESC
+	</select>
+	
+	<select id="selectUserRecommendBookLike" resultType="org.joonzis.domain.BookVO">
+		SELECT COUNT(*) as likecount, title, writer
+			FROM tbl_book
+			GROUP BY likecount, title, writer
+		ORDER BY likecount DESC
+	</select>
+
+</mapper>

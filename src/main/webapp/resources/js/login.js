@@ -22,13 +22,7 @@ document.querySelectorAll("button").forEach(a => {
 	});
 });
 
-f.username.addEventListener('keyup', e => {
-	if(e.target.value === 'deletedUser'){
-		alert('입력 할 수 없는 아이디 입니다.');
-		e.target.value = '';
-		return;
-	}
-});
+
 //데이터 검증 완료 함수
 function validated(inputTarget, resultState, comment) {
 	inputTarget.classList.add('is-valid');
@@ -74,7 +68,7 @@ function initialization(inputTarget, resultState) {
 function login(){
 	
 /*-----------------아이디  검증-----------------*/
-	f.userId.addEventListener('click', e => {
+/*	f.userId.addEventListener('click', e => {
 		let target = e.currentTarget;
 		console.log(target.value);
 		if (target.value === '') {
@@ -85,7 +79,7 @@ function login(){
 	
 	});
 
-/*-----------------비밀번호 검증-----------------*/
+-----------------비밀번호 검증-----------------
 	f.userPw.addEventListener('click', e => {
 		let target = e.currentTarget;
 		console.log(target.value);
@@ -95,12 +89,12 @@ function login(){
 			validated(target, mPwValidState);
 		}
 		
-	});
+	});*/
 	
 	
 	if(f.userPw.value === '' || f.userId.value === ''){
-		invalidated(f.userPw, mPwValidState, '비밀번호를 입력해주세요.');
-		invalidated(f.userId, mIdValidState, '아이디를 입력해주세요.');
+//		invalidated(f.userPw, mPwValidState, '비밀번호를 입력해주세요.');
+//		invalidated(f.userId, mIdValidState, '아이디를 입력해주세요.');
 		return;
 	}
 	
@@ -114,13 +108,15 @@ function login(){
 	.then(response => response.text())
 	.then(data => {
 		if(data === "find the ID&PW"){
-			f.action = "/login";
+			f.action = "/";
 			f.submit();
 		}else if(data === "password is wrong"){
-			invalidated(f.userPw,mPwValidState,'비밀번호가 틀립니다.');
+//			invalidated(f.userPw,mPwValidState,'비밀번호가 틀립니다.');
+			console.log(1);
 			
 		}else if(data === "ID is wrong"){
-			invalidated(f.userId,mIdValidState,'아이디가 틀립니다.')
+//			invalidated(f.userId,mIdValidState,'아이디가 틀립니다.')
+			console.log(1);
 		}
 			
 	})

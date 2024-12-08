@@ -11,6 +11,7 @@ public interface UserOrderService {
 
 	// 총 주문내역 조회
 	public int orderCount(int mno);
+	public int orderCountWe(int mno);
 
 	// 오늘/어제/3달전 조회
 	public List<UserOrderVO> selectDays(UserOrderVO vo);
@@ -23,6 +24,7 @@ public interface UserOrderService {
 
 	// 유저 주문내역 조회 (조인 X 버전)
 	public List<OrderDetailVO> NewuserOrderSelect(int mno);
+	public List<OrderDetailVO> NewuserOrderSelectWe(int mno);
 
 	// 유저 주문내역 조회 ( by.odno )
 	public List<UserOrderVO> selectOrderByOdno(int odno);

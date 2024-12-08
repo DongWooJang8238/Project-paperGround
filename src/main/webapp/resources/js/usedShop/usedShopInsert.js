@@ -25,9 +25,6 @@ document.querySelectorAll('button').forEach(btn => {
 
 // 상품 등록 함수
 function usedShopInsert() {
-	if(f.ubookPrice.value){
-		
-	}
 	console.log(f.title.value);
 	console.log(f.ubookPrice.value);
 	console.log(f.gno.value);

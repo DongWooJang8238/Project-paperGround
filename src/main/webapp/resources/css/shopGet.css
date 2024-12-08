@@ -1,6 +1,7 @@
 .get-container {
     max-width: 1200px;
     margin: 0 auto;
+	margin-top: 22px;
     padding: 20px;
 }
 
@@ -33,11 +34,11 @@
     max-width: 400px;
     border: 1px solid #ddd;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    height: 100%;
 }
 
 .price {
     font-size: 1.5em;
-    color: #e53935;
     margin-bottom: 10px;
 }
 
@@ -62,12 +63,20 @@
 
 .total-price {
     font-size: 1.5em;
-    color: #e53935;
 }
 
 .quantity-control {
     display: flex;
     align-items: center;
+    justify-content: center;
+}
+
+.product-details p {
+	font-weight: bold;
+}
+
+.details {
+	font-weight: normal;
 }
 
 .quantity-control button {
@@ -82,7 +91,20 @@
 }
 
 .action-buttons button {
+	width: 80px;
+    margin: 8px;
+    border: 1px solid #777;
+    border-radius: 12px;
+    padding: 5px;
+    transition: 0.5s;
+}
+
+.action-buttons button:hover {
     margin-left: 10px;
+    border: 1px solid blue;
+    border-radius: 12px;
+    padding: 5px;
+	box-shadow: 5px 5px 5px 5px #e8e4e4;
 }
 
 #tooltip {

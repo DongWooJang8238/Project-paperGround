@@ -21,12 +21,12 @@
 								class="beta-ic" src="/assets/ic/beta_icon.png" alt="">
 						</div>
 						<div class="writeHome">
-							<a href="#">조아라 웹소설 바로가기<img src="https://writer.joara.com/assets/ic/list-item/subnav-list-ic.png" alt=""></a>
+							<a href="#">창작 홈 바로가기<img src="https://writer.joara.com/assets/ic/list-item/subnav-list-ic.png" alt=""></a>
 						</div>
 					</div>
 					<div class="profile-ic">
 						<img class="img"
-							src="${wvo.coverImage}" alt="" onerror="this.onerror=null; this.src='/resources/images/notImg.webp';">
+							src="<sec:authentication property='principal.user.userIcon'/>" alt="" onerror="this.onerror=null; this.src='/resources/images/usericon.jpg';">
 						<div class="inner-border"></div>
 					</div>
 					<div class="profile-name">
@@ -55,7 +55,7 @@
 						<div class="moduled-bookWrite-left">
 							<p data-testid="joa-Mainpage-onClickNewBook">다음 에피소드</p>
 						</div>
-						<div class="link" data-wno="${wvo.wno}" data-testid="joa-Mainpage-onClickNewBook">
+						<div class="link" data-wno="${wvo.wno}" data-testid="joa-Mainpage-onClickNewBook" id="goWriteInsert">
 							연재하기<img src="/assets/ic/list-item/subnav-list-ic.png" alt="">
 						</div>
 					</div>

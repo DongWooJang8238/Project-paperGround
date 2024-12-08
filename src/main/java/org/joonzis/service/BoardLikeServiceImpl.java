@@ -62,7 +62,7 @@ public class BoardLikeServiceImpl implements BoardLikeService {
 
 	@Override
 	public int comcountLikes(int replyno) {
-	    log.info("댓글countLikes... " + replyno);
+	    log.warn("댓글countLikes... " + replyno);
 	    return mapper.comcountLikes(replyno);
 	}
 

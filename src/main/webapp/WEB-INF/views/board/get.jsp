@@ -1,52 +1,99 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags"
+	prefix="sec"%>
+	
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
 	<jsp:include page="../layout/header.jsp"></jsp:include>
 	<div class="panel-body">
 		<form method="POST">
-		<div class="text-container">
-			<table>
-				<tbody>
-					<tr>
-					    <td>
-					    	<input type="hidden" name="mno" value="${bvo.mno}">
-					        <input type="hidden" name="boardno" value="${bvo.boardno}" readonly>
-					        		<div class="boardcategory">
-								        <c:choose>
-								            <c:when test="${bvo.category == 1}">자유게시판</c:when>
-								            <c:when test="${bvo.category == 2}">리뷰게시판</c:when>
-								            <c:when test="${bvo.category == 3}">토론게시판</c:when>
-								            <c:when test="${bvo.category == 4}">문의게시판</c:when>
-								            <c:when test="${bvo.category == 5}">자료게시판</c:when>
-								            <c:when test="${bvo.category == 6}">요청게시판</c:when>
-								            <c:when test="${bvo.category == 0}">공지사항</c:when>
-								        </c:choose>
-								    </div>
-					        	<div class="title-container">
-								    <br><div class="title">${bvo.title}</div>
+			<div class="text-container">
+				<table>
+					<tbody>
+						<c:choose>
+							<c:when test="${isBestList}">인기게시판</c:when>
+							<c:when test="${selectedCategory == '0'}">공지사항</c:when>
+							<c:when test="${selectedCategory == '1'}">자유게시판</c:when>
+							<c:when test="${selectedCategory == '2'}">리뷰게시판</c:when>
+							<c:when test="${selectedCategory == '3'}">토론게시판</c:when>
+							<c:when test="${selectedCategory == '4'}">문의게시판</c:when>
+							<c:when test="${selectedCategory == '5'}">자료게시판</c:when>
+							<c:when test="${selectedCategory == '6'}">요청게시판</c:when>
+							<c:otherwise>게시판</c:otherwise>
+						</c:choose>
+						<div class="categoryList">
+							<hr>
+							<a href="list?pageNum=1&amount=10&category=0"
+								class="${selectedCategory == '0' ? 'active' : ''}"><i
+								class="bi bi-megaphone"></i> 공지</a> <a
+								href="list?pageNum=1&amount=10&category=1"
+								class="${selectedCategory == '1' ? 'active' : ''}"><i
+								class="bi bi-chat-dots"></i> 자유게시판</a> <a
+								href="list?pageNum=1&amount=10&category=2"
+								class="${selectedCategory == '2' ? 'active' : ''}"><i
+								class="bi bi-star"></i> 리뷰게시판</a> <a
+								href="list?pageNum=1&amount=10&category=3"
+								class="${selectedCategory == '3' ? 'active' : ''}"><i
+								class="bi bi-columns-gap"></i> 토론게시판</a> <a
+								href="list?pageNum=1&amount=10&category=4"
+								class="${selectedCategory == '4' ? 'active' : ''}"><i
+								class="bi bi-question-circle"></i> 문의게시판</a> <a
+								href="list?pageNum=1&amount=10&category=5"
+								class="${selectedCategory == '5' ? 'active' : ''}"><i
+								class="bi bi-folder"></i> 자료게시판</a> <a
+								href="list?pageNum=1&amount=10&category=6"
+								class="${selectedCategory == '6' ? 'active' : ''}"><i
+								class="bi bi-box-arrow-down"></i> 요청게시판</a> <a
+								href="bestList?pageNum=1&amount=20"
+								class="${isBestList ? 'active' : ''}"><i
+								class="bi bi-trophy"></i> 인기게시판</a>
+							<hr>
+						</div>
+
+
+						<tr>
+							<td><input type="hidden" name="mno" value="${bvo.mno}">
+								<input type="hidden" name="boardno" value="${bvo.boardno}"
+								readonly>
+								<div class="boardcategory">
+									<c:choose>
+										<c:when test="${bvo.category == 1}">자유게시판</c:when>
+										<c:when test="${bvo.category == 2}">리뷰게시판</c:when>
+										<c:when test="${bvo.category == 3}">토론게시판</c:when>
+										<c:when test="${bvo.category == 4}">문의게시판</c:when>
+										<c:when test="${bvo.category == 5}">자료게시판</c:when>
+										<c:when test="${bvo.category == 6}">요청게시판</c:when>
+										<c:when test="${bvo.category == 0}">공지사항</c:when>
+									</c:choose>
 								</div>
-								<hr>
 								<div class="title-container">
-								    <div class="writer">${bvo.writer}</div>
-								    <div class="regDate">${bvo.regDate}</div>
-								</div>
-					    </td>
-					</tr>
-					<tr>
-					    <td>
-					        <br><div class="content-display">${bvo.content}</div>
-					    </td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+									<div class="title">${bvo.title}</div>
+									
+									<div class="writer">작성자: ${bvo.writer}</div>
+									<div class="readCount">
+										<i class="bi bi-eye"></i>${bvo.readCount}
+									</div>
+									<div class="regDate">
+										<i class="bi bi-clock"></i> ${bvo.regDate}
+									</div>
+								</div></td>
+						</tr>
+						<tr>
+							<td><br>
+							<div class="content-display">${bvo.content}</div></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</form>
 		<div class="file-container">
 			<div class="file-header">
@@ -64,10 +111,17 @@
 			<div id="like-count">
 				<h1 id="like-countMy">${likecount}</h1>
 			</div>
-			<button id="like-btn" data-boardno="${bvo.boardno}" data-mno="${bvo.mno}">👍</button>
+			<sec:authorize access="isAuthenticated()">
+				<button id="like-btn" data-boardno="${bvo.boardno}"
+					data-mno="${bvo.mno}"><i class="bi bi-chat-left-heart"></i></button>
+			</sec:authorize>
 		</div>
 		<div class="panel-body-btns">
-			<button type="button" class="btn btn-sec" id="modifyBtn" data-boardmno="${bvo.mno}">수정</button>
+			<sec:authorize access="isAuthenticated()">
+				<!-- 로그인된 사용자만 볼 수 있는 내용 -->
+				<button type="button" class="btn btn-sec" id="modifyBtn"
+					data-boardmno="${bvo.mno}">수정</button>
+			</sec:authorize>
 			<button type="button" class="btn btn-fir" id="indexBtn">목록으로
 				이동</button>
 		</div>
@@ -82,17 +136,37 @@
 				<div class="reply-body">
 					<div>
 						<p>
-							<input type="hidden" name="replyer" value="${vo.userName}" readonly>
+							<sec:authorize access="isAuthenticated()">
+								<!-- 로그인된 사용자만 볼 수 있는 내용 -->
+								<input class="BoardGet" type="hidden" name="replyer"
+									value="<sec:authentication property="principal.user.nickName"/>"
+									readonly>
+							</sec:authorize>
+
+							<sec:authorize access="isAnonymous()">
+								<!-- 로그인되지 않은 사용자에게만 보이는 내용 -->
+								<input class="BoardGet" type="hidden" name="replyer"
+									placeholder="로그인이 필요한 기능입니다." readonly>
+							</sec:authorize>
 						</p>
 					</div>
 					<div>
 						<p>
-							<input type="text" name="reply">
+							<sec:authorize access="isAuthenticated()">
+								<input class="replyCss" type="text" name="reply">
+							</sec:authorize>
+							<sec:authorize access="isAnonymous()">
+								<!-- 로그인되지 않은 사용자에게만 보이는 내용 -->
+								<input class="BoardGet" type="text" name="reply" placeholder="로그인이 필요한 기능입니다."
+									readonly>
+							</sec:authorize>
 						</p>
 					</div>
 				</div>
 				<div class="reply-footer">
-					<button type="button" class="btn btn-sec" id="addReplyBtn">등록</button>
+					<sec:authorize access="isAuthenticated()">
+						<button class="BoardGet" type="button" class="btn btn-sec" id="addReplyBtn">등록</button>
+					</sec:authorize>
 				</div>
 			</div>
 		</div>
@@ -100,7 +174,7 @@
 		<div class="panel-footer">
 			<div class="panel-footer-body">
 				<ul class="chat">
-					<li data-replyno="10">
+					<!-- <li data-replyno="10">
 						<div>
 							<div class="chat-header">
 								<strong class="primary-font">작성자</strong> <small
@@ -111,14 +185,15 @@
 
 						</div>
 					</li>
-					<!-- 댓글 좋아요 버튼 및 개수 -->
+					 댓글 좋아요 버튼 및 개수 
 				 	<div class="reply-like-section">
 						<input type="hidden" name="mno" value="${bvo.mno}" readonly>
 						<div class="reply-like-count" id="reply-like-count-10">0</div>
 						 <button type="button" class="reply-like-btn" id="replyLikeBtn" data-boardno="${bvo.boardno}">👍</button>	
 						<button type="button" id="openModalBtn">수정</button>
-						<!-- 기본 값 0 -->
+						기본 값 0
 					</div>
+					 -->
 				</ul>
 			</div>
 
@@ -153,21 +228,24 @@
 							</div>
 						</li>
 						<input type="hidden" name="modalreplydate">
+						<input type="hidden" name="data_replyno">
 					</ul>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-thi" id="modifyReplyBtn" data-replymno="${bvo.mno}">수정</button>
-					<button type="button" class="btn btn-fou" id="removeReplyBtn" data-delreplymno="${bvo.mno}">삭제</button>
+					<button type="button" class="btn btn-thi" id="modifyReplyBtn"
+						data-replymno="${bvo.mno}">수정</button>
+					<button type="button" class="btn btn-fou" id="removeReplyBtn"
+						data-delreplymno="${bvo.mno}">삭제</button>
 					<button type="button" class="btn btn-fir" id="closeModalBtn">취소</button>
 				</div>
 			</div>
 
 		</div>
-		</div>
-		<jsp:include page="../layout/footer.jsp" />
-		<script type="text/javascript" src="/resources/js/board/reply.js"></script>
-		<script type="text/javascript" src="/resources/js/board/get.js"></script>
-		<script type="text/javascript" src="/resources/js/board/like.js"></script>
-		<script type="text/javascript" src="/resources/js/board/commentLike.js"></script>
+	</div>
+	<jsp:include page="../layout/footer.jsp" />
+	<script type="text/javascript" src="/resources/js/board/reply.js"></script>
+	<script type="text/javascript" src="/resources/js/board/get.js"></script>
+	<script type="text/javascript" src="/resources/js/board/like.js"></script>
+	<script type="text/javascript" src="/resources/js/board/commentLike.js"></script>
 </body>
 </html>

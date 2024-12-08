@@ -26,6 +26,9 @@ import org.joonzis.domain.WriteVO;
 import org.joonzis.service.UserOrderService;
 import org.joonzis.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,8 +37,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.extern.log4j.Log4j;
 
@@ -56,6 +62,8 @@ public class UserController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
+		
+		
 		return "/main";
 	}
 
@@ -73,6 +81,10 @@ public class UserController {
 
 	@PostMapping("/signup")
 	public String signup(UserVO vo) {
+		log.warn("비밀번호 인코더 후 : " + vo.getUserPw());
+		String resultPw = pwencoder.encode(vo.getUserPw());
+		log.warn("비밀번호 인코더 후 : " + resultPw);
+		vo.setUserPw(resultPw);
 		int result = service.signup_insert(vo);
 		log.warn("Controller 회원가입 성공 : " + result);
 
@@ -106,7 +118,8 @@ public class UserController {
 	public String goFindId(Model model, UserVO vo) {
 		UserVO result = service.selectUserIdByEmail(vo);
 		log.info("아이디 찾기 검색 페이지 이동 : " + result.getUserId());
-		model.addAttribute("userId", result.getUserId());
+
+		model.addAttribute("vo", result);
 		return "/find/goFindId";
 	}
 
@@ -121,7 +134,7 @@ public class UserController {
 	}
 
 	// 새 비밀번호 설정 페이지 이동
-	@PostMapping("/pwNew")
+	@GetMapping("/pwNew")
 	public String pwNew(Model model,UserVO vo) {
 		model.addAttribute("userId", vo.getUserId());
 		log.info("새 비밀번호 설정 페이지 이동 : " + vo.getUserId());
@@ -129,8 +142,9 @@ public class UserController {
 	}
 
 	// 새 비밀번호 설정 완료 - 메인페이지
-	@PostMapping("/pwChange")
+	@GetMapping("/pwChange")
 	public String pwChange(UserVO vo) {
+	
 		String resultPw = pwencoder.encode(vo.getUserPw());
 		log.warn("비밀번호 인코더 후 : " + resultPw);
 		vo.setUserPw(resultPw);
@@ -138,6 +152,21 @@ public class UserController {
 		log.info("새 비밀번호 설정 완료 : " + result);
 
 		return "/main";
+	}
+	
+	@ResponseBody
+	@PostMapping(value = "/pwChangeRest", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> pwChangeRest(@RequestBody UserVO vo) {
+		
+		log.warn("컨트롤러 비밀번호 변경 유저 아이디 : " + vo.getUserId());		
+		log.warn("컨트롤러 비밀번호 변경 유저 비밀번호 : " + vo.getUserPw());		
+		String resultPw = pwencoder.encode(vo.getUserPw());
+		log.warn("비밀번호 인코더 후 : " + resultPw);
+		vo.setUserPw(resultPw);
+		int result = service.updatePw(vo);
+		log.info("새 비밀번호 설정 완료 : " + result);
+		
+		return result != 0 ? new ResponseEntity<String>("success", HttpStatus.OK) : new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	// 마이페이지 이동 
@@ -167,25 +196,10 @@ public class UserController {
 			log.warn("*네임 : " + name);
 		}
 
-		// 권한 예외처리
-		String userRole = vo.getUserRole();
-		switch (userRole) {
-		case "USER_ROLE":
-			vo.setUserRole("일반 유저");
-			break;
-		case "MANAGER_ROLE":
-
-			break;
-		case "ADMIN_ROLE":
-
-			break;
-		default:
-
-			break;
-		}
-
-
 		log.info("마이페이지 이동" + vo);
+		model.addAttribute("myShoppingCount", service.myShoppingCount(vo.getMno()) );
+		model.addAttribute("myBoardCount", service.myBoardCount(vo.getMno()) );
+		model.addAttribute("directreportCount", service.directReportCountByMno(vo.getMno()) );
 		model.addAttribute("vo", vo);
 
 
@@ -233,20 +247,28 @@ public class UserController {
 		log.warn("상세주소 : " + vo.getDetailAddress());
 
 		// 이메일 가져오기 코드
-		String email = vo.getUserEmail();
-		String saveEmail = null;
-		String saveDomain = null;	
-		String[] arr = email.split("@");
-		for (int i = 0; i < arr.length; i++) {
-			log.info("문자열 자르기잉이이인ㅋ : " + arr[i]);
-			saveEmail = arr[0];
-			saveDomain = arr[1];
-		}
-		log.info("이메일 : " + saveEmail);
-		log.info("도메인 : " + saveDomain);
+	      String email = vo.getUserEmail();
+	      String saveEmail = null;
+	      String saveDomain = null;   
+	      String[] arr = email.split("@");
+	      for (int i = 0; i < arr.length; i++) {
+	         log.info("문자열 자르기잉이이인ㅋ : " + arr[i]);
+	         saveEmail = arr[0];
+	         if(arr.length > 1) {
+	            saveDomain = arr[1];
+	         }
+	      }
 
-		model.addAttribute("saveEmail", saveEmail);
-		model.addAttribute("saveDomain", saveDomain);
+	      if(saveDomain != null) {
+	         log.info("이메일 : " + saveEmail);
+	         log.info("도메인 : " + saveDomain);
+	         model.addAttribute("saveEmail", saveEmail);
+	         model.addAttribute("saveDomain", saveDomain);
+	      }else {
+	         log.info("이메일 : " + saveEmail);
+	         model.addAttribute("saveEmail", saveEmail);
+	      }
+
 
 		model.addAttribute("vo", vo);
 		log.info("마이페이지 수정 : " + vo.getUserId());
@@ -277,6 +299,7 @@ public class UserController {
 		log.warn("유저 정보 업데" + vo.getUserDate());
 		log.warn("유저정보 업데이트 :" + vo.getUserGender());
 		log.warn("유저정보 업데이트 :" + vo.getUserPhonenumber());
+		log.warn("유저정보 업데이트 :" + vo.getUserId());
 		int result = service.updateUserInfo(vo);
 		log.warn("dsadasdsadasdadwadwad" + result);
 
@@ -297,16 +320,28 @@ public class UserController {
 
 		model.addAttribute("saveEmail", saveEmail);
 		model.addAttribute("saveDomain", saveDomain);
-		model.addAttribute("vo", vo);
+		model.addAttribute("vo", service.selectUserId(vo.getUserId()));
 		return "/myPage/myPageUpdate";
 	}
 
 	// 유저 탈퇴
 	@GetMapping("deleteAccount")
-	public String deleteAccount(String userId) {
-		log.info("회원탈퇴 : " + userId);
-		service.deleteAccount(userId);
-		return "/main";
+	public String deleteAccount() {
+//		log.info("회원탈퇴 : " + userId);
+//		service.deleteAccount(userId);
+		return "/deleteAccount";
+	}
+	
+	@ResponseBody
+	@GetMapping(value = "deleteUser", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> deleteUser(@RequestParam int mno, @RequestParam String reason) {
+		log.warn("회원탈퇴 : " + mno);
+		log.warn("탈퇴사유 : " + reason);
+		
+		int result = service.deleteUser(mno);
+		log.warn(result);
+		
+		return result != 0 ? new ResponseEntity<String>("success", HttpStatus.OK) : new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -315,11 +350,65 @@ public class UserController {
 		log.info("vo@" + vo);
 		log.info("mno컨트룰러 : " + vo.getMno());
 
-		int orderCount = orderService.orderCount(vo.getMno());
+		int orderCount = orderService.orderCountWe(vo.getMno());
 		vo = service.userSelectOne(vo.getMno());
 		log.info("@@@@@@@@@@" + orderCount);
 		// 미리보기할 데이터 리스트 
 		List<OrderDetailVO> list = orderService.NewuserOrderSelect(vo.getMno());
+
+		list.forEach(action -> {
+			log.warn("조인 X버전 리스트 : " + action.getOrderMainBookName());
+			log.warn("조인 X버전 리스트 : " + action.getOrderMainImage());
+			log.warn("조인 X버전 리스트 : " + action.getTotalPrice());
+			log.warn("조인 X버전 리스트 : " + action.getOrderName());
+			log.warn("조인 X버전 리스트 : " + action.getOrderDate() );
+
+
+			LocalDate localDate = LocalDate.now();
+			Date dt = Date.valueOf(localDate);
+			//			log.warn("데이트 객체 결과 : " + dt);
+			//			dt.getDay() + 1;
+			//			log.warn("결과 " + dt.setDate(dt.getDate() + 1));
+
+			DateTimeFormatter df = DateTimeFormatter.ofPattern("yy-MM-dd");
+			String fdate = localDate.format(df);
+
+			//			log.warn("ddasdsadsadsadasdsa" +  action.getOrderDate().compareTo(dt));
+
+			log.warn("어제 : " + localDate.minusDays(1));
+			log.warn("현재 날짜 : " + fdate);
+			log.warn("다음날 : " + localDate.plusDays(1));
+			log.warn("다다음날 : " + localDate.plusDays(2));
+
+			//			if(action.getOrderDate().after(dt)) {
+			//				10-25가 10-26보다 뒤면??
+			//			}else if(action.getOrderDate().equals(dt)){
+			//				
+			//			}else if(action.getOrderDate().before(dt)) {
+			//				
+			//			}
+			// 가져온 날짜 vs 오늘 날짜 비교
+			// 비교 후 당일이면 ~ 하루뒤면 ~ 이틀뒤면 ~
+
+		});
+
+		model.addAttribute("orderCount",orderCount);
+		model.addAttribute("list", list);
+		model.addAttribute("vo",vo);
+		return "/myPage/myOrder";
+	}
+	
+	@SuppressWarnings("deprecation")
+	@GetMapping("OrderSelectWe")
+	public String userOrderSelectWe(Model model, UserVO vo) {
+		log.info("vo@We" + vo);
+		log.info("mno컨트룰러We : " + vo.getMno());
+
+		int orderCount = orderService.orderCountWe(vo.getMno());
+		vo = service.userSelectOne(vo.getMno());
+		log.info("@@@@@@@@@@We" + orderCount);
+		// 미리보기할 데이터 리스트 
+		List<OrderDetailVO> list = orderService.NewuserOrderSelectWe(vo.getMno());
 
 		list.forEach(action -> {
 			log.warn("조인 X버전 리스트 : " + action.getOrderMainBookName());
@@ -609,43 +698,48 @@ public class UserController {
 		if(cri.getFilterType().equals("posts")) {
 			List<BoardVO> list = service.selectBoard(cri);
 			int total = service.selectBoardCount(cri);
+			log.warn("리스트 크기 : " + list.size());
 			list.forEach(action -> {
 				log.warn("list-포스트 " + action.getTitle());
 				log.warn("list-포스트 " + action.getUpdateDate());
 				log.warn("list-포스트 " + action.getReadCount());
-				log.error("list-포스트 : " + list.size());
-				model.addAttribute("list", list);
-				model.addAttribute("pageMaker", new PageDTO(cri, total));
+				log.warn("list-포스트 보드넘버 " + action.getBoardno());
 			}); 
+			model.addAttribute("list", list);
+			model.addAttribute("pageMaker", new PageDTO(cri, total));
 		}else if(cri.getFilterType().equals("comments")) {
 			List<BoardVO> list = service.selectComments(cri);
 			int total = service.selectCommentsCount(cri);
+			log.warn("리스트 크기 : " + list.size());
 			list.forEach(action -> {
 				log.warn("list-댓글" + action.getReply());
 				log.warn("list-댓글" + action.getUpdateDate());
 				log.warn("list-댓글" + action.getReadCount());
 				log.warn("list-댓글" + action.getTitle());
-				log.error("list-댓글  : " + list.size());
-				model.addAttribute("commentsList", list);
-				model.addAttribute("pageMaker", new PageDTO(cri, total));
+				log.warn("list-댓글 " + action.getBoardno());
 			}); 
+			model.addAttribute("commentsList", list);
+			model.addAttribute("pageMaker", new PageDTO(cri, total));
 		}else if(cri.getFilterType().equals("liked")) {
-			List<BoardVO> list = service.selectBoard(cri);
+			List<BoardVO> list = service.selectLikesBoard(cri);
 			int total = service.selectLikesCount(cri);
+			log.warn("리스트 크기 : " + list.size());
 			list.forEach(action -> {
 				log.warn("list-좋아요" + action.getTitle());
 				log.warn("list-좋아요" + action.getUpdateDate());
 				log.warn("list-좋아요" + action.getReadCount());
-				log.error("list-좋아요  : " + list.size());
-				model.addAttribute("likesList", list);
-				model.addAttribute("pageMaker", new PageDTO(cri, total));
+				log.warn("list-좋아요 " + action.getBoardno());
 			});
+			model.addAttribute("likesList", list);
+			model.addAttribute("pageMaker", new PageDTO(cri, total));
 		}
 
 		log.warn("after cri : " + cri.getAmount());
 		log.warn("after cri : " + cri.getPageNum());
 		log.error("mno는?" + cri.getUserMno());
 		log.error("mno는?" + cri.getUserMno());
+		UserVO vo = service.userSelectOne(cri.getUserMno());
+		model.addAttribute("vo", vo);
 
 		return "myPage/myPageCommenPost";
 	}
@@ -688,7 +782,6 @@ public class UserController {
 		log.warn("집필 북마크 페이지 이동" + cri.getUserMno());
 		UserVO vo = service.userSelectOne(cri.getUserMno());
 		
-		
 		List<WriteVO> list = service.selectMyLikedWritingList(cri);
 		list.forEach(action -> {
 			log.warn("집필 타이틀 " + action.getTitle());
@@ -696,9 +789,10 @@ public class UserController {
 			log.warn("집필 타이틀 " + action.getCoverImage());
 		});
 		
+		model.addAttribute("vo", vo);
 		model.addAttribute("list", list);
 		return "myPage/myLikedWriterBookList";
 	}
 
-
+	
 }

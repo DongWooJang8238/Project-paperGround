@@ -28,7 +28,7 @@
 				</c:choose>
 			</select>
 			<input type="search" name="selectBook" placeholder="제목으로 검색" value="${selectValue}">
-			<button onclick="selectBookShoping()">🔍</button>
+			<button onclick="selectBookShoping()"><img src="https://cf.joara.com/joara30FE/assets/icon/ico_top_search.png" alt="검색" class="search-icon"></button>
 		</div>
 		
 		<div class="filterType-body">
@@ -80,7 +80,7 @@
 				<c:when test="${not empty list}">
 		<c:forEach var="bvo" items="${list}">
 				<div class="card" onclick="goGet(${bvo.bno})">
-					<img src="${bvo.bookcover }" alt="책 이미지">
+					<img style="object-fit: cover;" src="${bvo.bookcover }" alt="책 이미지">
 					<div class="card-title">
 						<a href="${bvo.bno}">${bvo.title}</a>
 					</div>
@@ -102,7 +102,7 @@
 		</c:forEach>
 				</c:when>
 				<c:otherwise>
-					<div class="card" style="width: 1400px; right: 1400px;">
+					<div class="card" style="width: 1200px; right: 1400px;">
 						<h1>검색 결과가 없습니다.</h1>
 					</div>
 				</c:otherwise>

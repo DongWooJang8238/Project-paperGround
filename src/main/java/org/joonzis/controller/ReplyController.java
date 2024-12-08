@@ -104,4 +104,12 @@ public class ReplyController {
 					new ResponseEntity<String>("success", HttpStatus.OK) :
 					new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		
+		// 댓글 좋아요 수 조회
+		@GetMapping(value = "/commentlike/count/{replyno}", produces = MediaType.TEXT_PLAIN_VALUE)
+		public ResponseEntity<String> getComLikeCount(@PathVariable("replyno") int replyno) {
+		    log.info("댓글 좋아요 수 조회... replyno: " + replyno);
+		    int likeCount = likeservice.comcountLikes(replyno);
+		    return new ResponseEntity<String>(String.valueOf(likeCount), HttpStatus.OK);
+		}
 }
